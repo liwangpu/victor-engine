@@ -1,0 +1,40 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { PageEditorRoutingModule } from './page-editor-routing.module';
+import { PageListComponent } from './components/page-list/page-list.component';
+import { PageManagementComponent } from './components/page-management/page-management.component';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { IconDefinition } from '@ant-design/icons-angular';
+import * as antIcon from '@ant-design/icons-angular/icons';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { PageEditorComponent } from './components/page-editor/page-editor.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { PageStoreService } from './services/page-store.service';
+
+const icons: Array<IconDefinition> = [antIcon.PlusOutline];
+
+@NgModule({
+  declarations: [
+    PageListComponent,
+    PageManagementComponent,
+    PageEditorComponent
+  ],
+  imports: [
+    CommonModule,
+    PageEditorRoutingModule,
+    ReactiveFormsModule,
+    FormsModule,
+    NzIconModule.forChild(icons),
+    NzButtonModule,
+    NzModalModule,
+    NzFormModule,
+    NzInputModule
+  ],
+  providers: [
+    PageStoreService
+  ]
+})
+export class PageEditorModule { }
