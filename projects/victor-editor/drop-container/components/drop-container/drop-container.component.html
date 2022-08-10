@@ -1,0 +1,10 @@
+<div class="drop-container" #dropContainer [attr.container-id]="metadata?.id">
+  <!-- <div class="wrapper"> -->
+    <victor-designer-component-design-wrapper class="drop-item" *ngFor="let md of components;trackBy:trackById"
+      [metadata]="md" [attr.id]="md.id">
+    </victor-designer-component-design-wrapper>
+  <!-- </div> -->
+  <!-- <victor-designer-component-design-wrapper class="drop-item" *ngFor="let md of components"
+  [metadata]="md" [attr.id]="md.id">
+</victor-designer-component-design-wrapper> -->
+</div>

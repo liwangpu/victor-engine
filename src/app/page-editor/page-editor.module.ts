@@ -13,20 +13,30 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { PageStoreService } from './services/page-store.service';
+import { DynamicPageComponent } from './components/dynamic-page/dynamic-page.component';
+import { PageDetailComponent } from './components/page-detail/page-detail.component';
+import { DesignerModule } from 'victor-editor/designer';
+import { RunTimeModule as TabsRunTimeModule } from 'dynamic-tabs/run-time';
+import { DesignTimeModule as TabsDesignTimeModule } from 'dynamic-tabs/design-time';
 
-const icons: Array<IconDefinition> = [antIcon.PlusOutline];
+const icons: Array<IconDefinition> = [antIcon.PlusOutline, antIcon.EditOutline];
 
 @NgModule({
   declarations: [
     PageListComponent,
     PageManagementComponent,
-    PageEditorComponent
+    PageEditorComponent,
+    DynamicPageComponent,
+    PageDetailComponent
   ],
   imports: [
     CommonModule,
     PageEditorRoutingModule,
     ReactiveFormsModule,
     FormsModule,
+    DesignerModule,
+    TabsDesignTimeModule,
+    TabsRunTimeModule,
     NzIconModule.forChild(icons),
     NzButtonModule,
     NzModalModule,

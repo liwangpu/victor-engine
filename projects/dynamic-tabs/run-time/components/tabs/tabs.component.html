@@ -1,0 +1,9 @@
+<!-- <p class="my-title">{{id}}</p> -->
+<nz-tabset class="tabset" [nzSelectedIndex]="selectedTabIndex"
+  (nzSelectedIndexChange)="onSelectedTabIndexChange($event)">
+  <nz-tab *ngFor="let tab of tabs;trackBy:trackById" [nzTitle]="tab.title">
+    <ng-template nz-tab>
+      <victor-tab-wrapper [tab]="tab"></victor-tab-wrapper>
+    </ng-template>
+  </nz-tab>
+</nz-tabset>

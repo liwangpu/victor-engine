@@ -23,17 +23,29 @@
     ],
     "paths": {
       "victor-core": [
-        "dist/victor-core/victor-core",
-        "dist/victor-core"
+        "projects/victor-core/src/public-api.ts",
+      ],
+      "victor-core/*": [
+        "projects/victor-core/*",
       ],
       "victor-editor": [
-        "dist/victor-editor/victor-editor",
-        "dist/victor-editor"
+        "projects/victor-editor/src/public-api.ts",
+      ],
+      "victor-editor/*": [
+        "projects/victor-editor/*",
       ],
       "victor-renderer": [
-        "dist/victor-renderer/victor-renderer",
-        "dist/victor-renderer"
-      ]
+        "projects/victor-renderer/src/public-api.ts",
+      ],
+      "victor-renderer/*": [
+        "projects/victor-renderer/*",
+      ],
+      "dynamic-tabs": [
+        "projects/dynamic-tabs/src/public-api.ts",
+      ],
+      "dynamic-tabs/*": [
+        "projects/dynamic-tabs/*",
+      ],
     },
   },
   "angularCompilerOptions": {

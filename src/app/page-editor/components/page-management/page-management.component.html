@@ -1,9 +1,19 @@
 <div class="header">
   <p class="title">动态页面</p>
-  <div class="add-btn" (click)="addPage()">
+  <div class="custom-button add" (click)="addPage()">
     <i nz-icon nzType="plus" nzTheme="outline"></i>
   </div>
 </div>
 <div class="content">
-
+  <div class="page" *ngFor="let page of pages" [routerLink]="['./dynamic',page.id]" routerLinkActive="actived">
+    <p>{{page.title}}</p>
+    <div class="operation">
+      <div class="custom-button" (click)="editPage(page.id)">
+        <i nz-icon nzType="edit" nzTheme="outline"></i>
+      </div>
+      <div class="custom-button" (click)="deletePage(page.id)">
+        <i nz-icon nzType="close" nzTheme="outline"></i>
+      </div>
+    </div>
+  </div>
 </div>

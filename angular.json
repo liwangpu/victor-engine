@@ -13,14 +13,33 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "tutorial": {
+    "victor-engine": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
+          "style": "scss",
+          "skipTests": true
         },
         "@schematics/angular:application": {
           "strict": true
+        },
+        "@schematics/angular:class": {
+          "skipTests": true
+        },
+        "@schematics/angular:directive": {
+          "skipTests": true
+        },
+        "@schematics/angular:guard": {
+          "skipTests": true
+        },
+        "@schematics/angular:module": {
+          "skipTests": true
+        },
+        "@schematics/angular:pipe": {
+          "skipTests": true
+        },
+        "@schematics/angular:service": {
+          "skipTests": true
         }
       },
       "root": "",
@@ -30,7 +49,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/tutorial",
+            "outputPath": "dist/victor-engine",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -47,7 +66,9 @@
             ],
             "styles": [
               "src/theme.less",
-              "src/styles.scss"
+              "src/styles.scss",
+              "projects/victor-editor/resources/designer.scss",
+              "projects/dynamic-tabs/resources/dynamic-tabs.scss"
             ],
             "scripts": []
           },
@@ -91,10 +112,10 @@
           },
           "configurations": {
             "production": {
-              "browserTarget": "tutorial:build:production"
+              "browserTarget": "victor-engine:build:production"
             },
             "development": {
-              "browserTarget": "tutorial:build:development"
+              "browserTarget": "victor-engine:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -102,7 +123,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "tutorial:build"
+            "browserTarget": "victor-engine:build"
           }
         },
         "test": {
@@ -125,11 +146,11 @@
         }
       }
     },
-    "form-control": {
+    "victor-core": {
       "projectType": "library",
-      "root": "projects/form-control",
-      "sourceRoot": "projects/form-control/src",
-      "prefix": "qflow-form-control",
+      "root": "projects/victor-core",
+      "sourceRoot": "projects/victor-core/src",
+      "prefix": "victor",
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
@@ -142,14 +163,14 @@
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "project": "projects/form-control/ng-package.json"
+            "project": "projects/victor-core/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/form-control/tsconfig.lib.prod.json"
+              "tsConfig": "projects/victor-core/tsconfig.lib.prod.json"
             },
             "development": {
-              "tsConfig": "projects/form-control/tsconfig.lib.json"
+              "tsConfig": "projects/victor-core/tsconfig.lib.json"
             }
           },
           "defaultConfiguration": "production"
@@ -157,18 +178,18 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/form-control/src/test.ts",
-            "tsConfig": "projects/form-control/tsconfig.spec.json",
-            "karmaConfig": "projects/form-control/karma.conf.js"
+            "main": "projects/victor-core/src/test.ts",
+            "tsConfig": "projects/victor-core/tsconfig.spec.json",
+            "karmaConfig": "projects/victor-core/karma.conf.js"
           }
         }
       }
     },
-    "dynamic-form": {
+    "victor-editor": {
       "projectType": "library",
-      "root": "projects/dynamic-form",
-      "sourceRoot": "projects/dynamic-form/src",
-      "prefix": "qflow-dynamic-form",
+      "root": "projects/victor-editor",
+      "sourceRoot": "projects/victor-editor/src",
+      "prefix": "victor",
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
@@ -181,14 +202,14 @@
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "project": "projects/dynamic-form/ng-package.json"
+            "project": "projects/victor-editor/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/dynamic-form/tsconfig.lib.prod.json"
+              "tsConfig": "projects/victor-editor/tsconfig.lib.prod.json"
             },
             "development": {
-              "tsConfig": "projects/dynamic-form/tsconfig.lib.json"
+              "tsConfig": "projects/victor-editor/tsconfig.lib.json"
             }
           },
           "defaultConfiguration": "production"
@@ -196,49 +217,18 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/dynamic-form/src/test.ts",
-            "tsConfig": "projects/dynamic-form/tsconfig.spec.json",
-            "karmaConfig": "projects/dynamic-form/karma.conf.js"
+            "main": "projects/victor-editor/src/test.ts",
+            "tsConfig": "projects/victor-editor/tsconfig.spec.json",
+            "karmaConfig": "projects/victor-editor/karma.conf.js"
           }
         }
       }
     },
-    "form-data-center": {
+    "victor-renderer": {
       "projectType": "library",
-      "root": "projects/form-data-center",
-      "sourceRoot": "projects/form-data-center/src",
-      "prefix": "lib",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "project": "projects/form-data-center/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "projects/form-data-center/tsconfig.lib.prod.json"
-            },
-            "development": {
-              "tsConfig": "projects/form-data-center/tsconfig.lib.json"
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/form-data-center/src/test.ts",
-            "tsConfig": "projects/form-data-center/tsconfig.spec.json",
-            "karmaConfig": "projects/form-data-center/karma.conf.js"
-          }
-        }
-      }
-    },
-    "form-designer": {
-      "projectType": "library",
-      "root": "projects/form-designer",
-      "sourceRoot": "projects/form-designer/src",
-      "prefix": "qflow-form-designer",
+      "root": "projects/victor-renderer",
+      "sourceRoot": "projects/victor-renderer/src",
+      "prefix": "victor",
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
@@ -251,14 +241,14 @@
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "project": "projects/form-designer/ng-package.json"
+            "project": "projects/victor-renderer/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/form-designer/tsconfig.lib.prod.json"
+              "tsConfig": "projects/victor-renderer/tsconfig.lib.prod.json"
             },
             "development": {
-              "tsConfig": "projects/form-designer/tsconfig.lib.json"
+              "tsConfig": "projects/victor-renderer/tsconfig.lib.json"
             }
           },
           "defaultConfiguration": "production"
@@ -266,48 +256,9 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/form-designer/test.ts",
-            "tsConfig": "projects/form-designer/tsconfig.spec.json",
-            "karmaConfig": "projects/form-designer/karma.conf.js"
-          }
-        }
-      }
-    },
-    "form-core": {
-      "projectType": "library",
-      "root": "projects/form-core",
-      "sourceRoot": "projects/form-core/src",
-      "prefix": "qflow",
-      "schematics": {
-        "@schematics/angular:component": {
-          "style": "scss"
-        },
-        "@schematics/angular:application": {
-          "strict": true
-        }
-      },
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "project": "projects/form-core/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "projects/form-core/tsconfig.lib.prod.json"
-            },
-            "development": {
-              "tsConfig": "projects/form-core/tsconfig.lib.json"
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/form-core/src/test.ts",
-            "tsConfig": "projects/form-core/tsconfig.spec.json",
-            "karmaConfig": "projects/form-core/karma.conf.js"
+            "main": "projects/victor-renderer/src/test.ts",
+            "tsConfig": "projects/victor-renderer/tsconfig.spec.json",
+            "karmaConfig": "projects/victor-renderer/karma.conf.js"
           }
         }
       }
@@ -316,7 +267,7 @@
       "projectType": "library",
       "root": "projects/dynamic-tabs",
       "sourceRoot": "projects/dynamic-tabs/src",
-      "prefix": "qflow",
+      "prefix": "victor-dynamic",
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
@@ -350,100 +301,7 @@
           }
         }
       }
-    },
-    "victor-core": {
-      "projectType": "library",
-      "root": "projects/victor-core",
-      "sourceRoot": "projects/victor-core/src",
-      "prefix": "lib",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "project": "projects/victor-core/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "projects/victor-core/tsconfig.lib.prod.json"
-            },
-            "development": {
-              "tsConfig": "projects/victor-core/tsconfig.lib.json"
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/victor-core/src/test.ts",
-            "tsConfig": "projects/victor-core/tsconfig.spec.json",
-            "karmaConfig": "projects/victor-core/karma.conf.js"
-          }
-        }
-      }
-    },
-    "victor-editor": {
-      "projectType": "library",
-      "root": "projects/victor-editor",
-      "sourceRoot": "projects/victor-editor/src",
-      "prefix": "lib",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "project": "projects/victor-editor/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "projects/victor-editor/tsconfig.lib.prod.json"
-            },
-            "development": {
-              "tsConfig": "projects/victor-editor/tsconfig.lib.json"
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/victor-editor/src/test.ts",
-            "tsConfig": "projects/victor-editor/tsconfig.spec.json",
-            "karmaConfig": "projects/victor-editor/karma.conf.js"
-          }
-        }
-      }
-    },
-    "victor-renderer": {
-      "projectType": "library",
-      "root": "projects/victor-renderer",
-      "sourceRoot": "projects/victor-renderer/src",
-      "prefix": "lib",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "project": "projects/victor-renderer/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "projects/victor-renderer/tsconfig.lib.prod.json"
-            },
-            "development": {
-              "tsConfig": "projects/victor-renderer/tsconfig.lib.json"
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/victor-renderer/src/test.ts",
-            "tsConfig": "projects/victor-renderer/tsconfig.spec.json",
-            "karmaConfig": "projects/victor-renderer/karma.conf.js"
-          }
-        }
-      }
     }
   },
-  "defaultProject": "tutorial"
+  "defaultProject": "victor-engine"
 }

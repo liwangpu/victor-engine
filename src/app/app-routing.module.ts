@@ -3,15 +3,15 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: 'page-editor',
+    path: 'pages',
     loadChildren: () => import('./page-editor/page-editor.module').then(m => m.PageEditorModule)
   },
   // {
-  //   path: 'form-designer',
+  //   path: 'victor-editor',
   //   loadChildren: () => import('./module-loaders/designer-loader/designer-loader.module').then(m => m.DesignerLoaderModule)
   // },
-  { path: '', pathMatch: 'full', redirectTo: 'page-editor' },
-  { path: '**', redirectTo: 'page-editor' }
+  { path: '', pathMatch: 'full', redirectTo: 'pages' },
+  { path: '**', redirectTo: 'pages' }
 ];
 
 @NgModule({

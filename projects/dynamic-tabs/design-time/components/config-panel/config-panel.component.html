@@ -1,0 +1,8 @@
+<form [formGroup]="form">
+  <victor-designer-shared-config-item title="标题">
+    <input nz-input placeholder="请输入标题" formControlName="title" />
+  </victor-designer-shared-config-item>
+  <victor-designer-shared-config-item title="标签项管理">
+    <victor-tabs-setting formControlName="body"></victor-tabs-setting>
+  </victor-designer-shared-config-item>
+</form>

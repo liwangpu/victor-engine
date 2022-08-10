@@ -1,6 +1,9 @@
-import { Component, OnInit, ChangeDetectionStrategy, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ViewContainerRef, ChangeDetectorRef } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { PageEditorComponent } from '../page-editor/page-editor.component';
+import { PageDefinition, PageStoreService } from '../../services/page-store.service';
+import { filter } from 'rxjs/operators';
+import { PageDetailComponent } from '../page-detail/page-detail.component';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-page-management',
@@ -10,25 +13,50 @@ import { PageEditorComponent } from '../page-editor/page-editor.component';
 })
 export class PageManagementComponent implements OnInit {
 
+  pages: PageDefinition[];
   constructor(
-    private modal: NzModalService, private viewContainerRef: ViewContainerRef
+    private modal: NzModalService,
+    private viewContainerRef: ViewContainerRef,
+    private pageStore: PageStoreService,
+    private cdr: ChangeDetectorRef,
+    private router: Router,
+    private acr: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
+    this.refreshList();
   }
 
   addPage(): void {
-    this.modal.create({
+    const ref = this.modal.create({
       nzTitle: '新页面',
-      nzContent: PageEditorComponent,
+      nzContent: PageDetailComponent,
       nzClosable: false,
       nzCancelText: null,
       nzOkText: null,
       nzFooter: null,
+      nzCentered: false,
       nzWrapClassName: 'page-editor-modal-wrapper',
-      nzClassName: 'page-editor-modal',
-      nzOnOk: () => new Promise(resolve => setTimeout(resolve, 1000))
+      nzClassName: 'page-editor-modal'
     });
+    ref.afterClose
+      .pipe(filter(id => id ? true : false))
+      .subscribe(id => {
+        this.router.navigate(['/pages', 'editor', id]);
+      });
   }
 
+  editPage(id: number): void {
+    this.router.navigate(['/pages', 'editor', id]);
+  }
+
+  async deletePage(id: number): Promise<void> {
+    await this.pageStore.delete(id);
+    this.refreshList();
+  }
+
+  private async refreshList(): Promise<void> {
+    this.pages = await this.pageStore.query();
+    this.cdr.markForCheck();
+  }
 }

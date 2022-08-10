@@ -1,0 +1,12 @@
+<form [formGroup]="form">
+  <div class="tabs-setting" formArrayName="tabs">
+    <ng-container *ngFor="let fg of tabs?.controls; let i = index">
+      <div class="item" [class.actived]="activedTabId===fg.value?.id" [formGroupName]="i" (click)="activeTab(fg.value?.id)">
+        <p class="title">{{fg?.value?.title}}</p>
+      </div>
+    </ng-container>
+  </div>
+</form>
+<div class="operation">
+  <button nz-button nzType="dashed" (click)="addTab()">添加标签项</button>
+</div>

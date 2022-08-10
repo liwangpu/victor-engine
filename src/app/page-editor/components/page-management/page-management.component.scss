@@ -4,31 +4,90 @@
   color: #fff;
 
   &>.header {
+    position: sticky;
+    top: 0;
+    left: 0;
     display: flex;
-    height: 32px;
+    // height: 32px;
     justify-content: space-between;
     align-items: center;
-    padding: 0 12px;
+    padding: 12px 12px 4px;
     color: #868787;
     font-size: 14px;
     font-weight: 500;
+    background-color: #1E1E28;
+    z-index: 99;
 
     &>.title {
       margin: 0;
     }
 
-    &>.add-btn {
-      $s: 20px;
+  }
+
+  &>.content {
+
+    div.page {
+      position: relative;
       display: flex;
-      width: $s;
-      height: $s;
-      justify-content: center;
       align-items: center;
+      height: 40px;
+      padding: 0 12px 0 20px;
+      overflow: hidden;
       cursor: pointer;
-      &:hover{
+
+      &.actived {
+        background-color: #272D33;
         color: #1890FF;
       }
-      // background-color: orange;
+
+      &:hover {
+        background-color: #272D33;
+
+        &>.operation {
+          display: flex;
+          background-color: #272D33;
+        }
+      }
+
+      &>p {
+        flex: 1;
+        padding: 0 12px 0 0;
+        margin: 0;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        word-break: break-all;
+      }
+
+      &>.operation {
+        position: absolute;
+        display: none;
+        align-items: center;
+        top: 0;
+        right: 0;
+        height: 100%;
+        padding: 0 12px 0 0;
+
+        &>* {
+          margin-left: 8px;
+        }
+      }
     }
+  }
+
+  .custom-button {
+    $s: 20px;
+    display: flex;
+    width: $s;
+    height: $s;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    cursor: pointer;
+
+    &:hover {
+      color: #1890FF;
+    }
+
   }
 }

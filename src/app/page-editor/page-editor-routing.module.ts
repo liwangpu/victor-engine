@@ -1,13 +1,29 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { DynamicPageComponent } from './components/dynamic-page/dynamic-page.component';
+import { PageEditorComponent } from './components/page-editor/page-editor.component';
 import { PageListComponent } from './components/page-list/page-list.component';
 
 const routes: Routes = [
   {
-    path: 'page-list',
-    component: PageListComponent
+    path: 'list',
+    component: PageListComponent,
+    children: [
+      {
+        path: 'dynamic/:id',
+        component: DynamicPageComponent
+      }
+    ]
   },
-  { path: '', pathMatch: 'full', redirectTo: 'page-list' },
+  {
+    path: 'editor',
+    component: PageEditorComponent
+  },
+  {
+    path: 'editor/:id',
+    component: PageEditorComponent
+  },
+  { path: '', pathMatch: 'full', redirectTo: 'list' },
 ];
 
 @NgModule({

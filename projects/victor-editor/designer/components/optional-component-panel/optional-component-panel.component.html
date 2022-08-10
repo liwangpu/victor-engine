@@ -1,0 +1,18 @@
+<div class="optional-list">
+  <ng-container *ngFor="let g of componentGroups">
+    <ng-container *ngTemplateOutlet="groupTpl;context:{$implicit:g}"></ng-container>
+  </ng-container>
+</div>
+
+<ng-template #groupTpl let-group>
+  <div class="optional-group">
+    <div class="header">
+      <p class="title">{{group.title}}</p>
+    </div>
+    <div class="content" [victorOptionalComponents]="group.components" dragItemClass="victor-editor-optional-component">
+      <div class="victor-editor-optional-component" *ngFor="let c of group.components">
+        <p class="title">{{c.title}}</p>
+      </div>
+    </div>
+  </div>
+</ng-template>
