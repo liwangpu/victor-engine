@@ -1,5 +1,6 @@
 import { createSelector, DefaultProjectorFn, MemoizedSelector } from '@ngrx/store';
 import { FormDesignerState, selectFormDesignerState } from '../state';
+import { ComponentTreeState } from './state';
 
 export const selectFirstLevelBodyComponents: (id: string) => MemoizedSelector<FormDesignerState, { id: string; title?: string; type: string }[]> = id => createSelector(
   selectFormDesignerState,
@@ -32,5 +33,16 @@ export const selectFirstLevelBodyComponentIds: (id: string) => MemoizedSelector<
     if (!id) { return []; }
     const tree = state.componentTree[id];
     return tree.body || [];
+  }
+);
+
+export const selectPageTree: MemoizedSelector<FormDesignerState, ComponentTreeState> = createSelector(
+  selectFormDesignerState,
+  (state: FormDesignerState) => {
+    if (!state.componentTree) { return null; }
+    const componentIds = Object.keys(state.componentTree);
+    const componentTrees: ComponentTreeState[] = componentIds.map(id => state.componentTree[id]);
+    let pageTree = componentTrees.find(t => t.type === 'page');
+    return pageTree;
   }
 );

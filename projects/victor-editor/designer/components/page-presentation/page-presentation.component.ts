@@ -4,6 +4,9 @@ import { DynamicComponent, DynamicComponentRegistry, DYNAMIC_COMPONENT, DYNAMIC_
 import { DropContainerComponent, DropContainerOpsatService } from 'victor-editor/drop-container';
 import { SubSink } from 'subsink';
 import { v4 as uuidv4 } from 'uuid';
+import { Store } from '@ngrx/store';
+import { selectPageTree } from 'victor-editor/state-store';
+import { filter, first } from 'rxjs/operators';
 
 @Component({
   selector: 'victor-designer-page-presentation',
@@ -20,14 +23,12 @@ export class PagePresentationComponent implements OnInit {
   dropContainers: string[] = [];
   @ViewChild('container', { static: true, read: ViewContainerRef })
   protected container: ViewContainerRef;
-  @LazyService(DropContainerOpsatService)
-  private readonly opsat: DropContainerOpsatService;
   @LazyService(ChangeDetectorRef)
   private readonly cdr: ChangeDetectorRef;
   @LazyService(ComponentFactoryResolver)
   protected cfr: ComponentFactoryResolver;
-  @LazyService(DYNAMIC_COMPONENT_REGISTRY)
-  private readonly dynamicComponentRegistry: DynamicComponentRegistry;
+  @LazyService(Store)
+  private readonly store: Store;
   private subs = new SubSink();
   constructor(
     protected injector: Injector
@@ -38,38 +39,21 @@ export class PagePresentationComponent implements OnInit {
     this.subs.unsubscribe();
   }
 
- async ngOnInit(): Promise<void> {
-    const fac = this.cfr.resolveComponentFactory(DropContainerComponent);
-    const ij = Injector.create({
-      providers: [
-        { provide: DYNAMIC_COMPONENT_METADATA, useValue: { id: 'page', type: 'page' } }
-      ],
-      parent: this.injector
-    });
-    this.container.createComponent(fac, null, ij);
+  ngOnInit(): void {
+    this.subs.sink = this.store.select(selectPageTree)
+      .pipe(filter(t => t ? true : false), first())
+      .subscribe(md => {
+        const fac = this.cfr.resolveComponentFactory(DropContainerComponent);
+        const ij = Injector.create({
+          providers: [
+            { provide: DYNAMIC_COMPONENT_METADATA, useValue: md }
+          ],
+          parent: this.injector
+        });
+        this.container.createComponent(fac, null, ij);
+        this.cdr.markForCheck();
+      });
 
-
-    // const fac = this.cfr.resolveComponentFactory(DropContainerComponent);
-    // const des = await this.dynamicComponentRegistry.getComponentDescription('tabs');
-    // const ij = Injector.create({
-    //   providers: [
-    //     {
-    //       provide: DYNAMIC_COMPONENT_METADATA, useValue: {
-    //         id: 'page', type: 'page', body: [
-    //           {
-    //             id: uuidv4(),
-    //             type: 'tab',
-    //             title: '页签1'
-    //           }
-    //         ]
-    //       }
-    //     }
-    //   ],
-    //   parent: this.injector
-    // });
-    // this.container.createComponent(des.fac, null, ij);
-
-    this.cdr.markForCheck();
   }
 
 }

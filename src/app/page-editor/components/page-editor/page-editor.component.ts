@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, forwardRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DynamicComponentMetadata } from 'victor-core';
 import { DesignerStarter, DESIGNER_STARTER, EditorHandler } from 'victor-editor/designer';
 import { PageStoreService } from '../../services/page-store.service';
 
@@ -23,7 +24,7 @@ export class PageEditorComponent implements DesignerStarter, OnInit {
   }
 
 
-  public getSchema(): Promise<any> {
+  public getSchema(): Promise<DynamicComponentMetadata> {
     const schema = this.acr.snapshot.data['schema'];
     // console.log('sss:',sss);
     return schema;
@@ -36,8 +37,9 @@ export class PageEditorComponent implements DesignerStarter, OnInit {
     this.editorHandler = handler;
   }
 
-  async saveSchema(schema: any): Promise<void> {
+  async saveSchema(schema: DynamicComponentMetadata): Promise<void> {
     console.log('save:', schema);
+    await this.pageStore.update(schema.id as any, schema);
   }
 
   async save(): Promise<void> {

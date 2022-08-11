@@ -10,7 +10,7 @@ export class PageEditorResolver implements Resolve<any> {
 
   async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<any> {
     const definition = await this.pageStore.get(route.params.id);
-    const schema = definition.schema || { id: `${definition.id}`, type: 'page', title: definition.title || '页面' };
-    return schema;
+    // const schema = definition;
+    return definition;
   }
 }

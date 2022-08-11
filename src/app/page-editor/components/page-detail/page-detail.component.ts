@@ -18,7 +18,8 @@ export class PageDetailComponent implements OnInit {
     private pageStore: PageStoreService
   ) {
     this.form = this.fb.group({
-      title: ['', [Validators.required]]
+      title: ['', [Validators.required]],
+      type: ['page']
     });
   }
 

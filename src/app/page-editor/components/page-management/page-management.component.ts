@@ -1,9 +1,10 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { PageDefinition, PageStoreService } from '../../services/page-store.service';
+import { PageStoreService } from '../../services/page-store.service';
 import { filter } from 'rxjs/operators';
 import { PageDetailComponent } from '../page-detail/page-detail.component';
 import { Router } from '@angular/router';
+import { DynamicComponentMetadata } from 'victor-core';
 
 @Component({
   selector: 'app-page-management',
@@ -13,7 +14,7 @@ import { Router } from '@angular/router';
 })
 export class PageManagementComponent implements OnInit {
 
-  pages: PageDefinition[];
+  pages: DynamicComponentMetadata[];
   constructor(
     private modal: NzModalService,
     private pageStore: PageStoreService,
@@ -44,13 +45,13 @@ export class PageManagementComponent implements OnInit {
       });
   }
 
-  editPage(id: number, e: MouseEvent): void {
+  editPage(id: string, e: MouseEvent): void {
     e.stopPropagation();
     this.router.navigate(['/pages', 'editor', id]);
     // console.log('iid:', id);
   }
 
-  async deletePage(id: number, e: MouseEvent): Promise<void> {
+  async deletePage(id: string, e: MouseEvent): Promise<void> {
     e.stopPropagation();
     await this.pageStore.delete(id);
     this.refreshList();

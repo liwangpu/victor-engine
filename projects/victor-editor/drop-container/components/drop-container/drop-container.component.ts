@@ -94,7 +94,6 @@ export class DropContainerComponent extends DynamicComponent implements OnInit, 
         dataTransfer.setData('Text', JSON.stringify({ id, type: metadata.type }));
       },
       onAdd: async (evt: SortableJs.SortableEvent) => {
-        // console.log('add:', evt);
         const dragEvt: DragEvent = (evt as any).originalEvent;
         const metadataStr = dragEvt.dataTransfer.getData('Text');
         if (!metadataStr) { return; }

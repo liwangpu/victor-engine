@@ -1,13 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import Dexie from 'dexie';
 import { DynamicComponentMetadata } from 'victor-core';
-
-export interface PageDefinition {
-  id?: number;
-  title: string;
-  schema?: DynamicComponentMetadata;
-}
 
 @Injectable()
 export class PageStoreService {
@@ -15,24 +8,28 @@ export class PageStoreService {
   private readonly db = new Dexie("PageStore");
   constructor() {
     this.db.version(1).stores({
-      pages: '++id,title,schema',
+      pages: '++id,title,type',
     });
   }
 
-  query(): Promise<PageDefinition[]> {
+  query(): Promise<DynamicComponentMetadata[]> {
     return this.db.table('pages').toArray();
   }
 
-  get(id: number): Promise<PageDefinition> {
+  get(id: string): Promise<DynamicComponentMetadata> {
     return this.db.table('pages').get(Number.parseInt(id as any));
   }
 
-  async create(definition: PageDefinition): Promise<number> {
+  async create(definition: DynamicComponentMetadata): Promise<string> {
     const id = await this.db.table('pages').add(definition);
-    return Number(id);
+    return id.toString();
   }
 
-  async delete(id: number): Promise<void> {
-    await this.db.table('pages').delete(id);
+  async update(id: string, definition: DynamicComponentMetadata): Promise<void> {
+    await this.db.table('pages').update(Number.parseInt(id as any), definition);
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.db.table('pages').delete(Number.parseInt(id));
   }
 }

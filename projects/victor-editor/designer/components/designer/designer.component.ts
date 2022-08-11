@@ -52,8 +52,8 @@ export class DesignerComponent implements EditorHandler, OnInit, OnDestroy {
   async ngOnInit(): Promise<void> {
     const schema = await this.starter.getSchema();
     const state = generateDesignState(schema);
-    console.log('schema:', schema);
-    console.log('state:', state);
+    // console.log('schema:', schema);
+    // console.log('state:', state);
     this.store.dispatch(setDesignerState({ state, source: DesignerComponent.name }));
 
     this.subs.sink = this.store.select(selectFormDesignerState)
