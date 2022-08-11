@@ -12,7 +12,7 @@ import { SubSink } from 'subsink';
 export class ConfigPanelComponent extends ComponentDesignPanel implements OnInit, OnDestroy {
 
 
-  public form: FormGroup;
+   form: FormGroup;
   @LazyService(FormBuilder)
   protected fb: FormBuilder;
   private subs = new SubSink();

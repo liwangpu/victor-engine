@@ -8,10 +8,10 @@
   <div class="page" *ngFor="let page of pages" [routerLink]="['./dynamic',page.id]" routerLinkActive="actived">
     <p>{{page.title}}</p>
     <div class="operation">
-      <div class="custom-button" (click)="editPage(page.id)">
+      <div class="custom-button" (click)="editPage(page.id,$event)">
         <i nz-icon nzType="edit" nzTheme="outline"></i>
       </div>
-      <div class="custom-button" (click)="deletePage(page.id)">
+      <div class="custom-button" (click)="deletePage(page.id,$event)">
         <i nz-icon nzType="close" nzTheme="outline"></i>
       </div>
     </div>

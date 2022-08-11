@@ -217,7 +217,7 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/victor-editor/src/test.ts",
+            "main": "projects/victor-editor/test.ts",
             "tsConfig": "projects/victor-editor/tsconfig.spec.json",
             "karmaConfig": "projects/victor-editor/karma.conf.js"
           }
@@ -298,6 +298,45 @@
             "main": "projects/dynamic-tabs/src/test.ts",
             "tsConfig": "projects/dynamic-tabs/tsconfig.spec.json",
             "karmaConfig": "projects/dynamic-tabs/karma.conf.js"
+          }
+        }
+      }
+    },
+    "dynamic-form": {
+      "projectType": "library",
+      "root": "projects/dynamic-form",
+      "sourceRoot": "projects/dynamic-form/src",
+      "prefix": "victor-dynamic",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        },
+        "@schematics/angular:application": {
+          "strict": true
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/dynamic-form/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/dynamic-form/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/dynamic-form/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/dynamic-form/src/test.ts",
+            "tsConfig": "projects/dynamic-form/tsconfig.spec.json",
+            "karmaConfig": "projects/dynamic-form/karma.conf.js"
           }
         }
       }

@@ -6,7 +6,7 @@ export const selectFirstLevelBodyComponents: (id: string) => MemoizedSelector<Fo
   (state: FormDesignerState) => {
     if (!id) { return []; }
     const tree = state.componentTree[id];
-    if (!tree.body?.length) { return []; }
+    if (!tree?.body?.length) { return []; }
     const bodys = [];
     tree.body.forEach(cid => {
       const md = state.componentMetadata[cid];

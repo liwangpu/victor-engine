@@ -1,35 +1,34 @@
 :host {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  div.optional-list {
     display: block;
-    height: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
     padding: 12px;
 
-    div.optional-list {
-        display: flex;
-        flex-flow: column nowrap;
-
-        div.optional-group {
-            &>.header {
-                &>.title {
-                    font-size: 14px;
-                    font-weight: 600;
-                    margin-bottom: 0;
-                }
-            }
-
-            &>.content {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                column-gap: 16px;
-                row-gap: 12px;
-                padding: 8px 0;
-                user-select: none;
-
-                .component {
-
-                }
-            }
+    div.optional-group {
+      &>.header {
+        &>.title {
+          font-size: 14px;
+          font-weight: 600;
+          margin-bottom: 0;
         }
+      }
+
+      &>.content {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        column-gap: 16px;
+        row-gap: 12px;
+        padding: 8px 0;
+        user-select: none;
+
+        .component {}
+      }
     }
+  }
 }

@@ -3,9 +3,10 @@ import { Store } from '@ngrx/store';
 import { DESIGN_INTERACTION_OPSAT, LazyService } from 'victor-core';
 import { DesignInteractionOpsatService } from '../../services/design-interaction-opsat.service';
 import { DropContainerOpsatService } from 'victor-editor/drop-container';
-import { FORM_DESIGNER_INITIAL_STATE, selectFormDesignerState, setDesignerState } from 'victor-editor/state-store';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { FORM_DESIGNER_INITIAL_STATE, nestComponentTree, selectFormDesignerState, setDesignerState, flatComponentTree, generateDesignState } from 'victor-editor/state-store';
 import { SubSink } from 'subsink';
+import { first } from 'rxjs/operators';
+import { DESIGNER_STARTER, DesignerStarter, EditorHandler } from '../../tokens/designer-starter';
 
 const designerDraft = 'formDesignerDraf';
 
@@ -19,19 +20,28 @@ const designerDraft = 'formDesignerDraf';
     { provide: DESIGN_INTERACTION_OPSAT, useClass: DesignInteractionOpsatService }
   ]
 })
-export class DesignerComponent implements OnInit, OnDestroy {
+export class DesignerComponent implements EditorHandler, OnInit, OnDestroy {
 
   @LazyService(ChangeDetectorRef)
   private readonly cdr: ChangeDetectorRef;
+  @LazyService(DESIGNER_STARTER)
+  private readonly starter: DesignerStarter;
   @LazyService(Store)
   private readonly store: Store;
   private subs = new SubSink();
   constructor(
     protected injector: Injector
   ) {
-    if (sessionStorage.getItem(designerDraft)) {
-      this.store.dispatch(setDesignerState({ state: JSON.parse(sessionStorage.getItem(designerDraft)), source: DesignerComponent.name }));
-    }
+    this.starter.registryEditorHandler(this);
+    // if (sessionStorage.getItem(designerDraft)) {
+    //   this.store.dispatch(setDesignerState({ state: JSON.parse(sessionStorage.getItem(designerDraft)), source: DesignerComponent.name }));
+    // }
+  }
+
+  async save(): Promise<void> {
+    const state = await this.store.select(selectFormDesignerState).pipe(first()).toPromise();
+    const schema = nestComponentTree(state);
+    await this.starter.saveSchema(schema);
   }
 
   ngOnDestroy(): void {
@@ -39,7 +49,13 @@ export class DesignerComponent implements OnInit, OnDestroy {
     this.store.dispatch(setDesignerState({ state: FORM_DESIGNER_INITIAL_STATE, source: DesignerComponent.name }));
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    const schema = await this.starter.getSchema();
+    const state = generateDesignState(schema);
+    console.log('schema:', schema);
+    console.log('state:', state);
+    this.store.dispatch(setDesignerState({ state, source: DesignerComponent.name }));
+
     this.subs.sink = this.store.select(selectFormDesignerState)
       // .pipe(debounceTime(120))
       .subscribe(state => {

@@ -1,1 +1,15 @@
-<victor-designer></victor-designer>
+<div class="header">
+  <div class="return">
+    <button nz-button nzType="text" (click)="goback()">
+      <i nz-icon nzType="left" nzTheme="outline"></i>
+      <span>返回</span>
+    </button>
+  </div>
+  <nz-button-group>
+    <button nz-button nzType="primary" (click)="save()">保存</button>
+    <!-- <button nz-button nzType="primary" nzDanger (click)="clearCache()">清除缓存</button> -->
+  </nz-button-group>
+</div>
+<div class="content">
+  <victor-designer></victor-designer>
+</div>

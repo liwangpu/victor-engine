@@ -1,10 +1,11 @@
 {
   "dynamicComponent": {
     "tabs": "页签",
-    "tab": "页签"
+    "tab": "页签",
+    "text": "单行文字"
   },
   "dynamicComponentGroup": {
-    "formControl": "表单",
+    "form": "表单",
     "container": "容器"
   }
 }

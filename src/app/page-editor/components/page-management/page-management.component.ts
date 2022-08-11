@@ -1,9 +1,9 @@
-import { Component, OnInit, ChangeDetectionStrategy, ViewContainerRef, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { PageDefinition, PageStoreService } from '../../services/page-store.service';
 import { filter } from 'rxjs/operators';
 import { PageDetailComponent } from '../page-detail/page-detail.component';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-page-management',
@@ -16,11 +16,9 @@ export class PageManagementComponent implements OnInit {
   pages: PageDefinition[];
   constructor(
     private modal: NzModalService,
-    private viewContainerRef: ViewContainerRef,
     private pageStore: PageStoreService,
     private cdr: ChangeDetectorRef,
-    private router: Router,
-    private acr: ActivatedRoute
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -46,13 +44,22 @@ export class PageManagementComponent implements OnInit {
       });
   }
 
-  editPage(id: number): void {
+  editPage(id: number, e: MouseEvent): void {
+    e.stopPropagation();
     this.router.navigate(['/pages', 'editor', id]);
+    // console.log('iid:', id);
   }
 
-  async deletePage(id: number): Promise<void> {
+  async deletePage(id: number, e: MouseEvent): Promise<void> {
+    e.stopPropagation();
     await this.pageStore.delete(id);
     this.refreshList();
+    const firstPage = this.pages.length ? this.pages[0] : null;
+    if (firstPage) {
+      this.router.navigate(['/pages', 'list', 'dynamic', firstPage.id]);
+    } else {
+      this.router.navigate(['/pages', 'list']);
+    }
   }
 
   private async refreshList(): Promise<void> {

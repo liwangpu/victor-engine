@@ -13,7 +13,8 @@ export const ons: ReducerTypes<FormDesignerState, readonly ActionCreator<string,
     componentTree[metadata.id] = tree;
     const parentTree = { ...componentTree[parentId] };
     parentTree.body = parentTree.body?.length ? [...parentTree.body] : [];
-    parentTree.body.push(metadata.id);
+    // parentTree.body.push(metadata.id);
+    parentTree.body.splice(index, 0, metadata.id);
     componentTree[parentId] = parentTree;
     componentMetadata[metadata.id] = { ...metadata, body: [] };
     // 容器组件的body需要维护到tree上

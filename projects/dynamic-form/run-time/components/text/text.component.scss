@@ -1,0 +1,10 @@
+:host {
+  display: block;
+
+  &>div.title {
+    &>p {
+      padding: 0 0 4px;
+      margin: 0;
+    }
+  }
+}

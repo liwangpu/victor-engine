@@ -18,8 +18,12 @@ import { PageDetailComponent } from './components/page-detail/page-detail.compon
 import { DesignerModule } from 'victor-editor/designer';
 import { RunTimeModule as TabsRunTimeModule } from 'dynamic-tabs/run-time';
 import { DesignTimeModule as TabsDesignTimeModule } from 'dynamic-tabs/design-time';
+import { RunTimeModule as FormRunTimeModule } from 'dynamic-form/run-time';
+import { DesignTimeModule as FormDesignTimeModule } from 'dynamic-form/design-time';
+import { COMPONENT_GROUP_SORT_RULE } from 'victor-editor';
+import { PageEditorResolver } from './services/page-editor.resolver';
 
-const icons: Array<IconDefinition> = [antIcon.PlusOutline, antIcon.EditOutline];
+const icons: Array<IconDefinition> = [antIcon.PlusOutline, antIcon.EditOutline, antIcon.LeftOutline];
 
 @NgModule({
   declarations: [
@@ -37,6 +41,8 @@ const icons: Array<IconDefinition> = [antIcon.PlusOutline, antIcon.EditOutline];
     DesignerModule,
     TabsDesignTimeModule,
     TabsRunTimeModule,
+    FormRunTimeModule,
+    FormDesignTimeModule,
     NzIconModule.forChild(icons),
     NzButtonModule,
     NzModalModule,
@@ -44,7 +50,9 @@ const icons: Array<IconDefinition> = [antIcon.PlusOutline, antIcon.EditOutline];
     NzInputModule
   ],
   providers: [
-    PageStoreService
+    PageStoreService,
+    PageEditorResolver,
+    { provide: COMPONENT_GROUP_SORT_RULE, useValue: ['form', 'container'] }
   ]
 })
 export class PageEditorModule { }

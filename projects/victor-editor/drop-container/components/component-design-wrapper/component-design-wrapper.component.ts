@@ -50,7 +50,7 @@ export class ComponentDesignWrapperComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log('des:',);
+    // console.log('des:',);
     const nel: HTMLElement = this.el.nativeElement;
     if (this.mouseEnterListenFn) {
       nel.removeEventListener('mouseenter', this.mouseEnterListenFn);

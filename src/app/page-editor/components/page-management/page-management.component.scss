@@ -2,6 +2,7 @@
   display: flex;
   flex-flow: column;
   color: #fff;
+  user-select: none;
 
   &>.header {
     position: sticky;
@@ -19,6 +20,7 @@
     z-index: 99;
 
     &>.title {
+      flex: 1;
       margin: 0;
     }
 
@@ -32,6 +34,7 @@
       align-items: center;
       height: 40px;
       padding: 0 12px 0 20px;
+      margin: 0 0 3px;
       overflow: hidden;
       cursor: pointer;
 
@@ -62,6 +65,7 @@
       &>.operation {
         position: absolute;
         display: none;
+        // display: flex;
         align-items: center;
         top: 0;
         right: 0;
@@ -69,14 +73,14 @@
         padding: 0 12px 0 0;
 
         &>* {
-          margin-left: 8px;
+          margin-left: 2px;
         }
       }
     }
   }
 
   .custom-button {
-    $s: 20px;
+    $s: 26px;
     display: flex;
     width: $s;
     height: $s;
