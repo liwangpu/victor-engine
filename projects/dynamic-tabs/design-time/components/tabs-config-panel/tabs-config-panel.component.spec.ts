@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { VictorRendererComponent } from './victor-renderer.component';
+import { TabsConfigPanelComponent } from './tabs-config-panel.component';
 
-describe('VictorRendererComponent', () => {
-  let component: VictorRendererComponent;
-  let fixture: ComponentFixture<VictorRendererComponent>;
+describe('TabsConfigPanelComponent', () => {
+  let component: TabsConfigPanelComponent;
+  let fixture: ComponentFixture<TabsConfigPanelComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ VictorRendererComponent ]
+      declarations: [ TabsConfigPanelComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(VictorRendererComponent);
+    fixture = TestBed.createComponent(TabsConfigPanelComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

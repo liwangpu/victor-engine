@@ -12,12 +12,14 @@ export class PageStoreService {
     });
   }
 
-  query(): Promise<DynamicComponentMetadata[]> {
-    return this.db.table('pages').toArray();
+  async query(): Promise<DynamicComponentMetadata[]> {
+    const metadatas = await this.db.table('pages').toArray();
+    return metadatas.map(m => ({ ...m, id: m.id.toString() }))
   }
 
-  get(id: string): Promise<DynamicComponentMetadata> {
-    return this.db.table('pages').get(Number.parseInt(id as any));
+  async get(id: string): Promise<DynamicComponentMetadata> {
+    const metadata = await this.db.table('pages').get(Number.parseInt(id as any));
+    return { ...metadata, id: metadata.id.toString() }
   }
 
   async create(definition: DynamicComponentMetadata): Promise<string> {
@@ -26,7 +28,8 @@ export class PageStoreService {
   }
 
   async update(id: string, definition: DynamicComponentMetadata): Promise<void> {
-    await this.db.table('pages').update(Number.parseInt(id as any), definition);
+    const nid = Number.parseInt(id as any);
+    await this.db.table('pages').update(nid, { ...definition, id: nid });
   }
 
   async delete(id: string): Promise<void> {

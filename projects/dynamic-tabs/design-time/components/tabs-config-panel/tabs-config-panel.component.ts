@@ -4,15 +4,15 @@ import { ComponentDesignPanel, LazyService } from 'victor-core';
 import { SubSink } from 'subsink';
 
 @Component({
-  selector: 'victor-config-panel',
-  templateUrl: './config-panel.component.html',
-  styleUrls: ['./config-panel.component.scss'],
+  selector: 'victor-dynamic-tabs-config-panel',
+  templateUrl: './tabs-config-panel.component.html',
+  styleUrls: ['./tabs-config-panel.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ConfigPanelComponent extends ComponentDesignPanel implements OnInit, OnDestroy {
+export class TabsConfigPanelComponent extends ComponentDesignPanel implements OnInit, OnDestroy {
 
 
-   form: FormGroup;
+  form: FormGroup;
   @LazyService(FormBuilder)
   protected fb: FormBuilder;
   private subs = new SubSink();

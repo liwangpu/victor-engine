@@ -1,15 +1,15 @@
 import { ComponentFactoryResolver, Inject, NgModule, Optional } from '@angular/core';
-import { ConfigPanelComponent } from './components/config-panel/config-panel.component';
 import { ComponentDesignPanelRegistry, COMPONENT_DESIGN_PANEL_REGISTRY } from 'victor-core';
 import { TabsSettingComponent } from './components/tabs-setting/tabs-setting.component';
 import { DesignerSharedModule } from 'victor-core/designer-shared';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { TabsConfigPanelComponent } from './components/tabs-config-panel/tabs-config-panel.component';
 
 @NgModule({
   declarations: [
-    ConfigPanelComponent,
-    TabsSettingComponent
+    TabsSettingComponent,
+    TabsConfigPanelComponent
   ],
   imports: [
     DesignerSharedModule,
@@ -27,7 +27,7 @@ export class DesignTimeModule {
     if (designPanelRegistry) {
       designPanelRegistry.registry({
         type: 'tabs',
-        fac: cfr.resolveComponentFactory(ConfigPanelComponent)
+        fac: cfr.resolveComponentFactory(TabsConfigPanelComponent)
       });
     }
   }

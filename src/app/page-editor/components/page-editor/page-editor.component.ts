@@ -38,7 +38,6 @@ export class PageEditorComponent implements DesignerStarter, OnInit {
   }
 
   async saveSchema(schema: DynamicComponentMetadata): Promise<void> {
-    console.log('save:', schema);
     await this.pageStore.update(schema.id as any, schema);
   }
 

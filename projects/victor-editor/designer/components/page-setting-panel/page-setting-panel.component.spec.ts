@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ConfigPanelComponent } from './config-panel.component';
+import { PageSettingPanelComponent } from './page-setting-panel.component';
 
-describe('ConfigPanelComponent', () => {
-  let component: ConfigPanelComponent;
-  let fixture: ComponentFixture<ConfigPanelComponent>;
+describe('PageSettingPanelComponent', () => {
+  let component: PageSettingPanelComponent;
+  let fixture: ComponentFixture<PageSettingPanelComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ConfigPanelComponent ]
+      declarations: [ PageSettingPanelComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ConfigPanelComponent);
+    fixture = TestBed.createComponent(PageSettingPanelComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

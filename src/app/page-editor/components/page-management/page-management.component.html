@@ -6,6 +6,7 @@
 </div>
 <div class="content">
   <div class="page" *ngFor="let page of pages" [routerLink]="['./dynamic',page.id]" routerLinkActive="actived">
+    <i nz-icon nzType="file" nzTheme="fill" class="icon"></i>
     <p>{{page.title}}</p>
     <div class="operation">
       <div class="custom-button" (click)="editPage(page.id,$event)">

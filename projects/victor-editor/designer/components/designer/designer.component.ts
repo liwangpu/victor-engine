@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { DESIGN_INTERACTION_OPSAT, LazyService } from 'victor-core';
 import { DesignInteractionOpsatService } from '../../services/design-interaction-opsat.service';
 import { DropContainerOpsatService } from 'victor-editor/drop-container';
-import { FORM_DESIGNER_INITIAL_STATE, nestComponentTree, selectFormDesignerState, setDesignerState, flatComponentTree, generateDesignState } from 'victor-editor/state-store';
+import { FORM_DESIGNER_INITIAL_STATE, nestComponentTree, selectFormDesignerState, setDesignerState, flatComponentTree, generateDesignState, resetDesignerState } from 'victor-editor/state-store';
 import { SubSink } from 'subsink';
 import { first } from 'rxjs/operators';
 import { DESIGNER_STARTER, DesignerStarter, EditorHandler } from '../../tokens/designer-starter';
@@ -46,7 +46,7 @@ export class DesignerComponent implements EditorHandler, OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();
-    this.store.dispatch(setDesignerState({ state: FORM_DESIGNER_INITIAL_STATE, source: DesignerComponent.name }));
+    this.store.dispatch(resetDesignerState({ source: DesignerComponent.name }));
   }
 
   async ngOnInit(): Promise<void> {

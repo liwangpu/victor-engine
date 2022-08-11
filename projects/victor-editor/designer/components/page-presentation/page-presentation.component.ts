@@ -1,11 +1,11 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, forwardRef, Injector, ComponentFactoryResolver, ViewContainerRef, ViewChild } from '@angular/core';
-import { DynamicComponent, DynamicComponentRegistry, DYNAMIC_COMPONENT, DYNAMIC_COMPONENT_METADATA, DYNAMIC_COMPONENT_REGISTRY, LazyService } from 'victor-core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, forwardRef, Injector, ComponentFactoryResolver, ViewContainerRef, ViewChild, HostListener } from '@angular/core';
+import { DynamicComponent, DynamicComponentMetadata, DynamicComponentRegistry, DYNAMIC_COMPONENT, DYNAMIC_COMPONENT_METADATA, DYNAMIC_COMPONENT_REGISTRY, LazyService } from 'victor-core';
 import { DropContainerComponent, DropContainerOpsatService } from 'victor-editor/drop-container';
 import { SubSink } from 'subsink';
 import { v4 as uuidv4 } from 'uuid';
 import { Store } from '@ngrx/store';
-import { selectPageTree } from 'victor-editor/state-store';
+import { activeComponent, selectPageTree } from 'victor-editor/state-store';
 import { filter, first } from 'rxjs/operators';
 
 @Component({
@@ -18,8 +18,7 @@ import { filter, first } from 'rxjs/operators';
   ]
 })
 export class PagePresentationComponent implements OnInit {
-  // id: string = 'page';
-  // type: string = 'page';
+
   dropContainers: string[] = [];
   @ViewChild('container', { static: true, read: ViewContainerRef })
   protected container: ViewContainerRef;
@@ -29,6 +28,7 @@ export class PagePresentationComponent implements OnInit {
   protected cfr: ComponentFactoryResolver;
   @LazyService(Store)
   private readonly store: Store;
+  private metadata: DynamicComponentMetadata;
   private subs = new SubSink();
   constructor(
     protected injector: Injector
@@ -43,6 +43,7 @@ export class PagePresentationComponent implements OnInit {
     this.subs.sink = this.store.select(selectPageTree)
       .pipe(filter(t => t ? true : false), first())
       .subscribe(md => {
+        this.metadata = md as any;
         const fac = this.cfr.resolveComponentFactory(DropContainerComponent);
         const ij = Injector.create({
           providers: [
@@ -56,5 +57,10 @@ export class PagePresentationComponent implements OnInit {
 
   }
 
+  @HostListener('click', ['$event'])
+  onActive(event: MouseEvent): void {
+    event.stopPropagation();
+    this.store.dispatch(activeComponent({ id: this.metadata.id, source: PagePresentationComponent.name }));
+  }
 }
 

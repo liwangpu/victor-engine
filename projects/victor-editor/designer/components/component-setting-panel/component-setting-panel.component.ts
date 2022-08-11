@@ -58,7 +58,6 @@ export class ComponentSettingPanelComponent implements OnInit, OnDestroy {
     this.subs.sink = this.store.select(selectActiveComponentMetadata)
       .pipe(filter(cfg => cfg ? true : false))
       .subscribe(async cfg => {
-        // console.log('cfg:', cfg);
         let newPanel = false;
         if (!this.panelMap.has(cfg.id)) {
           const des = await this.designPanelRegistry.getComponentDescription(cfg.type);

@@ -23,7 +23,7 @@ import { DesignTimeModule as FormDesignTimeModule } from 'dynamic-form/design-ti
 import { COMPONENT_GROUP_SORT_RULE } from 'victor-editor';
 import { PageEditorResolver } from './services/page-editor.resolver';
 
-const icons: Array<IconDefinition> = [antIcon.PlusOutline, antIcon.EditOutline, antIcon.LeftOutline];
+const icons: Array<IconDefinition> = [antIcon.PlusOutline, antIcon.EditOutline, antIcon.LeftOutline, antIcon.FileFill];
 
 @NgModule({
   declarations: [
