@@ -21,7 +21,8 @@ export class TextConfigPanelComponent extends ComponentDesignPanel implements On
     super(injector);
     this.form = this.fb.group({
       title: [],
-      placeholder: []
+      placeholder: [],
+      validators: []
     });
   }
 
@@ -33,7 +34,6 @@ export class TextConfigPanelComponent extends ComponentDesignPanel implements On
     this.form.patchValue(this.configuration, { emitEvent: false });
     this.subs.sink = this.form.valueChanges
       .subscribe(val => {
-        // console.log('ccc:', val);
         this.onChangeFn(val);
       });
   }

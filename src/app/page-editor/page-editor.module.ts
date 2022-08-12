@@ -44,6 +44,7 @@ const icons: Array<IconDefinition> = [antIcon.PlusOutline, antIcon.EditOutline, 
     PageEditorRoutingModule,
     ReactiveFormsModule,
     FormsModule,
+    // victor engine 
     RegistrationModule,
     RendererModule,
     DesignerModule,
@@ -51,13 +52,13 @@ const icons: Array<IconDefinition> = [antIcon.PlusOutline, antIcon.EditOutline, 
     TabsRunTimeModule,
     FormRunTimeModule,
     FormDesignTimeModule,
+    // victor engine 
     NzIconModule.forChild(icons),
     NzButtonModule,
     NzModalModule,
     NzFormModule,
     NzInputModule,
     NzDrawerModule,
-    // MonacoEditorModule
   ],
   providers: [
     PageStoreService,

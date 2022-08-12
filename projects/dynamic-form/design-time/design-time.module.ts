@@ -1,20 +1,22 @@
 import { ComponentFactoryResolver, Inject, NgModule, Optional } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { TextConfigPanelComponent } from './components/text-config-panel/text-config-panel.component';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { ComponentDesignPanelRegistry, COMPONENT_DESIGN_PANEL_REGISTRY } from 'victor-core';
 import { DesignerSharedModule } from 'victor-core/designer-shared';
-
+import { TextValidatorComponent } from './components/text-validator/text-validator.component';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 
 @NgModule({
   declarations: [
-    TextConfigPanelComponent
+    TextConfigPanelComponent,
+    TextValidatorComponent
   ],
   imports: [
     DesignerSharedModule,
     NzInputModule,
-    NzButtonModule
+    NzButtonModule,
+    NzCheckboxModule
   ]
 })
 export class DesignTimeModule {

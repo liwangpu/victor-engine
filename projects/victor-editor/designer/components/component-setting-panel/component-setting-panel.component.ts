@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewChild, ViewContainerRef, OnDestroy, Injector, ChangeDetectorRef, ComponentRef, Renderer2 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ComponentDesignPanel, ComponentDesignPanelRegistry, COMPONENT_DESIGN_CONFIGURATION, COMPONENT_DESIGN_PANEL_REGISTRY, DesignInteractionOpsat, DESIGN_INTERACTION_OPSAT, INTERACTION_ACTION_EXECUTOR, INTERACTION_EVENT_OBSERVER, LazyService } from 'victor-core';
-import { selectActiveComponentMetadata, selectActiveComponentId, setComponentMetadata, selectAllComponentIds } from 'victor-editor/state-store';
+import { selectActiveComponentMetadata, setComponentMetadata, selectAllComponentIds } from 'victor-editor/state-store';
 import { Subject } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
 import { SubSink } from 'subsink';
@@ -14,6 +14,7 @@ import { SubSink } from 'subsink';
 })
 export class ComponentSettingPanelComponent implements OnInit, OnDestroy {
 
+  unRegisteredComponentConfigPanel: boolean = false;
   @ViewChild('container', { static: true, read: ViewContainerRef })
   protected readonly container: ViewContainerRef;
   @LazyService(ChangeDetectorRef)
@@ -61,37 +62,38 @@ export class ComponentSettingPanelComponent implements OnInit, OnDestroy {
         let newPanel = false;
         if (!this.panelMap.has(cfg.id)) {
           const des = await this.designPanelRegistry.getComponentDescription(cfg.type);
-          if (!des) { return; }
-          const actionExecutor = (actionName: string, data?: any) => {
-            this.interactionOpsat.execAction({ componentId: cfg.id, actionName, data });
-          };
-          const ij = Injector.create({
-            providers: [
-              { provide: COMPONENT_DESIGN_CONFIGURATION, useValue: cfg },
-              { provide: INTERACTION_EVENT_OBSERVER, useValue: this.interactionOpsat.event$.pipe(filter(e => e.componentId === cfg.id)) },
-              { provide: INTERACTION_ACTION_EXECUTOR, useValue: actionExecutor },
-            ],
-            parent: this.injector
-          });
-          const ref = this.container.createComponent(des.fac, null, ij);
-          const valueChange$ = new Subject<any>();
-          const sub = new SubSink();
-          ref.instance.registerOnChange(val => {
-            valueChange$.next(val);
-          });
-          sub.sink = valueChange$
-            .pipe(debounceTime(120))
-            .subscribe(val => {
-              this.store.dispatch(
-                setComponentMetadata({ id: cfg.id, metadata: { ...val, id: cfg.id, type: cfg.type }, source: ComponentSettingPanelComponent.name })
-              );
+          if (des) {
+            const actionExecutor = (actionName: string, data?: any) => {
+              this.interactionOpsat.execAction({ componentId: cfg.id, actionName, data });
+            };
+            const ij = Injector.create({
+              providers: [
+                { provide: COMPONENT_DESIGN_CONFIGURATION, useValue: cfg },
+                { provide: INTERACTION_EVENT_OBSERVER, useValue: this.interactionOpsat.event$.pipe(filter(e => e.componentId === cfg.id)) },
+                { provide: INTERACTION_ACTION_EXECUTOR, useValue: actionExecutor },
+              ],
+              parent: this.injector
             });
-          ref.onDestroy(() => {
-            sub.unsubscribe();
-          });
-          this.renderer.addClass(ref.location.nativeElement, 'configuration-panel');
-          this.panelMap.set(cfg.id, ref);
-          newPanel = true;
+            const ref = this.container.createComponent(des.fac, null, ij);
+            const valueChange$ = new Subject<any>();
+            const sub = new SubSink();
+            ref.instance.registerOnChange(val => {
+              valueChange$.next(val);
+            });
+            sub.sink = valueChange$
+              .pipe(debounceTime(120))
+              .subscribe(val => {
+                this.store.dispatch(
+                  setComponentMetadata({ id: cfg.id, metadata: { ...val, id: cfg.id, type: cfg.type }, source: ComponentSettingPanelComponent.name })
+                );
+              });
+            ref.onDestroy(() => {
+              sub.unsubscribe();
+            });
+            this.renderer.addClass(ref.location.nativeElement, 'configuration-panel');
+            this.panelMap.set(cfg.id, ref);
+            newPanel = true;
+          }
         }
 
         for (let [mid, ref] of this.panelMap) {
@@ -107,6 +109,7 @@ export class ComponentSettingPanelComponent implements OnInit, OnDestroy {
             ref.changeDetectorRef.detach();
           }
         }
+        this.unRegisteredComponentConfigPanel = !this.panelMap.has(cfg.id);
         this.cdr.markForCheck();
       });
   }

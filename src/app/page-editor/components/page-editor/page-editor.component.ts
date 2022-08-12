@@ -28,7 +28,6 @@ export class PageEditorComponent implements DesignerStarter, OnInit {
 
   public getSchema(): Promise<DynamicComponentMetadata> {
     const schema = this.acr.snapshot.data['schema'];
-    // console.log('sss:',sss);
     return schema;
   }
 
@@ -48,7 +47,7 @@ export class PageEditorComponent implements DesignerStarter, OnInit {
   }
 
   goback(): void {
-    // this.router.navigateByUrl('./pages');
-    this.location.back();
+    this.router.navigateByUrl('./pages');
+    // this.location.back();
   }
 }

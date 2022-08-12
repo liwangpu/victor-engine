@@ -7,6 +7,7 @@ import { SubSink } from 'subsink';
 import { DynamicComponentMetadata } from 'victor-core';
 import { RendererStarter, RENDERER_STARTER } from 'victor-renderer/renderer';
 import { PageStoreService } from '../../services/page-store.service';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-dynamic-page',
@@ -43,6 +44,7 @@ export class DynamicPageComponent implements RendererStarter, OnInit, OnDestroy 
 
   async onEditorClose(): Promise<void> {
     this.editorVisible = false;
+    if (_.isEqual(this.pageSchema, this.pageSchema$.value)) { return; }
     await this.pageStore.update(this.pageSchema.id, this.pageSchema);
     this.pageSchema$.next(this.pageSchema);
     this.opsat.publish('page-update');

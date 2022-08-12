@@ -1,6 +1,7 @@
 import { ComponentFactory, InjectionToken, Injector } from '@angular/core';
 import { LazyService, PropertyEntry } from '../../utils/common-decorator';
 import 'reflect-metadata';
+import { ComponentValidatorRule } from 'victor-core';
 
 enum metadataType {
   scope = 'scope',
@@ -15,6 +16,7 @@ export interface DynamicComponentMetadata {
   type: string;
   title?: string;
   configuration?: { [key: string]: any };
+  validators?: ComponentValidatorRule[];
   body?: DynamicComponentMetadata[];
 }
 
@@ -29,7 +31,7 @@ export function ComponentScope(scope?: string): Function {
     propertyDesciptor.value = function (...args: Array<any>): Promise<any> {
       const result: any = method.apply(this, args);
       if (typeof this['scopeChangeFn'] === 'function') {
-        this['scopeChangeFn'](scope,result);
+        this['scopeChangeFn'](scope, result);
       }
       return result;
     };

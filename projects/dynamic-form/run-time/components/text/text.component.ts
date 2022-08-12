@@ -29,6 +29,7 @@ export class TextComponent extends DynamicComponent implements OnInit, OnDestroy
   }
 
   ngOnInit(): void {
+    console.log('metadata:', this.metadata);
     this.subs.sink = this.control.valueChanges
       .pipe(debounceTime(120))
       .subscribe(val => {

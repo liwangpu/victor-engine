@@ -5,14 +5,14 @@ import { PagePresentationComponent } from './components/page-presentation/page-p
 import { DropContainerModule } from 'victor-editor/drop-container';
 import { ComponentSettingPanelComponent } from './components/component-setting-panel/component-setting-panel.component';
 import { StateStoreModule } from 'victor-editor/state-store';
-import { ComponentDesignPanelRegistry, COMPONENT_DESIGN_PANEL_REGISTRY, COMPONENT_ID_GENERATOR, CUSTOM_RENDER_PROVIDER } from 'victor-core';
+import { ComponentDesignPanelRegistry, COMPONENT_DESIGN_PANEL_REGISTRY, COMPONENT_ID_GENERATOR } from 'victor-core';
 import { ComponentDesignPanelRegistryService } from './services/component-design-panel-registry.service';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { CustomRenderProviderService } from './services/custom-render-provider.service';
 import { ComponentIdGeneratorService } from './services/component-id-generator.service';
 import { PageSettingPanelComponent } from './components/page-setting-panel/page-setting-panel.component';
 import { DesignerSharedModule } from 'victor-core/designer-shared';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
 
 @NgModule({
   declarations: [
@@ -28,10 +28,10 @@ import { NzInputModule } from 'ng-zorro-antd/input';
     StateStoreModule,
     NzButtonModule,
     NzInputModule,
+    NzEmptyModule,
   ],
   providers: [
     { provide: COMPONENT_ID_GENERATOR, useClass: ComponentIdGeneratorService },
-    // { provide: CUSTOM_RENDER_PROVIDER, useClass: CustomRenderProviderService },
     { provide: COMPONENT_DESIGN_PANEL_REGISTRY, useClass: ComponentDesignPanelRegistryService },
   ],
   exports: [
