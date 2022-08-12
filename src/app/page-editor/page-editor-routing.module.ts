@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DynamicPageComponent } from './components/dynamic-page/dynamic-page.component';
 import { PageEditorComponent } from './components/page-editor/page-editor.component';
 import { PageListComponent } from './components/page-list/page-list.component';
-import { PageEditorResolver } from './services/page-editor.resolver';
+import { PageDefinitionResolver } from './services/page-definition.resolver';
 
 const routes: Routes = [
   {
@@ -12,7 +12,10 @@ const routes: Routes = [
     children: [
       {
         path: 'dynamic/:id',
-        component: DynamicPageComponent
+        component: DynamicPageComponent,
+        resolve: {
+          definition: PageDefinitionResolver
+        }
       }
     ]
   },
@@ -20,7 +23,7 @@ const routes: Routes = [
     path: 'editor/:id',
     component: PageEditorComponent,
     resolve: {
-      schema: PageEditorResolver
+      schema: PageDefinitionResolver
     }
   },
   { path: '', pathMatch: 'full', redirectTo: 'list' },

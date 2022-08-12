@@ -21,7 +21,12 @@ import { DesignTimeModule as TabsDesignTimeModule } from 'dynamic-tabs/design-ti
 import { RunTimeModule as FormRunTimeModule } from 'dynamic-form/run-time';
 import { DesignTimeModule as FormDesignTimeModule } from 'dynamic-form/design-time';
 import { COMPONENT_GROUP_SORT_RULE } from 'victor-editor';
-import { PageEditorResolver } from './services/page-editor.resolver';
+import { RendererModule } from 'victor-renderer/renderer';
+import { RegistrationModule } from 'victor-core/registration';
+import { PageDefinitionResolver } from './services/page-definition.resolver';
+import { JsonEditorComponent } from './components/json-editor/json-editor.component';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+
 
 const icons: Array<IconDefinition> = [antIcon.PlusOutline, antIcon.EditOutline, antIcon.LeftOutline, antIcon.FileFill];
 
@@ -31,13 +36,16 @@ const icons: Array<IconDefinition> = [antIcon.PlusOutline, antIcon.EditOutline, 
     PageManagementComponent,
     PageEditorComponent,
     DynamicPageComponent,
-    PageDetailComponent
+    PageDetailComponent,
+    JsonEditorComponent
   ],
   imports: [
     CommonModule,
     PageEditorRoutingModule,
     ReactiveFormsModule,
     FormsModule,
+    RegistrationModule,
+    RendererModule,
     DesignerModule,
     TabsDesignTimeModule,
     TabsRunTimeModule,
@@ -47,11 +55,13 @@ const icons: Array<IconDefinition> = [antIcon.PlusOutline, antIcon.EditOutline, 
     NzButtonModule,
     NzModalModule,
     NzFormModule,
-    NzInputModule
+    NzInputModule,
+    NzDrawerModule,
+    // MonacoEditorModule
   ],
   providers: [
     PageStoreService,
-    PageEditorResolver,
+    PageDefinitionResolver,
     { provide: COMPONENT_GROUP_SORT_RULE, useValue: ['form', 'container'] }
   ]
 })

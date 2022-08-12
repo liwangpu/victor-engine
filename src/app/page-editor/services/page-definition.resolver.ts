@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Router, Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
+import { Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 import { PageStoreService } from './page-store.service';
 
 @Injectable()
-export class PageEditorResolver implements Resolve<any> {
+export class PageDefinitionResolver implements Resolve<any> {
   constructor(
     private pageStore: PageStoreService
   ) { }

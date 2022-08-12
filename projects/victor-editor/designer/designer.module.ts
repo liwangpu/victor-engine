@@ -5,9 +5,7 @@ import { PagePresentationComponent } from './components/page-presentation/page-p
 import { DropContainerModule } from 'victor-editor/drop-container';
 import { ComponentSettingPanelComponent } from './components/component-setting-panel/component-setting-panel.component';
 import { StateStoreModule } from 'victor-editor/state-store';
-import { DynamicComponentRegistryService } from './services/dynamic-component-registry.service';
-import { ComponentDesignPanelRegistry, COMPONENT_DESIGN_PANEL_REGISTRY, COMPONENT_ID_GENERATOR, CUSTOM_RENDER_PROVIDER, DYNAMIC_COMPONENT_REGISTRY, DYNAMIC_COMPONENT_RENDERER } from 'victor-core';
-import { DynamicComponentRendererService } from './services/dynamic-component-renderer.service';
+import { ComponentDesignPanelRegistry, COMPONENT_DESIGN_PANEL_REGISTRY, COMPONENT_ID_GENERATOR, CUSTOM_RENDER_PROVIDER } from 'victor-core';
 import { ComponentDesignPanelRegistryService } from './services/component-design-panel-registry.service';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { CustomRenderProviderService } from './services/custom-render-provider.service';
@@ -33,9 +31,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
   ],
   providers: [
     { provide: COMPONENT_ID_GENERATOR, useClass: ComponentIdGeneratorService },
-    { provide: CUSTOM_RENDER_PROVIDER, useClass: CustomRenderProviderService },
-    { provide: DYNAMIC_COMPONENT_REGISTRY, useClass: DynamicComponentRegistryService },
-    { provide: DYNAMIC_COMPONENT_RENDERER, useClass: DynamicComponentRendererService },
+    // { provide: CUSTOM_RENDER_PROVIDER, useClass: CustomRenderProviderService },
     { provide: COMPONENT_DESIGN_PANEL_REGISTRY, useClass: ComponentDesignPanelRegistryService },
   ],
   exports: [

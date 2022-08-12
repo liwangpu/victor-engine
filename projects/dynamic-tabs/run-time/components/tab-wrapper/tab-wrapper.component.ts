@@ -26,8 +26,6 @@ export class TabWrapperComponent implements OnInit {
   ) { }
 
   async ngOnInit(): Promise<void> {
-    // console.log('tab:', this.tab);
-    // console.log('customRenderProvider:', this.customRenderProvider);
     const ij = Injector.create({
       providers: [
         { provide: DYNAMIC_COMPONENT_METADATA, useValue: this.tab }
@@ -37,9 +35,10 @@ export class TabWrapperComponent implements OnInit {
     let fac = null;
     if (this.customRenderProvider) {
       fac = await this.customRenderProvider.getRenderFactory(this.tab);
-    } else {
-      fac = this.cfr.resolveComponentFactory(TabComponent);
     }
+
+    fac = fac || this.cfr.resolveComponentFactory(TabComponent);
+
     if (fac) {
       this.container.createComponent(fac, null, ij);
     }

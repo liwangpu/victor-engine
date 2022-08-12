@@ -1,1 +1,12 @@
-<p>dynamic-page works!</p>
+<victor-renderer></victor-renderer>
+
+<div class="setting" (click)="editorPage()">
+  <i nz-icon nzType="setting" nzTheme="outline"></i>
+</div>
+
+<nz-drawer [nzClosable]="false" [nzVisible]="editorVisible" nzWidth="500px" nzWrapClassName="page-json-editor-wrapper" nzPlacement="right" nzTitle="Schema编辑"
+  (nzOnClose)="onEditorClose()">
+  <ng-container *nzDrawerContent>
+    <app-json-editor [(ngModel)]="pageSchema"></app-json-editor>
+  </ng-container>
+</nz-drawer>

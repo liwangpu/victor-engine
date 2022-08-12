@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, Injector, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
-import { ComponentEvent, DynamicComponent, DynamicComponentMetadata, LazyService, PropertyEntry } from 'victor-core';
+import { ComponentAction, ComponentEvent, DynamicComponent, DynamicComponentMetadata, LazyService, PropertyEntry } from 'victor-core';
 
 @Component({
   selector: 'victor-tabs',
@@ -29,6 +29,7 @@ export class TabsComponent extends DynamicComponent implements OnInit {
     // console.log('tabs:', this.tabs);
   }
 
+  @ComponentAction()
   activeTab(id: string): void {
     this.selectedTabIndex = this.tabs.findIndex(t => t.id === id);
     this.cdr.markForCheck();

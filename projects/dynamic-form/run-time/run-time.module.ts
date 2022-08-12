@@ -4,6 +4,7 @@ import { TextComponent } from './components/text/text.component';
 import { DynamicComponentRegistry, DYNAMIC_COMPONENT_REGISTRY } from 'victor-core';
 import { TranslateService } from '@ngx-translate/core';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -11,7 +12,9 @@ import { NzInputModule } from 'ng-zorro-antd/input';
   ],
   imports: [
     CommonModule,
-    NzInputModule
+    NzInputModule,
+    ReactiveFormsModule,
+    FormsModule
   ]
 })
 export class RunTimeModule {

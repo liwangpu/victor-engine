@@ -13,5 +13,8 @@
     background-color: #1E1E28;
   }
 
-  &>div.page {}
+  &>div.page {
+    flex: 1;
+    height: 100%;
+  }
 }

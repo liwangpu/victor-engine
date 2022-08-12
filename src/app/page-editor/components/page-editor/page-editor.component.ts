@@ -1,4 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, forwardRef } from '@angular/core';
+import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DynamicComponentMetadata } from 'victor-core';
 import { DesignerStarter, DESIGNER_STARTER, EditorHandler } from 'victor-editor/designer';
@@ -19,6 +20,7 @@ export class PageEditorComponent implements DesignerStarter, OnInit {
   constructor(
     private router: Router,
     private acr: ActivatedRoute,
+    private location: Location,
     private pageStore: PageStoreService
   ) {
   }
@@ -46,6 +48,7 @@ export class PageEditorComponent implements DesignerStarter, OnInit {
   }
 
   goback(): void {
-    this.router.navigateByUrl('./pages');
+    // this.router.navigateByUrl('./pages');
+    this.location.back();
   }
 }

@@ -27,8 +27,6 @@ export class ComponentDesignWrapperComponent implements OnInit, OnDestroy {
   private readonly componentRenderer: DynamicComponentRenderer;
   @LazyService(DESIGN_INTERACTION_OPSAT)
   private readonly interactionOpsat: DesignInteractionOpsat;
-  // @LazyService(INTERACTION_EVENT_PUBLISHER, null)
-  // private readonly eventPublisher: (eventName: string, data?: any) => void;
   @LazyService(ElementRef)
   private readonly el: ElementRef;
   @LazyService(ChangeDetectorRef)
@@ -119,12 +117,14 @@ export class ComponentDesignWrapperComponent implements OnInit, OnDestroy {
       }
     });
 
+    const allAction = new Set(actions.map(x => x.key));
     this.interactionOpsat.action$
       .pipe(filter(act => act.componentId === metadata.id))
       .subscribe(act => {
+        if (!allAction.has(act.actionName)) { return; }
         ref.instance[act.actionName](act.data);
       });
-    // console.log('events:', events);
+
     ref.onDestroy(() => {
       subs.unsubscribe();
     });

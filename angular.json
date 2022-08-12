@@ -62,12 +62,18 @@
                 "glob": "**/*",
                 "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
                 "output": "/assets/"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/jsoneditor/dist",
+                "output": "assets/jsoneditor/"
               }
             ],
             "styles": [
               "src/theme.less",
               "src/styles.scss",
               "projects/victor-editor/resources/designer.scss",
+              "projects/victor-renderer/resources/renderer.scss",
               "projects/dynamic-tabs/resources/dynamic-tabs.scss"
             ],
             "scripts": []

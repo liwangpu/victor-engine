@@ -13,12 +13,14 @@ export class PageStoreService {
   }
 
   async query(): Promise<DynamicComponentMetadata[]> {
-    const metadatas = await this.db.table('pages').toArray();
+    let metadatas = await this.db.table('pages').toArray();
+    metadatas = metadatas || [];
     return metadatas.map(m => ({ ...m, id: m.id.toString() }))
   }
 
   async get(id: string): Promise<DynamicComponentMetadata> {
     const metadata = await this.db.table('pages').get(Number.parseInt(id as any));
+    if (!metadata) { return null; }
     return { ...metadata, id: metadata.id.toString() }
   }
 

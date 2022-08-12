@@ -1,10 +1,12 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { PageStoreService } from '../../services/page-store.service';
 import { filter } from 'rxjs/operators';
 import { PageDetailComponent } from '../page-detail/page-detail.component';
 import { Router } from '@angular/router';
 import { DynamicComponentMetadata } from 'victor-core';
+import { OpsatService, topicFilter } from 'src/app/services/opsat.service';
+import { SubSink } from 'subsink';
 
 @Component({
   selector: 'app-page-management',
@@ -12,18 +14,30 @@ import { DynamicComponentMetadata } from 'victor-core';
   styleUrls: ['./page-management.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PageManagementComponent implements OnInit {
+export class PageManagementComponent implements OnInit, OnDestroy {
 
   pages: DynamicComponentMetadata[];
+  private subs = new SubSink();
   constructor(
     private modal: NzModalService,
     private pageStore: PageStoreService,
     private cdr: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
+    private opsat: OpsatService
   ) { }
+
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
+  }
 
   ngOnInit(): void {
     this.refreshList();
+
+    this.subs.sink = this.opsat.message$
+      .pipe(topicFilter('page-update'))
+      .subscribe(() => {
+        this.refreshList();
+      });
   }
 
   addPage(): void {
@@ -48,13 +62,12 @@ export class PageManagementComponent implements OnInit {
   editPage(id: string, e: MouseEvent): void {
     e.stopPropagation();
     this.router.navigate(['/pages', 'editor', id]);
-    // console.log('iid:', id);
   }
 
   async deletePage(id: string, e: MouseEvent): Promise<void> {
     e.stopPropagation();
     await this.pageStore.delete(id);
-    this.refreshList();
+    await this.refreshList();
     const firstPage = this.pages.length ? this.pages[0] : null;
     if (firstPage) {
       this.router.navigate(['/pages', 'list', 'dynamic', firstPage.id]);

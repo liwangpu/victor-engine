@@ -1,12 +1,13 @@
 import { Component, OnInit, ChangeDetectionStrategy, Injector, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { DESIGN_INTERACTION_OPSAT, LazyService } from 'victor-core';
+import { CUSTOM_RENDER_PROVIDER, DESIGN_INTERACTION_OPSAT, LazyService } from 'victor-core';
 import { DesignInteractionOpsatService } from '../../services/design-interaction-opsat.service';
 import { DropContainerOpsatService } from 'victor-editor/drop-container';
 import { FORM_DESIGNER_INITIAL_STATE, nestComponentTree, selectFormDesignerState, setDesignerState, flatComponentTree, generateDesignState, resetDesignerState } from 'victor-editor/state-store';
 import { SubSink } from 'subsink';
 import { first } from 'rxjs/operators';
 import { DESIGNER_STARTER, DesignerStarter, EditorHandler } from '../../tokens/designer-starter';
+import { CustomRenderProviderService } from 'victor-editor/designer/services/custom-render-provider.service';
 
 const designerDraft = 'formDesignerDraf';
 
@@ -17,7 +18,8 @@ const designerDraft = 'formDesignerDraf';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     DropContainerOpsatService,
-    { provide: DESIGN_INTERACTION_OPSAT, useClass: DesignInteractionOpsatService }
+    { provide: DESIGN_INTERACTION_OPSAT, useClass: DesignInteractionOpsatService },
+    { provide: CUSTOM_RENDER_PROVIDER, useClass: CustomRenderProviderService },
   ]
 })
 export class DesignerComponent implements EditorHandler, OnInit, OnDestroy {

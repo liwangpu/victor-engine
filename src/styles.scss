@@ -43,3 +43,17 @@ body {
     padding: 0 !important;
   }
 }
+
+.page-json-editor-wrapper {
+  .ant-drawer-body {
+    padding: 0 !important;
+  }
+
+  .jsoneditor {
+    border: none !important;
+
+    a.jsoneditor-poweredBy {
+      display: none !important;
+    }
+  }
+}
