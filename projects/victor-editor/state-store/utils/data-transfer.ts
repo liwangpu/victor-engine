@@ -1,5 +1,5 @@
 import { DynamicComponentMetadata } from 'victor-core';
-import { FormDesignerState, FORM_DESIGNER_INITIAL_STATE } from '../state';
+import { VictorDesignerState, VICTOR_DESIGNER_INITIAL_STATE } from '../state';
 import { ComponentTreeState } from '../visual-editing';
 import * as _ from 'lodash';
 
@@ -22,7 +22,7 @@ export function flatComponentTree(md: DynamicComponentMetadata): { [id: string]:
   return componentTree;
 }
 
-export function nestComponentTree(state: FormDesignerState): DynamicComponentMetadata {
+export function nestComponentTree(state: VictorDesignerState): DynamicComponentMetadata {
   if (!state?.componentTree) { return null; }
   const componentIds = Object.keys(state.componentTree);
   const componentTrees: ComponentTreeState[] = componentIds.map(id => state.componentTree[id]);
@@ -56,8 +56,8 @@ export function nestComponentTree(state: FormDesignerState): DynamicComponentMet
   return pageTree as any;
 }
 
-export function generateDesignState(metadata: DynamicComponentMetadata): FormDesignerState {
-  const state = _.cloneDeep(FORM_DESIGNER_INITIAL_STATE);
+export function generateDesignState(metadata: DynamicComponentMetadata): VictorDesignerState {
+  const state = _.cloneDeep(VICTOR_DESIGNER_INITIAL_STATE);
   if (!metadata) { return state; }
   const componentTree = {};
   const componentMetadata = {};

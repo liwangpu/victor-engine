@@ -33,6 +33,20 @@ victor-designer-component-setting-panel {
 }
 
 victor-designer-page-presentation {
+
+  &.hover {
+    &>victor-designer-drop-container {
+      border-color: #205DD9;
+    }
+  }
+
+  &.actived {
+    &>victor-designer-drop-container {
+      border-style: solid !important;
+      border-color: #205DD9 !important;
+    }
+  }
+
   victor-designer-drop-container {
     .drop-container {
 
@@ -41,13 +55,13 @@ victor-designer-page-presentation {
       }
 
       &>.sortable-ghost {
-        margin:0 0 8px;
+        margin: 0 0 8px;
         // background-color: orange !important;
       }
 
       .drop-item {
         // &:not(:last-of-type) {
-          margin-bottom: 8px;
+        margin-bottom: 8px;
         // }
 
         &.sortable-ghost {}

@@ -1,5 +1,10 @@
-<ng-container #container></ng-container>
-
 <div class="empty-container" [class.hidden]="!unRegisteredComponentConfigPanel">
   <nz-empty nzNotFoundContent="没有找到该组件的配置面板"></nz-empty>
+</div>
+
+<div class="header">
+  <p class="title">{{activedComponentTitle}}</p>
+</div>
+<div class="content">
+  <ng-container #container></ng-container>
 </div>

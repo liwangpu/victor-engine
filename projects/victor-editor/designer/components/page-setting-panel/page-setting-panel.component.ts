@@ -1,7 +1,8 @@
-import { Component, OnInit, ChangeDetectionStrategy, Injector } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Injector, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { SubSink } from 'subsink';
 import { ComponentDesignPanel, LazyService } from 'victor-core';
+import { DropContainerOpsatService } from 'victor-editor/drop-container';
 
 @Component({
   selector: 'victor-page-setting-panel',

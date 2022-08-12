@@ -1,10 +1,10 @@
 import { createSelector, DefaultProjectorFn, MemoizedSelector } from '@ngrx/store';
-import { FormDesignerState, selectFormDesignerState } from '../state';
+import { VictorDesignerState, selectVictorDesignerState } from '../state';
 import { ComponentTreeState } from './state';
 
-export const selectFirstLevelBodyComponents: (id: string) => MemoizedSelector<FormDesignerState, { id: string; title?: string; type: string }[]> = id => createSelector(
-  selectFormDesignerState,
-  (state: FormDesignerState) => {
+export const selectFirstLevelBodyComponents: (id: string) => MemoizedSelector<VictorDesignerState, { id: string; title?: string; type: string }[]> = id => createSelector(
+  selectVictorDesignerState,
+  (state: VictorDesignerState) => {
     if (!id) { return []; }
     const tree = state.componentTree[id];
     if (!tree?.body?.length) { return []; }
@@ -17,28 +17,28 @@ export const selectFirstLevelBodyComponents: (id: string) => MemoizedSelector<Fo
   }
 );
 
-export const selectActiveComponentId: MemoizedSelector<FormDesignerState, string> = createSelector(
-  selectFormDesignerState,
-  (state: FormDesignerState) => state.activeComponentId
+export const selectActiveComponentId: MemoizedSelector<VictorDesignerState, string> = createSelector(
+  selectVictorDesignerState,
+  (state: VictorDesignerState) => state.activeComponentId
 );
 
-export const selectAllComponentIds: MemoizedSelector<FormDesignerState, string[]> = createSelector(
-  selectFormDesignerState,
-  (state: FormDesignerState) => Object.keys(state.componentTree)
+export const selectAllComponentIds: MemoizedSelector<VictorDesignerState, string[]> = createSelector(
+  selectVictorDesignerState,
+  (state: VictorDesignerState) => Object.keys(state.componentTree)
 );
 
-export const selectFirstLevelBodyComponentIds: (id: string) => MemoizedSelector<FormDesignerState, string[]> = id => createSelector(
-  selectFormDesignerState,
-  (state: FormDesignerState) => {
+export const selectFirstLevelBodyComponentIds: (id: string) => MemoizedSelector<VictorDesignerState, string[]> = id => createSelector(
+  selectVictorDesignerState,
+  (state: VictorDesignerState) => {
     if (!id) { return []; }
     const tree = state.componentTree[id];
     return tree.body || [];
   }
 );
 
-export const selectPageTree: MemoizedSelector<FormDesignerState, ComponentTreeState> = createSelector(
-  selectFormDesignerState,
-  (state: FormDesignerState) => {
+export const selectPageTree: MemoizedSelector<VictorDesignerState, ComponentTreeState> = createSelector(
+  selectVictorDesignerState,
+  (state: VictorDesignerState) => {
     if (!state.componentTree) { return null; }
     const componentIds = Object.keys(state.componentTree);
     const componentTrees: ComponentTreeState[] = componentIds.map(id => state.componentTree[id]);

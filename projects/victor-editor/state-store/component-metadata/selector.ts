@@ -1,8 +1,8 @@
 import { createSelector, MemoizedSelector } from '@ngrx/store';
 import { DynamicComponentMetadata } from 'victor-core';
-import { FormDesignerState, selectFormDesignerState } from '../state';
+import { VictorDesignerState, selectVictorDesignerState } from '../state';
 
-function getBodyMetadata(state: FormDesignerState, bodyIds: string[]): DynamicComponentMetadata[] {
+function getBodyMetadata(state: VictorDesignerState, bodyIds: string[]): DynamicComponentMetadata[] {
   const body: DynamicComponentMetadata[] = [];
   if (bodyIds?.length) {
     bodyIds.forEach(cid => {
@@ -16,9 +16,9 @@ function getBodyMetadata(state: FormDesignerState, bodyIds: string[]): DynamicCo
 }
 
 // 注意,这里body只选择第一级
-export const selectActiveComponentMetadata: MemoizedSelector<FormDesignerState, DynamicComponentMetadata> = createSelector(
-  selectFormDesignerState,
-  (state: FormDesignerState) => {
+export const selectActiveComponentMetadata: MemoizedSelector<VictorDesignerState, DynamicComponentMetadata> = createSelector(
+  selectVictorDesignerState,
+  (state: VictorDesignerState) => {
     if (!state.activeComponentId) { return null; }
 
     const tree = state.componentTree[state.activeComponentId];
@@ -30,9 +30,9 @@ export const selectActiveComponentMetadata: MemoizedSelector<FormDesignerState, 
 );
 
 // 注意,这里body只选择第一级
-export const selectComponentMetadata: (id: string) => MemoizedSelector<FormDesignerState, DynamicComponentMetadata> = id => createSelector(
-  selectFormDesignerState,
-  (state: FormDesignerState) => {
+export const selectComponentMetadata: (id: string) => MemoizedSelector<VictorDesignerState, DynamicComponentMetadata> = id => createSelector(
+  selectVictorDesignerState,
+  (state: VictorDesignerState) => {
     if (!id) { return null; }
 
     const tree = state.componentTree[id];

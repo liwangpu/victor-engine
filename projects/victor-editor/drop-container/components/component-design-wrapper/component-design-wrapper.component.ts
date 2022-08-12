@@ -1,9 +1,9 @@
-import { Component, OnInit, ChangeDetectionStrategy, Injector, Inject, ViewChild, ViewContainerRef, ChangeDetectorRef, OnDestroy, HostBinding, HostListener, Input, NgZone, ElementRef, Renderer2 } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Injector, ViewChild, ViewContainerRef, ChangeDetectorRef, OnDestroy, HostListener, Input, NgZone, ElementRef, Renderer2 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { DesignInteractionOpsat, DESIGN_INTERACTION_OPSAT, DynamicComponentMetadata, DynamicComponentRenderer, DYNAMIC_COMPONENT_RENDERER, LazyService, UNIQUE_ID } from 'victor-core';
+import { DesignInteractionOpsat, DESIGN_INTERACTION_OPSAT, DynamicComponentMetadata, DynamicComponentRenderer, DYNAMIC_COMPONENT_RENDERER, LazyService } from 'victor-core';
 import { activeComponent, selectActiveComponentId, selectComponentMetadata } from 'victor-editor/state-store';
 import * as _ from 'lodash';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { distinctUntilChanged, filter } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 import { DropContainerOpsatService } from '../../services/drop-container-opsat.service';
@@ -18,8 +18,6 @@ export class ComponentDesignWrapperComponent implements OnInit, OnDestroy {
 
   @Input()
   metadata: DynamicComponentMetadata;
-  @HostBinding('class.actived')
-  actived: boolean;
   @ViewChild('container', { static: true, read: ViewContainerRef })
   readonly container: ViewContainerRef;
 
@@ -48,7 +46,6 @@ export class ComponentDesignWrapperComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // console.log('des:',);
     const nel: HTMLElement = this.el.nativeElement;
     if (this.mouseEnterListenFn) {
       nel.removeEventListener('mouseenter', this.mouseEnterListenFn);
@@ -65,15 +62,18 @@ export class ComponentDesignWrapperComponent implements OnInit, OnDestroy {
       .subscribe(metadata => {
         this.renderComponent(metadata);
       });
-    this.subs.sink = this.store.select(selectActiveComponentId)
-      .subscribe(id => {
-        this.actived = this.metadata.id === id;
-        this.cdr.markForCheck();
-      });
 
     this.zone.runOutsideAngular(() => {
+      const nel: HTMLElement = this.el.nativeElement;
+      this.subs.sink = this.store.select(selectActiveComponentId)
+        .subscribe(id => {
+          if (this.metadata.id === id) {
+            this.renderer.addClass(nel, 'actived');
+          } else {
+            this.renderer.removeClass(nel, 'actived');
+          }
+        });
       if (this.opsat) {
-        const nel: HTMLElement = this.el.nativeElement;
         this.mouseEnterListenFn = () => {
           this.opsat.publishComponentHover(this.metadata.id);
         };

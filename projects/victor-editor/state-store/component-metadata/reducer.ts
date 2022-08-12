@@ -1,11 +1,11 @@
 import { ActionCreator, Creator, on, ReducerTypes } from '@ngrx/store';
 import { DynamicComponentMetadata } from 'victor-core';
-import { FormDesignerState } from '../state';
+import { VictorDesignerState } from '../state';
 import { ComponentTreeState } from '../visual-editing';
 import * as fromAction from './action';
 
-export const ons: ReducerTypes<FormDesignerState, readonly ActionCreator<string, Creator<any[], object>>[]>[] = [
-  on(fromAction.setComponentMetadata, (state: FormDesignerState, { id, metadata }) => {
+export const ons: ReducerTypes<VictorDesignerState, readonly ActionCreator<string, Creator<any[], object>>[]>[] = [
+  on(fromAction.setComponentMetadata, (state: VictorDesignerState, { id, metadata }) => {
     const componentTree = { ...state.componentTree };
     const componentMetadata = { ...state.componentMetadata };
     const maintainBodyComponent = (bodyMetadata: DynamicComponentMetadata, parentId: string) => {

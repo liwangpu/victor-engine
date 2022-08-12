@@ -1,10 +1,10 @@
 import { ActionCreator, Creator, on, ReducerTypes } from '@ngrx/store';
-import { FormDesignerState } from '../state';
+import { VictorDesignerState } from '../state';
 import * as fromAction from './action';
 import { ComponentTreeState } from './state';
 
-export const ons: ReducerTypes<FormDesignerState, readonly ActionCreator<string, Creator<any[], object>>[]>[] = [
-  on(fromAction.addNewComponent, (state: FormDesignerState, { metadata, parentId, index }) => {
+export const ons: ReducerTypes<VictorDesignerState, readonly ActionCreator<string, Creator<any[], object>>[]>[] = [
+  on(fromAction.addNewComponent, (state: VictorDesignerState, { metadata, parentId, index }) => {
     const componentTree = { ...state.componentTree };
     if (componentTree[metadata.id]) { return state; }
     const componentMetadata = { ...state.componentMetadata };
@@ -30,11 +30,11 @@ export const ons: ReducerTypes<FormDesignerState, readonly ActionCreator<string,
     }
     return { ...state, componentTree, componentMetadata, activeComponentId: state.activeComponentId || metadata.id };
   }),
-  on(fromAction.activeComponent, (state: FormDesignerState, { id }) => {
+  on(fromAction.activeComponent, (state: VictorDesignerState, { id }) => {
     if (state.activeComponentId === id) { return state; }
     return { ...state, activeComponentId: id };
   }),
-  on(fromAction.moveComponent, (state: FormDesignerState, { id, parentId, index }) => {
+  on(fromAction.moveComponent, (state: VictorDesignerState, { id, parentId, index }) => {
     const componentTree = { ...state.componentTree };
     const tree = { ...state.componentTree[id] };
     const originParent = { ...state.componentTree[tree.parentId] };

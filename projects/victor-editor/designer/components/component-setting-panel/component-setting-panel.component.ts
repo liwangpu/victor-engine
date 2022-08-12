@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewChild, ViewContainerRef, OnDestroy, Injector, ChangeDetectorRef, ComponentRef, Renderer2 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { ComponentDesignPanel, ComponentDesignPanelRegistry, COMPONENT_DESIGN_CONFIGURATION, COMPONENT_DESIGN_PANEL_REGISTRY, DesignInteractionOpsat, DESIGN_INTERACTION_OPSAT, INTERACTION_ACTION_EXECUTOR, INTERACTION_EVENT_OBSERVER, LazyService } from 'victor-core';
+import { ComponentDesignPanel, ComponentDesignPanelRegistry, COMPONENT_DESIGN_CONFIGURATION, COMPONENT_DESIGN_PANEL_REGISTRY, DesignInteractionOpsat, DESIGN_INTERACTION_OPSAT, DynamicComponentRegistry, DYNAMIC_COMPONENT_REGISTRY, INTERACTION_ACTION_EXECUTOR, INTERACTION_EVENT_OBSERVER, LazyService } from 'victor-core';
 import { selectActiveComponentMetadata, setComponentMetadata, selectAllComponentIds } from 'victor-editor/state-store';
 import { Subject } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
@@ -14,6 +14,7 @@ import { SubSink } from 'subsink';
 })
 export class ComponentSettingPanelComponent implements OnInit, OnDestroy {
 
+  activedComponentTitle: string;
   unRegisteredComponentConfigPanel: boolean = false;
   @ViewChild('container', { static: true, read: ViewContainerRef })
   protected readonly container: ViewContainerRef;
@@ -21,13 +22,16 @@ export class ComponentSettingPanelComponent implements OnInit, OnDestroy {
   private readonly cdr: ChangeDetectorRef;
   @LazyService(COMPONENT_DESIGN_PANEL_REGISTRY)
   private readonly designPanelRegistry: ComponentDesignPanelRegistry;
+  @LazyService(DYNAMIC_COMPONENT_REGISTRY)
+  private readonly componentRegistry: DynamicComponentRegistry;
   @LazyService(DESIGN_INTERACTION_OPSAT)
   private readonly interactionOpsat: DesignInteractionOpsat;
   @LazyService(Store)
   private readonly store: Store;
   @LazyService(Renderer2)
   private readonly renderer: Renderer2;
-  private panelMap = new Map<string, ComponentRef<ComponentDesignPanel>>();
+  private readonly panelMap = new Map<string, ComponentRef<ComponentDesignPanel>>();
+  private readonly componentTypeTitleMap = new Map<string, string>();
   private subs = new SubSink();
   constructor(
     protected injector: Injector
@@ -37,7 +41,12 @@ export class ComponentSettingPanelComponent implements OnInit, OnDestroy {
     this.subs.unsubscribe();
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    const componentDes = await this.componentRegistry.getComponentDescriptions();
+    componentDes.forEach(d => {
+      this.componentTypeTitleMap.set(d.type, d.title);
+    });
+
     this.subs.sink = this.store.select(selectAllComponentIds)
       .subscribe(ids => {
         const mids = new Set(ids);
@@ -55,14 +64,13 @@ export class ComponentSettingPanelComponent implements OnInit, OnDestroy {
         }
       });
 
-    // TODO: 补充销毁
     this.subs.sink = this.store.select(selectActiveComponentMetadata)
       .pipe(filter(cfg => cfg ? true : false))
       .subscribe(async cfg => {
         let newPanel = false;
         if (!this.panelMap.has(cfg.id)) {
-          const des = await this.designPanelRegistry.getComponentDescription(cfg.type);
-          if (des) {
+          const panelDes = await this.designPanelRegistry.getComponentDescription(cfg.type);
+          if (panelDes) {
             const actionExecutor = (actionName: string, data?: any) => {
               this.interactionOpsat.execAction({ componentId: cfg.id, actionName, data });
             };
@@ -74,7 +82,7 @@ export class ComponentSettingPanelComponent implements OnInit, OnDestroy {
               ],
               parent: this.injector
             });
-            const ref = this.container.createComponent(des.fac, null, ij);
+            const ref = this.container.createComponent(panelDes.fac, null, ij);
             const valueChange$ = new Subject<any>();
             const sub = new SubSink();
             ref.instance.registerOnChange(val => {
@@ -110,6 +118,7 @@ export class ComponentSettingPanelComponent implements OnInit, OnDestroy {
           }
         }
         this.unRegisteredComponentConfigPanel = !this.panelMap.has(cfg.id);
+        this.activedComponentTitle = this.componentTypeTitleMap.get(cfg.type) || '页面';
         this.cdr.markForCheck();
       });
   }

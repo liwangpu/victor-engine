@@ -2,18 +2,18 @@ import { createFeatureSelector } from '@ngrx/store';
 import { DynamicComponentMetadata } from 'victor-core';
 import { ComponentTreeState } from './visual-editing/state';
 
-export interface FormDesignerState {
+export interface VictorDesignerState {
   activeComponentId?: string;
   componentMetadata: { [id: string]: DynamicComponentMetadata };
   componentTree: { [id: string]: ComponentTreeState };
 }
 
-export const FORM_DESIGNER_INITIAL_STATE: FormDesignerState = {
+export const VICTOR_DESIGNER_INITIAL_STATE: VictorDesignerState = {
   componentMetadata: {},
   componentTree: {},
   activeComponentId: null
 }
 
-export const formDesignerStateKey: string = 'formDesigner';
+export const victorDesignerStateKey: string = 'victorDesigner';
 
-export const selectFormDesignerState = createFeatureSelector<FormDesignerState>(formDesignerStateKey);
+export const selectVictorDesignerState = createFeatureSelector<VictorDesignerState>(victorDesignerStateKey);

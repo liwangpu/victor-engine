@@ -1,11 +1,11 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, forwardRef, Injector, ComponentFactoryResolver, ViewContainerRef, ViewChild, HostListener } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, forwardRef, Injector, ComponentFactoryResolver, ViewContainerRef, ViewChild, HostListener, NgZone, Renderer2, ElementRef } from '@angular/core';
 import { DynamicComponent, DynamicComponentMetadata, DynamicComponentRegistry, DYNAMIC_COMPONENT, DYNAMIC_COMPONENT_METADATA, DYNAMIC_COMPONENT_REGISTRY, LazyService } from 'victor-core';
 import { DropContainerComponent, DropContainerOpsatService } from 'victor-editor/drop-container';
 import { SubSink } from 'subsink';
 import { v4 as uuidv4 } from 'uuid';
 import { Store } from '@ngrx/store';
-import { activeComponent, selectPageTree } from 'victor-editor/state-store';
+import { activeComponent, selectActiveComponentId, selectPageTree } from 'victor-editor/state-store';
 import { filter, first } from 'rxjs/operators';
 
 @Component({
@@ -28,6 +28,16 @@ export class PagePresentationComponent implements OnInit {
   protected cfr: ComponentFactoryResolver;
   @LazyService(Store)
   private readonly store: Store;
+  @LazyService(ElementRef)
+  private readonly el: ElementRef;
+  @LazyService(NgZone)
+  private readonly zone: NgZone;
+  @LazyService(DropContainerOpsatService, null)
+  private readonly opsat: DropContainerOpsatService;
+  @LazyService(Renderer2)
+  private readonly renderer: Renderer2;
+  private mouseEnterListenFn: (e: MouseEvent) => void;
+  private mouseLeaveListenFn: (e: MouseEvent) => void;
   private metadata: DynamicComponentMetadata;
   private subs = new SubSink();
   constructor(
@@ -36,6 +46,13 @@ export class PagePresentationComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
+    const nel: HTMLElement = this.el.nativeElement;
+    if (this.mouseEnterListenFn) {
+      nel.removeEventListener('mouseenter', this.mouseEnterListenFn);
+    }
+    if (this.mouseLeaveListenFn) {
+      nel.removeEventListener('mouseleave', this.mouseLeaveListenFn);
+    }
     this.subs.unsubscribe();
   }
 
@@ -55,6 +72,37 @@ export class PagePresentationComponent implements OnInit {
         this.cdr.markForCheck();
       });
 
+    this.zone.runOutsideAngular(() => {
+      const nel: HTMLElement = this.el.nativeElement;
+      this.subs.sink = this.store.select(selectActiveComponentId)
+        .pipe(filter(() => this.metadata ? true : false))
+        .subscribe(id => {
+          if (this.metadata.id === id) {
+            this.renderer.addClass(nel, 'actived');
+          } else {
+            this.renderer.removeClass(nel, 'actived');
+          }
+        });
+      if (this.opsat) {
+        this.mouseEnterListenFn = () => {
+          this.opsat.publishComponentHover(this.metadata.id);
+        };
+        this.mouseLeaveListenFn = () => {
+          this.opsat.publishComponentUnHover();
+        };
+        nel.addEventListener('mouseenter', this.mouseEnterListenFn);
+        nel.addEventListener('mouseleave', this.mouseLeaveListenFn);
+
+        this.subs.sink = this.opsat.componentHovering$
+          .subscribe(id => {
+            if (this.metadata.id === id) {
+              this.renderer.addClass(nel, 'hover');
+            } else {
+              this.renderer.removeClass(nel, 'hover');
+            }
+          });
+      }
+    });
   }
 
   @HostListener('click', ['$event'])

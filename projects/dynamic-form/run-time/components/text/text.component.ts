@@ -29,7 +29,8 @@ export class TextComponent extends DynamicComponent implements OnInit, OnDestroy
   }
 
   ngOnInit(): void {
-    console.log('metadata:', this.metadata);
+    // console.log('metadata:', this.metadata);
+    // console.log(`scopes:`, this.scopes);
     this.subs.sink = this.control.valueChanges
       .pipe(debounceTime(120))
       .subscribe(val => {
@@ -37,9 +38,9 @@ export class TextComponent extends DynamicComponent implements OnInit, OnDestroy
       });
   }
 
-  @ComponentScope('value')
-  onValueChange(val: string): string {
-    return val;
+  @ComponentScope()
+  onValueChange(value: string): { value: string } {
+    return { value };
   }
 
 }

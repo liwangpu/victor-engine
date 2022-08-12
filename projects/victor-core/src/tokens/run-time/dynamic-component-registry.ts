@@ -23,9 +23,15 @@ export interface DynamicComponentMetadata {
 
 export const DYNAMIC_COMPONENT_METADATA = new InjectionToken<DynamicComponent>('dynamic component metadata');
 
+export interface DynamicComponentScopes {
+  [scopeName: string]: { value: any, source?: any };
+}
+
+export const DYNAMIC_COMPONENT_SCOPES = new InjectionToken<DynamicComponent>('dynamic component scopes');
+
 export function ComponentScope(scope?: string): Function {
   return function (target: object, propertyName: string, propertyDesciptor: PropertyDescriptor): any {
-    scope = scope || propertyName;
+    scope = scope || 'data';
     const method: any = propertyDesciptor.value;
     Reflect.defineMetadata(scope, { metadataType: metadataType.scope }, target);
     propertyDesciptor.value = function (...args: Array<any>): Promise<any> {
@@ -65,8 +71,12 @@ export abstract class DynamicComponent {
   id: string;
   @PropertyEntry('metadata.type')
   type: string;
+  @PropertyEntry('metadata.title')
+  title: string;
   @LazyService(DYNAMIC_COMPONENT_METADATA)
   metadata: DynamicComponentMetadata;
+  @LazyService(DYNAMIC_COMPONENT_SCOPES, {})
+  scopes: DynamicComponentScopes;
   protected scopeChangeFn: (scope: string, value: any) => void;
   constructor(
     public injector: Injector

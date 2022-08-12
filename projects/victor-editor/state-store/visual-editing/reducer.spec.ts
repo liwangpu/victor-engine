@@ -1,11 +1,11 @@
 import { Action, createReducer } from '@ngrx/store';
-import { FormDesignerState, FORM_DESIGNER_INITIAL_STATE } from '../state';
+import { VictorDesignerState, VICTOR_DESIGNER_INITIAL_STATE } from '../state';
 import { ons } from './reducer';
 import * as fromAction from './action';
 import { DynamicComponentMetadata } from 'victor-core';
 import { flatComponentTree } from '../utils/data-transfer';
 
-const formDesignerReducer = createReducer<FormDesignerState, Action>(FORM_DESIGNER_INITIAL_STATE, ...ons);
+const formDesignerReducer = createReducer<VictorDesignerState, Action>(VICTOR_DESIGNER_INITIAL_STATE, ...ons);
 
 describe('Visual Editing Reducer', () => {
 
@@ -38,7 +38,7 @@ describe('Visual Editing Reducer', () => {
           }
         ]
       };
-      const state: FormDesignerState = {
+      const state: VictorDesignerState = {
         componentMetadata: {},
         componentTree: flatComponentTree(pageMd)
       };
@@ -79,7 +79,7 @@ describe('Visual Editing Reducer', () => {
           }
         ]
       };
-      const state: FormDesignerState = {
+      const state: VictorDesignerState = {
         componentMetadata: {},
         componentTree: flatComponentTree(pageMd)
       };
@@ -120,7 +120,7 @@ describe('Visual Editing Reducer', () => {
           }
         ]
       };
-      const state: FormDesignerState = {
+      const state: VictorDesignerState = {
         componentMetadata: {},
         componentTree: flatComponentTree(pageMd)
       };

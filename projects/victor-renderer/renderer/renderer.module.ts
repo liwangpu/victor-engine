@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RendererComponent } from './components/renderer/renderer.component';
 import { DYNAMIC_COMPONENT_RENDERER } from 'victor-core';
 import { DynamicComponentRendererService } from './services/dynamic-component-renderer.service';
+import { StateStoreModule } from 'victor-renderer/state-store';
 
 @NgModule({
   declarations: [
@@ -10,8 +11,9 @@ import { DynamicComponentRendererService } from './services/dynamic-component-re
   ],
   imports: [
     CommonModule,
+    StateStoreModule,
   ],
-  providers:[
+  providers: [
     { provide: DYNAMIC_COMPONENT_RENDERER, useClass: DynamicComponentRendererService },
   ],
   exports: [

@@ -1,10 +1,10 @@
 :host {
   position: absolute;
-  display: block;
+  display: flex;
+  flex-flow: column;
   width: 100%;
   height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: hidden;
 
   &>div.empty-container {
     position: absolute;
@@ -20,5 +20,24 @@
     &.hidden {
       display: none !important;
     }
+  }
+
+  &>div.header {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px 0;
+
+    &>p.title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #494f57;
+      margin: 0;
+    }
+  }
+
+  &>div.content {
+    flex: 1;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 }

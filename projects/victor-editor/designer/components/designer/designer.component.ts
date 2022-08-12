@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { CUSTOM_RENDER_PROVIDER, DESIGN_INTERACTION_OPSAT, LazyService } from 'victor-core';
 import { DesignInteractionOpsatService } from '../../services/design-interaction-opsat.service';
 import { DropContainerOpsatService } from 'victor-editor/drop-container';
-import { FORM_DESIGNER_INITIAL_STATE, nestComponentTree, selectFormDesignerState, setDesignerState, flatComponentTree, generateDesignState, resetDesignerState } from 'victor-editor/state-store';
+import { VICTOR_DESIGNER_INITIAL_STATE, nestComponentTree, selectVictorDesignerState, setDesignerState, flatComponentTree, generateDesignState, resetDesignerState } from 'victor-editor/state-store';
 import { SubSink } from 'subsink';
 import { first } from 'rxjs/operators';
 import { DESIGNER_STARTER, DesignerStarter, EditorHandler } from '../../tokens/designer-starter';
@@ -41,7 +41,7 @@ export class DesignerComponent implements EditorHandler, OnInit, OnDestroy {
   }
 
   async save(): Promise<void> {
-    const state = await this.store.select(selectFormDesignerState).pipe(first()).toPromise();
+    const state = await this.store.select(selectVictorDesignerState).pipe(first()).toPromise();
     const schema = nestComponentTree(state);
     await this.starter.saveSchema(schema);
   }
@@ -58,7 +58,7 @@ export class DesignerComponent implements EditorHandler, OnInit, OnDestroy {
     // console.log('state:', state);
     this.store.dispatch(setDesignerState({ state, source: DesignerComponent.name }));
 
-    this.subs.sink = this.store.select(selectFormDesignerState)
+    this.subs.sink = this.store.select(selectVictorDesignerState)
       // .pipe(debounceTime(120))
       .subscribe(state => {
         sessionStorage.setItem(designerDraft, JSON.stringify(state));
@@ -68,7 +68,7 @@ export class DesignerComponent implements EditorHandler, OnInit, OnDestroy {
   clearCache(): void {
     // sessionStorage.removeItem(designerDraft);
     // location.reload();
-    this.store.dispatch(setDesignerState({ state: FORM_DESIGNER_INITIAL_STATE, source: DesignerComponent.name }));
+    this.store.dispatch(setDesignerState({ state: VICTOR_DESIGNER_INITIAL_STATE, source: DesignerComponent.name }));
   }
 
 }

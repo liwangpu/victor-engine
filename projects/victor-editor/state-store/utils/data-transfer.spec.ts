@@ -1,6 +1,6 @@
 import { flatComponentTree, generateDesignState, nestComponentTree } from './data-transfer';
 import { DynamicComponentMetadata } from 'victor-core';
-import { FormDesignerState, FORM_DESIGNER_INITIAL_STATE } from '../state';
+import { VictorDesignerState, VICTOR_DESIGNER_INITIAL_STATE } from '../state';
 
 describe('data transfer', () => {
 
@@ -69,7 +69,7 @@ describe('data transfer', () => {
     });
 
     it('initial state', () => {
-      const metadata = nestComponentTree(FORM_DESIGNER_INITIAL_STATE);
+      const metadata = nestComponentTree(VICTOR_DESIGNER_INITIAL_STATE);
       expect(metadata).toEqual({
         id: 'page',
         type: 'page'
@@ -77,7 +77,7 @@ describe('data transfer', () => {
     });
 
     it('仅有page且有配置', () => {
-      const state: FormDesignerState = {
+      const state: VictorDesignerState = {
         componentMetadata: {
           'page': { id: 'page', type: 'page', title: '我是页面标题' }
         },
@@ -94,7 +94,7 @@ describe('data transfer', () => {
     });
 
     it('多层级组件', () => {
-      const state: FormDesignerState = {
+      const state: VictorDesignerState = {
         componentMetadata: {
           'page': { id: 'page', type: 'page', title: '我是页面标题' },
           'text1': { id: 'text1', type: 'text', title: '姓名' },
@@ -139,7 +139,7 @@ describe('data transfer', () => {
 
     it('null', () => {
       const state = generateDesignState(null);
-      expect(state).toEqual(FORM_DESIGNER_INITIAL_STATE);
+      expect(state).toEqual(VICTOR_DESIGNER_INITIAL_STATE);
     });
 
     fit('多层级', () => {
@@ -169,7 +169,7 @@ describe('data transfer', () => {
       };
       const state = generateDesignState(metadata);
       console.log('state:', state);
-      // expect(state).toEqual(FORM_DESIGNER_INITIAL_STATE);
+      // expect(state).toEqual(VICTOR_DESIGNER_INITIAL_STATE);
     });
 
   });
