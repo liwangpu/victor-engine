@@ -1,10 +1,20 @@
 victor-tabs {
   .ant-tabs {
+    .ant-tabs-nav {
+      margin: 0 !important;
+    }
+
     .ant-tabs-content-holder {
       .ant-tabs-content {
         width: 100%;
         height: 100%;
       }
+    }
+  }
+
+  &.design-time {
+    victor-tab-wrapper {
+      padding: 4px !important;
     }
   }
 }

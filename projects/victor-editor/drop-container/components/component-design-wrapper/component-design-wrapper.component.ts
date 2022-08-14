@@ -106,6 +106,7 @@ export class ComponentDesignWrapperComponent implements OnInit, OnDestroy {
     if (!metadata?.type) { return; }
 
     const ref = await this.componentRenderer.render(this.injector, metadata, this.container);
+    this.renderer.addClass(ref.location.nativeElement, 'design-time');
     const { events, actions } = ref.instance['getMetaDataDescription']();
     const subs = new SubSink();
     events.forEach(e => {
