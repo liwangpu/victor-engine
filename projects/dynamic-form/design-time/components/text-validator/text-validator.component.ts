@@ -5,6 +5,9 @@ import { ComponentValidatorRule, LazyService } from 'victor-core';
 
 interface FormValue {
   required?: boolean;
+  textLength?: boolean;
+  textLengthMin?: number;
+  textLengthMax?: number;
 }
 
 @Component({
@@ -35,7 +38,10 @@ export class TextValidatorComponent implements ControlValueAccessor, OnInit, OnD
     protected injector: Injector
   ) {
     this.form = this.fb.group({
-      required: []
+      required: [],
+      textLength: [],
+      textLengthMin: [],
+      textLengthMax: [],
     });
   }
 
@@ -55,6 +61,17 @@ export class TextValidatorComponent implements ControlValueAccessor, OnInit, OnD
     obj = obj || [];
     const formValue: FormValue = {};
     formValue.required = obj.some(x => x.type === 'required');
+
+    const textLengthRule = obj.find(x => x.type === 'text-length');
+    if (textLengthRule) {
+      formValue.textLength = textLengthRule.min || textLengthRule.max;
+      formValue.textLengthMin = textLengthRule.min;
+      formValue.textLengthMax = textLengthRule.max;
+    } else {
+      formValue.textLength = false;
+    }
+
+
     this.form.patchValue(formValue, { emitEvent: false });
     this.cdr.markForCheck();
   }
@@ -78,6 +95,19 @@ export class TextValidatorComponent implements ControlValueAccessor, OnInit, OnD
         type: 'required'
       });
     }
+
+    if (val.textLength) {
+      const rule: ComponentValidatorRule = { type: 'text-length' };
+      if (val.textLengthMin) {
+        rule.min = val.textLengthMin;
+      }
+
+      if (val.textLengthMax) {
+        rule.max = val.textLengthMax;
+      }
+      rules.push(rule);
+    }
+    console.log(`rules:`, rules);
     return rules;
   }
 

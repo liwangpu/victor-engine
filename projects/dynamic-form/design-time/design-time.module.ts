@@ -6,6 +6,7 @@ import { ComponentDesignPanelRegistry, COMPONENT_DESIGN_PANEL_REGISTRY } from 'v
 import { DesignerSharedModule } from 'victor-core/designer-shared';
 import { TextValidatorComponent } from './components/text-validator/text-validator.component';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
     DesignerSharedModule,
     NzInputModule,
     NzButtonModule,
-    NzCheckboxModule
+    NzCheckboxModule,
+    NzInputNumberModule
   ]
 })
 export class DesignTimeModule {

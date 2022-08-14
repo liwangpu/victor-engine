@@ -1,6 +1,5 @@
 import { InjectionToken } from '@angular/core';
 import { Observable } from 'rxjs';
-import { filter } from 'rxjs/operators';
 
 export interface DesignInteractionEvent {
   componentId: string;

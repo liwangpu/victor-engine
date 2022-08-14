@@ -1,13 +1,17 @@
 import { Component, OnInit, ChangeDetectionStrategy, Injector, OnDestroy, ViewChild, ViewContainerRef, ChangeDetectorRef, Renderer2 } from '@angular/core';
 import { SubSink } from 'subsink';
-import { DynamicComponentMetadata, DynamicComponentRenderer, DYNAMIC_COMPONENT_RENDERER, LazyService } from 'victor-core';
+import { DynamicComponentMetadata, DynamicComponentRenderer, DYNAMIC_COMPONENT_RENDERER, DYNAMIC_PAGE_ID, LazyService } from 'victor-core';
 import { RENDERER_STARTER, RendererStarter } from '../../tokens/renderer-starter';
+import { DynamicComponentRendererService } from '../../services/dynamic-component-renderer.service';
 
 @Component({
   selector: 'victor-renderer',
   templateUrl: './renderer.component.html',
   styleUrls: ['./renderer.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    { provide: DYNAMIC_COMPONENT_RENDERER, useClass: DynamicComponentRendererService },
+  ]
 })
 export class RendererComponent implements OnInit, OnDestroy {
 
@@ -43,9 +47,15 @@ export class RendererComponent implements OnInit, OnDestroy {
     if (this.container.length) { this.container.clear(); }
     if (!metadata?.type) { return; }
     const body: DynamicComponentMetadata[] = metadata.body || [];
+    const ij = Injector.create({
+      providers: [
+        { provide: DYNAMIC_PAGE_ID, useValue: metadata.id }
+      ],
+      parent: this.injector
+    });
     if (body.length) {
       for (let md of body) {
-        await this.componentRenderer.render(this.injector, md, this.container);
+        await this.componentRenderer.render(ij, md, this.container);
       }
     }
     this.cdr.markForCheck();

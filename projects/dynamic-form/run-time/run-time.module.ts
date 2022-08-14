@@ -5,6 +5,11 @@ import { DynamicComponentRegistry, DYNAMIC_COMPONENT_REGISTRY } from 'victor-cor
 import { TranslateService } from '@ngx-translate/core';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { IconDefinition } from '@ant-design/icons-angular';
+import * as antIcon from '@ant-design/icons-angular/icons';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+
+const icons: Array<IconDefinition> = [antIcon.CloseCircleOutline];
 
 @NgModule({
   declarations: [
@@ -14,7 +19,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     NzInputModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    NzIconModule.forChild(icons),
   ]
 })
 export class RunTimeModule {

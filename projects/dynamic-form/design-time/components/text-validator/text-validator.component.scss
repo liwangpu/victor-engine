@@ -3,7 +3,26 @@
   width: 100%;
   height: 100%;
 
+  form {
+    display: flex;
+    flex-flow: column nowrap;
+
+    &>.range {
+      display: flex;
+      align-items: center;
+
+      &>.gap {
+        padding: 0 6px;
+      }
+
+      &>.ipt {
+        flex: 1;
+      }
+    }
+  }
+
   .ckb {
+    margin-left: 0;
     user-select: none;
   }
 }

@@ -20,6 +20,7 @@ export class TextConfigPanelComponent extends ComponentDesignPanel implements On
   ) {
     super(injector);
     this.form = this.fb.group({
+      key: [],
       title: [],
       placeholder: [],
       validators: []

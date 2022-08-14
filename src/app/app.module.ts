@@ -18,6 +18,7 @@ import { MenuFoldOutline, MenuUnfoldOutline } from '@ant-design/icons-angular/ic
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { EffectsModule } from '@ngrx/effects';
 
 registerLocaleData(zh);
 
@@ -44,6 +45,7 @@ const icons: Array<IconDefinition> = [MenuFoldOutline, MenuUnfoldOutline];
       defaultLanguage: 'cn'
     }),
     StoreModule.forRoot({}),
+    EffectsModule.forRoot(),
     StoreDevtoolsModule.instrument(),
     BrowserAnimationsModule,
     FormsModule,

@@ -4,10 +4,10 @@ import * as fromAction from './action';
 import { ComponentScope } from './state';
 
 export const ons: ReducerTypes<VictorRendererState, readonly ActionCreator<string, Creator<any[], object>>[]>[] = [
-  on(fromAction.setComponentScope, (state: VictorRendererState, { id, title, scopeName, scopeValue }) => {
+  on(fromAction.setComponentScope, (state: VictorRendererState, { id, title, scopeName, scopeValue, scopeSource }) => {
     const componentScopes = { ...state.componentScopes };
     const comScope: ComponentScope = { id, title, scopes: componentScopes[id]?.scopes ? { ...componentScopes[id].scopes } : {} };
-    comScope.scopes[scopeName] = scopeValue;
+    comScope.scopes[scopeName] = { value: scopeValue, source: scopeSource };
     componentScopes[id] = comScope;
     return { ...state, componentScopes };
   })

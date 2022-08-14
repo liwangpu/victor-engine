@@ -1,5 +1,5 @@
 import { ComponentFactory, InjectionToken } from '@angular/core';
-import { DynamicComponent, DynamicComponentMetadata } from '../run-time/dynamic-component-registry';
+import { DynamicComponent, DynamicComponentMetadata } from '../../models';
 
 export interface CustomRenderProvider {
   getRenderFactory(metadata: DynamicComponentMetadata): Promise<ComponentFactory<DynamicComponent>>;
