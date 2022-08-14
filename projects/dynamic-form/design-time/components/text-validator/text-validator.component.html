@@ -2,10 +2,10 @@
   <label nz-checkbox class="ckb" formControlName="required">这个是必填项</label>
   <label nz-checkbox class="ckb" formControlName="textLength">限制字数</label>
   <div class="range" *ngIf="form?.value.textLength">
-    <nz-input-number class="ipt" [nzMin]="1" [nzMax]="10" [nzStep]="1" formControlName="textLengthMin">
+    <nz-input-number class="ipt" [nzMin]="1" [nzStep]="1" formControlName="textLengthMin">
     </nz-input-number>
     <span class="gap">~</span>
-    <nz-input-number class="ipt" [nzMin]="1" [nzMax]="10" [nzStep]="1" formControlName="textLengthMax">
+    <nz-input-number class="ipt" [nzStep]="1" formControlName="textLengthMax">
     </nz-input-number>
   </div>
 </form>

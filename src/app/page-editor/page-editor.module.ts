@@ -24,8 +24,8 @@ import { COMPONENT_GROUP_SORT_RULE } from 'victor-editor';
 import { RendererModule } from 'victor-renderer/renderer';
 import { RegistrationModule } from 'victor-core/registration';
 import { PageDefinitionResolver } from './services/page-definition.resolver';
-import { JsonEditorComponent } from './components/json-editor/json-editor.component';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { JsonEditorModule } from '../json-editor/json-editor.module';
 
 
 const icons: Array<IconDefinition> = [antIcon.PlusOutline, antIcon.EditOutline, antIcon.LeftOutline, antIcon.FileFill];
@@ -36,14 +36,14 @@ const icons: Array<IconDefinition> = [antIcon.PlusOutline, antIcon.EditOutline, 
     PageManagementComponent,
     PageEditorComponent,
     DynamicPageComponent,
-    PageDetailComponent,
-    JsonEditorComponent
+    PageDetailComponent
   ],
   imports: [
     CommonModule,
     PageEditorRoutingModule,
     ReactiveFormsModule,
     FormsModule,
+    JsonEditorModule,
     // victor engine 
     RegistrationModule,
     RendererModule,

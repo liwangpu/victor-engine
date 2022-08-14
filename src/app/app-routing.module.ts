@@ -6,10 +6,10 @@ const routes: Routes = [
     path: 'pages',
     loadChildren: () => import('./page-editor/page-editor.module').then(m => m.PageEditorModule)
   },
-  // {
-  //   path: 'victor-editor',
-  //   loadChildren: () => import('./module-loaders/designer-loader/designer-loader.module').then(m => m.DesignerLoaderModule)
-  // },
+  {
+    path: 'victor-form-demo',
+    loadChildren: () => import('./victor-form-demo/victor-form-demo.module').then(m => m.VictorFormDemoModule)
+  },
   { path: '', pathMatch: 'full', redirectTo: 'pages' },
   { path: '**', redirectTo: 'pages' }
 ];
