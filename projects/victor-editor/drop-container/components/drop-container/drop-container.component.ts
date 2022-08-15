@@ -22,8 +22,6 @@ export class DropContainerComponent extends DynamicComponent implements OnInit, 
   @HostBinding('class.actived')
   actived?: boolean;
   components: DynamicComponentMetadata[] = [];
-  // @ViewChild('container', { static: true, read: ViewContainerRef })
-  // private readonly container: ViewContainerRef;
   @ViewChild('dropContainer', { static: true })
   private readonly dropContainer: ElementRef;
   private subs = new SubSink();
@@ -42,6 +40,7 @@ export class DropContainerComponent extends DynamicComponent implements OnInit, 
   @LazyService(DYNAMIC_COMPONENT_REGISTRY)
   private readonly dynamicComponentRegistry: DynamicComponentRegistry;
   private sortable: Sortable;
+  private previewNode: HTMLElement;
 
   constructor(
     injector: Injector
@@ -57,10 +56,6 @@ export class DropContainerComponent extends DynamicComponent implements OnInit, 
     this.subs.sink = this.store.select(selectFirstLevelBodyComponents(this.metadata.id))
       .subscribe(async components => {
         this.components = components;
-        // if(this.metadata.id==='page'){
-        //   console.log(`container ${this.metadata.id}`, components);
-        // }
-        // console.log(`container ${this.metadata.id}`, components);
         this.generateSortable();
         this.cdr.markForCheck();
       });
@@ -90,7 +85,18 @@ export class DropContainerComponent extends DynamicComponent implements OnInit, 
         containers.forEach(e => {
           this.renderer.addClass(e, 'hidden');
         });
+        if (!this.previewNode) {
+          const pid = 'victor-editor-drop-preview';
+          this.previewNode = document.getElementById(pid) || document.createElement('div');
+          this.previewNode.id = pid;
+          document.body.appendChild(this.previewNode);
+        } else {
+          this.renderer.removeClass(this.previewNode, 'hidden');
+        }
+
+        dataTransfer.setDragImage(this.previewNode, 0, 0);
         const metadata = await this.store.select(selectComponentMetadata(id)).pipe(first()).toPromise();
+        this.previewNode.innerHTML = metadata.title;
         dataTransfer.setData('Text', JSON.stringify({ id, type: metadata.type }));
       },
       onAdd: async (evt: SortableJs.SortableEvent) => {
@@ -108,11 +114,14 @@ export class DropContainerComponent extends DynamicComponent implements OnInit, 
         this.store.dispatch(addNewComponent({ metadata: { ...metadata, id: componetId }, parentId: this.metadata.id, index: evt.newIndex, source: DropContainerComponent.name }));
       },
       onStart: (evt: SortableJs.SortableEvent) => {
-        const dragEvt: DragEvent = (evt as any).originalEvent;
+        // const dragEvt: DragEvent = (evt as any).originalEvent;
       },
       onEnd: async (evt: SortableJs.SortableEvent) => {
-        var itemEl = evt.item;  // dragged HTMLElement
-        // console.log('end:', evt);
+        // console.log(`end:`,);
+        if (this.previewNode) {
+          this.renderer.addClass(this.previewNode, 'hidden');
+        }
+        var itemEl = evt.item;
         const containers = evt.item.querySelectorAll('div.drop-container');
         containers.forEach(e => {
           this.renderer.removeClass(e, 'hidden');
