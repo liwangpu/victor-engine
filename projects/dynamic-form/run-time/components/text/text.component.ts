@@ -52,7 +52,6 @@ export class TextComponent extends DynamicComponent implements IHasValidator, On
   }
 
   async onValidatedChange(errors: { [scopeName: string]: string; }): Promise<void> {
-    // console.log(`validate change:`, errors);
     this.errorMessages = [];
     if (errors) {
       const keys = Object.keys(errors);

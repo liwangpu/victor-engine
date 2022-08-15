@@ -12,11 +12,12 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { RunTimeModule as TabsRunTimeModule } from 'dynamic-tabs/run-time';
 import { DynamicComponentRegistry, DYNAMIC_COMPONENT_REGISTRY, DYNAMIC_VALIDATOR } from 'victor-core';
 import { TextRequiredValidatorService } from './services/text-required-validator.service';
-import { SpecifyTextRequiredValidatorService } from './services/specify-required-validator.service copy';
+import { SpecifyTextRequiredValidatorService } from './services/specify-required-validator.service';
 import { MyPasswordComponent } from './components/my-password/my-password.component';
 import { TranslateService } from '@ngx-translate/core';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NativeComponetMarketModule } from 'victor-core/native-componet-market';
+import { WeakPasswordCheckValidatorService } from './services/weak-password-check-validator.service';
 
 const icons: Array<IconDefinition> = [antIcon.CloseCircleOutline];
 
@@ -42,6 +43,7 @@ const icons: Array<IconDefinition> = [antIcon.CloseCircleOutline];
   providers: [
     // { provide: DYNAMIC_VALIDATOR, useClass: TextRequiredValidatorService, multi: true },
     // { provide: DYNAMIC_VALIDATOR, useClass: SpecifyTextRequiredValidatorService, multi: true },
+    { provide: DYNAMIC_VALIDATOR, useClass: WeakPasswordCheckValidatorService, multi: true },
   ]
 })
 export class VictorFormDemoModule {

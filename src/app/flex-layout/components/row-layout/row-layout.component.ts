@@ -17,7 +17,6 @@ export class RowLayoutComponent extends DynamicComponent {
     injector: Injector
   ) {
     super(injector);
-    // console.log(`rows:`,this.rows);
   }
 
   trackById(index: number, it: DynamicComponentMetadata): any {

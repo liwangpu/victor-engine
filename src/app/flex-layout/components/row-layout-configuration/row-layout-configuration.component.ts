@@ -43,8 +43,6 @@ export class RowLayoutConfigurationComponent extends ComponentDesignPanel implem
     this.form.patchValue(this.configuration, { emitEvent: false });
     this.subs.sink = this.form.valueChanges
       .subscribe((val: FormValue) => {
-        // console.log(`ccc:`, val);
-        // body = this.configuration.body?.length ? [...this.configuration.body] : [];
         if (body.length > val.rows) {
           body = body.slice(0, val.rows);
         } else {
@@ -59,7 +57,6 @@ export class RowLayoutConfigurationComponent extends ComponentDesignPanel implem
 
         const cfg = { ...val, body: _.cloneDeep(body) };
         delete cfg.rows;
-        console.log(`cfg:`, cfg);
         this.onChangeFn(cfg);
       });
   }
