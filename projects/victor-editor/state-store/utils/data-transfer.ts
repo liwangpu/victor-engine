@@ -7,37 +7,37 @@ type NestedComponentMetadata = ComponentTreeState & DynamicComponentMetadata;
 
 export function flatComponentTree(md: DynamicComponentMetadata): { [id: string]: ComponentTreeState } {
   if (!md) { return {}; }
-  const componentTree = {};
+  const componentTrees = {};
   const tree: ComponentTreeState = { id: md.id, type: md.type, body: md.body?.length ? md.body.map(c => c.id) : [] };
-  componentTree[md.id] = tree;
+  componentTrees[md.id] = tree;
   const maintainBodyComponent = (bodyMd: DynamicComponentMetadata, parentId: string) => {
-    if (!componentTree[bodyMd.id]) {
+    if (!componentTrees[bodyMd.id]) {
       const ctree: ComponentTreeState = { id: bodyMd.id, type: bodyMd.type, parentId, body: bodyMd.body?.length ? bodyMd.body.map(c => c.id) : [] };
-      componentTree[ctree.id] = ctree;
+      componentTrees[ctree.id] = ctree;
       bodyMd.body?.forEach(cmd => maintainBodyComponent(cmd, bodyMd.id));
     }
   };
 
   md.body?.forEach(cmd => maintainBodyComponent(cmd, md.id));
-  return componentTree;
+  return componentTrees;
 }
 
 export function nestComponentTree(state: VictorDesignerState): DynamicComponentMetadata {
-  if (!state?.componentTree) { return null; }
-  const componentIds = Object.keys(state.componentTree);
-  const componentTrees: ComponentTreeState[] = componentIds.map(id => state.componentTree[id]);
+  if (!state?.componentTrees) { return null; }
+  const componentIds = Object.keys(state.componentTrees);
+  const componentTrees: ComponentTreeState[] = componentIds.map(id => state.componentTrees[id]);
   let pageTree = componentTrees.find(t => t.type === 'page');
   if (!pageTree) { return null; }
   pageTree = { ...pageTree };
   const generateComponentMetadata = (tree: NestedComponentMetadata) => {
     const bodyIds = tree.body || [];
-    const md = state.componentMetadata[tree.id];
+    const md = state.componentMetadatas[tree.id];
     if (md) {
       _.merge(tree, { ...md, type: tree.type, id: tree.id });
     }
     const body: DynamicComponentMetadata[] = [];
     bodyIds.forEach(cid => {
-      let ctree = state.componentTree[cid];
+      let ctree = state.componentTrees[cid];
       if (!ctree) { return; }
       ctree = { ...ctree };
       generateComponentMetadata(ctree as NestedComponentMetadata);
@@ -59,16 +59,16 @@ export function nestComponentTree(state: VictorDesignerState): DynamicComponentM
 export function generateDesignState(metadata: DynamicComponentMetadata): VictorDesignerState {
   const state = _.cloneDeep(VICTOR_DESIGNER_INITIAL_STATE);
   if (!metadata) { return state; }
-  const componentTree = {};
-  const componentMetadata = {};
+  const componentTrees = {};
+  const componentMetadatas = {};
   const generateComponentMetadataAndTree = (md: DynamicComponentMetadata, parentId: string) => {
     const ctree: ComponentTreeState = { id: md.id, type: md.type };
     if (parentId) {
       ctree.parentId = parentId;
     }
-    componentTree[md.id] = ctree;
+    componentTrees[md.id] = ctree;
     md = { ...md };
-    componentMetadata[md.id] = md;
+    componentMetadatas[md.id] = md;
     const bodyMetadatas: DynamicComponentMetadata[] = md.body?.length ? md.body : [];
     const bodyIds = bodyMetadatas.map(c => c.id);
     ctree.body = bodyIds;
@@ -78,7 +78,7 @@ export function generateDesignState(metadata: DynamicComponentMetadata): VictorD
     });
   };
   generateComponentMetadataAndTree(metadata, null);
-  state.componentTree = componentTree;
-  state.componentMetadata = componentMetadata;
+  state.componentTrees = componentTrees;
+  state.componentMetadatas = componentMetadatas;
   return state;
 }

@@ -6,12 +6,12 @@ export const selectFirstLevelBodyComponents: (id: string) => MemoizedSelector<Vi
   selectVictorDesignerState,
   (state: VictorDesignerState) => {
     if (!id) { return []; }
-    const tree = state.componentTree[id];
+    const tree = state.componentTrees[id];
     if (!tree?.body?.length) { return []; }
     const bodys = [];
     tree.body.forEach(cid => {
-      const md = state.componentMetadata[cid];
-      bodys.push({ id: cid, type: state.componentTree[cid].type, title: md?.title });
+      const md = state.componentMetadatas[cid];
+      bodys.push({ id: cid, type: state.componentTrees[cid].type, title: md?.title });
     });
     return bodys;
   }
@@ -24,14 +24,14 @@ export const selectActiveComponentId: MemoizedSelector<VictorDesignerState, stri
 
 export const selectAllComponentIds: MemoizedSelector<VictorDesignerState, string[]> = createSelector(
   selectVictorDesignerState,
-  (state: VictorDesignerState) => Object.keys(state.componentTree)
+  (state: VictorDesignerState) => Object.keys(state.componentTrees)
 );
 
 export const selectFirstLevelBodyComponentIds: (id: string) => MemoizedSelector<VictorDesignerState, string[]> = id => createSelector(
   selectVictorDesignerState,
   (state: VictorDesignerState) => {
     if (!id) { return []; }
-    const tree = state.componentTree[id];
+    const tree = state.componentTrees[id];
     return tree.body || [];
   }
 );
@@ -39,9 +39,9 @@ export const selectFirstLevelBodyComponentIds: (id: string) => MemoizedSelector<
 export const selectPageTree: MemoizedSelector<VictorDesignerState, ComponentTreeState> = createSelector(
   selectVictorDesignerState,
   (state: VictorDesignerState) => {
-    if (!state.componentTree) { return null; }
-    const componentIds = Object.keys(state.componentTree);
-    const componentTrees: ComponentTreeState[] = componentIds.map(id => state.componentTree[id]);
+    if (!state.componentTrees) { return null; }
+    const componentIds = Object.keys(state.componentTrees);
+    const componentTrees: ComponentTreeState[] = componentIds.map(id => state.componentTrees[id]);
     let pageTree = componentTrees.find(t => t.type === 'page');
     return pageTree;
   }

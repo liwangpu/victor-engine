@@ -31,11 +31,9 @@ export class TabsConfigPanelComponent extends ComponentDesignPanel implements On
   }
 
   ngOnInit(): void {
-    // console.log('panel:', this.configuration);
     this.form.patchValue(this.configuration, { emitEvent: false });
     this.subs.sink = this.form.valueChanges
       .subscribe(val => {
-        // console.log('ccc:', val);
         this.onChangeFn(val);
       });
   }

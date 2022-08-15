@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { DynamicComponent, PropertyEntry } from 'victor-core';
+import { DynamicComponent, PropertyEntry, IHasValidator } from 'victor-core';
 
 @Component({
   selector: 'app-my-password',

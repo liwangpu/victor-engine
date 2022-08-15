@@ -4,6 +4,7 @@ import { DynamicPageComponent } from './components/dynamic-page/dynamic-page.com
 import { PageEditorComponent } from './components/page-editor/page-editor.component';
 import { PageListComponent } from './components/page-list/page-list.component';
 import { PageDefinitionResolver } from './services/page-definition.resolver';
+import { PageListPreviewGuard } from './services/page-list-preview.guard';
 
 const routes: Routes = [
   {
@@ -17,6 +18,9 @@ const routes: Routes = [
           definition: PageDefinitionResolver
         }
       }
+    ],
+    canActivate: [
+      PageListPreviewGuard
     ]
   },
   {

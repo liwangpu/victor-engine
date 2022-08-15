@@ -4,13 +4,13 @@ import { ComponentTreeState } from './visual-editing/state';
 
 export interface VictorDesignerState {
   activeComponentId?: string;
-  componentMetadata: { [id: string]: DynamicComponentMetadata };
-  componentTree: { [id: string]: ComponentTreeState };
+  componentMetadatas: { [id: string]: DynamicComponentMetadata };
+  componentTrees: { [id: string]: ComponentTreeState };
 }
 
 export const VICTOR_DESIGNER_INITIAL_STATE: VictorDesignerState = {
-  componentMetadata: {},
-  componentTree: {},
+  componentMetadatas: {},
+  componentTrees: {},
   activeComponentId: null
 }
 

@@ -1,10 +1,9 @@
 import { ChangeDetectorRef, ComponentFactory, ElementRef, InjectionToken, Injector, Renderer2 } from '@angular/core';
+import { DynamicComponentMetadata } from 'victor-core';
 import { LazyService, PropertyEntry } from '../../utils/common-decorator';
 
-export interface ComponentDesignConfiguration {
-  id: string;
-  type: string;
-  config?: { [key: string]: any };
+export interface ComponentDesignConfiguration extends DynamicComponentMetadata {
+
 }
 
 export const COMPONENT_DESIGN_CONFIGURATION: InjectionToken<ComponentDesignConfiguration> = new InjectionToken<ComponentDesignConfiguration>('component design configuration');

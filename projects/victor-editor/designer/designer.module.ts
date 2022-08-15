@@ -5,7 +5,7 @@ import { PagePresentationComponent } from './components/page-presentation/page-p
 import { DropContainerModule } from 'victor-editor/drop-container';
 import { ComponentSettingPanelComponent } from './components/component-setting-panel/component-setting-panel.component';
 import { StateStoreModule } from 'victor-editor/state-store';
-import { ComponentDesignPanelRegistry, COMPONENT_DESIGN_PANEL_REGISTRY, COMPONENT_ID_GENERATOR } from 'victor-core';
+import { ComponentDesignPanelRegistry, COMPONENT_DESIGN_PANEL_REGISTRY, COMPONENT_ID_GENERATOR, DYNAMIC_COMPONENT_RENDERER } from 'victor-core';
 import { ComponentDesignPanelRegistryService } from './services/component-design-panel-registry.service';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { ComponentIdGeneratorService } from './services/component-id-generator.service';
@@ -13,6 +13,7 @@ import { PageSettingPanelComponent } from './components/page-setting-panel/page-
 import { DesignerSharedModule } from 'victor-core/designer-shared';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
+import { DynamicComponentRendererService } from './services/dynamic-component-renderer.service';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
   ],
   providers: [
     { provide: COMPONENT_ID_GENERATOR, useClass: ComponentIdGeneratorService },
+    { provide: DYNAMIC_COMPONENT_RENDERER, useClass: DynamicComponentRendererService },
     { provide: COMPONENT_DESIGN_PANEL_REGISTRY, useClass: ComponentDesignPanelRegistryService },
   ],
   exports: [

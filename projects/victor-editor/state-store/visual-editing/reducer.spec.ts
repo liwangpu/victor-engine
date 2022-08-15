@@ -39,14 +39,14 @@ describe('Visual Editing Reducer', () => {
         ]
       };
       const state: VictorDesignerState = {
-        componentMetadata: {},
-        componentTree: flatComponentTree(pageMd)
+        componentMetadatas: {},
+        componentTrees: flatComponentTree(pageMd)
       };
       const action = fromAction.moveComponent({ id: 'tabs2', parentId: 'page', index: 0, source: 'test' });
       const newState = formDesignerReducer(state, action);
-      const pageTree = newState.componentTree['page'];
+      const pageTree = newState.componentTrees['page'];
       expect(pageTree.body).toEqual(['tabs2', 'tabs1']);
-      const tabs2Tree = newState.componentTree['tabs2'];
+      const tabs2Tree = newState.componentTrees['tabs2'];
       expect(tabs2Tree.parentId).toBe('page');
     });
 
@@ -80,14 +80,14 @@ describe('Visual Editing Reducer', () => {
         ]
       };
       const state: VictorDesignerState = {
-        componentMetadata: {},
-        componentTree: flatComponentTree(pageMd)
+        componentMetadatas: {},
+        componentTrees: flatComponentTree(pageMd)
       };
       const action = fromAction.moveComponent({ id: 'tabs2', parentId: 'page', index: 0, source: 'test' });
       const newState = formDesignerReducer(state, action);
-      const pageTree = newState.componentTree['page'];
+      const pageTree = newState.componentTrees['page'];
       expect(pageTree.body).toEqual(['tabs2', 'tabs1']);
-      const tabs2Tree = newState.componentTree['tabs2'];
+      const tabs2Tree = newState.componentTrees['tabs2'];
       expect(tabs2Tree.parentId).toBe('page');
     });
 
@@ -121,14 +121,14 @@ describe('Visual Editing Reducer', () => {
         ]
       };
       const state: VictorDesignerState = {
-        componentMetadata: {},
-        componentTree: flatComponentTree(pageMd)
+        componentMetadatas: {},
+        componentTrees: flatComponentTree(pageMd)
       };
       const action = fromAction.moveComponent({ id: 'tabs2', parentId: 'page', index: 1, source: 'test' });
       const newState = formDesignerReducer(state, action);
-      const pageTree = newState.componentTree['page'];
+      const pageTree = newState.componentTrees['page'];
       expect(pageTree.body).toEqual(['tabs1', 'tabs2']);
-      const tabs2Tree = newState.componentTree['tabs2'];
+      const tabs2Tree = newState.componentTrees['tabs2'];
       expect(tabs2Tree.parentId).toBe('page');
     });
   });

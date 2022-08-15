@@ -55,6 +55,7 @@ export class PageManagementComponent implements OnInit, OnDestroy {
     ref.afterClose
       .pipe(filter(id => id ? true : false))
       .subscribe(id => {
+        // this.router.navigate(['/pages', 'list', 'dynamic', id]);
         this.router.navigate(['/pages', 'editor', id]);
       });
   }

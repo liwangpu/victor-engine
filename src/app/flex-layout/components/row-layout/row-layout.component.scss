@@ -1,0 +1,16 @@
+:host {
+  position: relative;
+  display: flex;
+  height: 260px;
+  background-color: #fff;
+
+  &>.row-item {
+    flex: 1;
+    height: 100%;
+
+    &:not(:last-of-type) {
+      margin-right: 12px;
+    }
+  }
+
+}

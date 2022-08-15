@@ -1,9 +1,8 @@
 import { ComponentFactoryResolver, Inject, NgModule, Optional } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { VictorFormDemoRoutingModule } from './victor-form-demo-routing.module';
-import { JsonEditorModule } from '../json-editor/json-editor.module';
+import { JsonEditorModule } from '../json-editor';
 import { HomeComponent } from './components/home/home.component';
-import { RegistrationModule } from 'victor-core/registration';
 import { RunTimeModule as FormRunTimeModule } from 'dynamic-form/run-time';
 import { FormModule as VictorFormModule } from 'victor-renderer/form';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -17,6 +16,7 @@ import { SpecifyTextRequiredValidatorService } from './services/specify-required
 import { MyPasswordComponent } from './components/my-password/my-password.component';
 import { TranslateService } from '@ngx-translate/core';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { NativeComponetMarketModule } from 'victor-core/native-componet-market';
 
 const icons: Array<IconDefinition> = [antIcon.CloseCircleOutline];
 
@@ -34,7 +34,7 @@ const icons: Array<IconDefinition> = [antIcon.CloseCircleOutline];
     NzInputModule,
     NzIconModule.forChild(icons),
     // victor engine
-    RegistrationModule,
+    NativeComponetMarketModule,
     VictorFormModule,
     FormRunTimeModule,
     TabsRunTimeModule

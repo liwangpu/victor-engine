@@ -1,4 +1,3 @@
-<!-- <p class="my-title">{{id}}</p> -->
 <nz-tabset class="tabset" [nzSelectedIndex]="selectedTabIndex"
   (nzSelectedIndexChange)="onSelectedTabIndexChange($event)">
   <nz-tab *ngFor="let tab of tabs;trackBy:trackById" [nzTitle]="tab.title">

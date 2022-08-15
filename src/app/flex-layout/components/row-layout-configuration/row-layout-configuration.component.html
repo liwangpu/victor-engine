@@ -1,0 +1,9 @@
+<form [formGroup]="form">
+  <!-- <victor-designer-shared-config-item title="标题">
+    <input nz-input placeholder="请输入标题" formControlName="title" />
+  </victor-designer-shared-config-item> -->
+  <victor-designer-shared-config-item title="列数">
+    <nz-input-number class="ipt" [nzStep]="1" formControlName="rows">
+    </nz-input-number>
+  </victor-designer-shared-config-item>
+</form>

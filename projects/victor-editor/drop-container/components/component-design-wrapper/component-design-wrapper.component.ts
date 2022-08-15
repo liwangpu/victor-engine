@@ -102,6 +102,7 @@ export class ComponentDesignWrapperComponent implements OnInit, OnDestroy {
   }
 
   private async renderComponent(metadata: DynamicComponentMetadata): Promise<void> {
+    // console.log(`render:`,metadata);
     if (this.container.length) { this.container.clear(); }
     if (!metadata?.type) { return; }
 

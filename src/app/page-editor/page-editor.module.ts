@@ -22,10 +22,12 @@ import { RunTimeModule as FormRunTimeModule } from 'dynamic-form/run-time';
 import { DesignTimeModule as FormDesignTimeModule } from 'dynamic-form/design-time';
 import { COMPONENT_GROUP_SORT_RULE } from 'victor-editor';
 import { RendererModule } from 'victor-renderer/renderer';
-import { RegistrationModule } from 'victor-core/registration';
 import { PageDefinitionResolver } from './services/page-definition.resolver';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
-import { JsonEditorModule } from '../json-editor/json-editor.module';
+import { JsonEditorModule } from '../json-editor';
+import { NativeComponetMarketModule } from 'victor-core/native-componet-market';
+import { FlexLayoutModule } from '../flex-layout';
+import { PageListPreviewGuard } from './services/page-list-preview.guard';
 
 
 const icons: Array<IconDefinition> = [antIcon.PlusOutline, antIcon.EditOutline, antIcon.LeftOutline, antIcon.FileFill];
@@ -45,13 +47,14 @@ const icons: Array<IconDefinition> = [antIcon.PlusOutline, antIcon.EditOutline, 
     FormsModule,
     JsonEditorModule,
     // victor engine 
-    RegistrationModule,
+    NativeComponetMarketModule,
     RendererModule,
     DesignerModule,
     TabsDesignTimeModule,
     TabsRunTimeModule,
     FormRunTimeModule,
     FormDesignTimeModule,
+    FlexLayoutModule,
     // victor engine 
     NzIconModule.forChild(icons),
     NzButtonModule,
@@ -63,6 +66,7 @@ const icons: Array<IconDefinition> = [antIcon.PlusOutline, antIcon.EditOutline, 
   providers: [
     PageStoreService,
     PageDefinitionResolver,
+    PageListPreviewGuard,
     { provide: COMPONENT_GROUP_SORT_RULE, useValue: ['form', 'container'] }
   ]
 })
