@@ -25,7 +25,7 @@ export class DynamicComponentRendererService implements DynamicComponentRenderer
   constructor(
     protected injector: Injector
   ) {
-    // console.log(`validators:`, this.validators);
+    console.log(`validators:`, this.validators);
     // 订阅数据变更,触发校验/联动等
     this.subs.sink = this.actions$
       .pipe(ofType(setComponentScope))
