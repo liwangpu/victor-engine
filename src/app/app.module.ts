@@ -19,8 +19,18 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { EffectsModule } from '@ngrx/effects';
+import { NzNotificationModule } from 'ng-zorro-antd/notification';
+import { NzConfig, NZ_CONFIG } from 'ng-zorro-antd/core/config';
 
 registerLocaleData(zh);
+
+const ngZorroConfig: NzConfig = {
+  // 注意组件名称没有 nz 前缀
+  notification: {
+    nzDuration: 2000,
+    nzPlacement: 'bottomRight'
+  }
+};
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -47,13 +57,17 @@ const icons: Array<IconDefinition> = [MenuFoldOutline, MenuUnfoldOutline];
     StoreModule.forRoot({}),
     EffectsModule.forRoot(),
     StoreDevtoolsModule.instrument(),
+    NzIconModule.forRoot(icons),
     BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,
     NzButtonModule,
-    NzIconModule.forRoot(icons),
+    NzNotificationModule,
   ],
-  providers: [{ provide: NZ_I18N, useValue: zh_CN }],
+  providers: [
+    { provide: NZ_I18N, useValue: zh_CN },
+    { provide: NZ_CONFIG, useValue: ngZorroConfig }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,5 +1,6 @@
 export * from './common/component-id-generator';
 export * from './common/unique-id';
+export * from './common/operation-message';
 export * from './run-time/dynamic-component-registry';
 export * from './run-time/dynamic-component-renderer';
 export * from './run-time/dynamic-validator';

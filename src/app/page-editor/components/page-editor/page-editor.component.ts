@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DynamicComponentMetadata } from 'victor-core';
 import { DesignerStarter, DESIGNER_STARTER, EditorHandler } from 'victor-editor/designer';
 import { PageStoreService } from '../../services/page-store.service';
+import { OperationMessageService } from 'src/app/services/operation-message.service';
 
 @Component({
   selector: 'app-page-editor',
@@ -21,7 +22,8 @@ export class PageEditorComponent implements DesignerStarter, OnInit {
     private router: Router,
     private acr: ActivatedRoute,
     private location: Location,
-    private pageStore: PageStoreService
+    private pageStore: PageStoreService,
+    private operationSrv: OperationMessageService
   ) {
   }
 
@@ -44,6 +46,7 @@ export class PageEditorComponent implements DesignerStarter, OnInit {
 
   async save(): Promise<void> {
     await this.editorHandler.save();
+    this.operationSrv.success('保存成功');
   }
 
   goback(): void {

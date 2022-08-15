@@ -107,7 +107,7 @@ export class TextValidatorComponent implements ControlValueAccessor, OnInit, OnD
       }
       rules.push(rule);
     }
-    console.log(`rules:`, rules);
+
     return rules;
   }
 
