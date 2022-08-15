@@ -25,7 +25,7 @@ export class DynamicComponentRendererService implements DynamicComponentRenderer
   constructor(
     protected injector: Injector
   ) {
-    console.log(`validators:`, this.validators);
+    // console.log(`validators:`, this.validators);
     // 订阅数据变更,触发校验/联动等
     this.subs.sink = this.actions$
       .pipe(ofType(setComponentScope))
@@ -58,7 +58,7 @@ export class DynamicComponentRendererService implements DynamicComponentRenderer
             this.validatorMap.set(key, it);
           });
         }
-        const validatorRules = metadata.validators;
+        const validatorRules = metadata.validators || [];
         // 触发校验
         if (this.validatorMap.size && validatorRules.length) {
           const errors: { [scopeName: string]: string } = {};
@@ -109,6 +109,7 @@ export class DynamicComponentRendererService implements DynamicComponentRenderer
     });
     const pageId = parent.get(DYNAMIC_PAGE_ID);
     const des = await this.registry.getComponentDescription(metadata.type);
+    if (!des) { return null; }
     const ref = container.createComponent(des.fac, null, ij);
     const nel: HTMLElement = ref.location.nativeElement;
     nel.classList.add('dynamic-component');

@@ -51,9 +51,12 @@ body {
 
   .jsoneditor {
     border: none !important;
+  }
+}
 
-    a.jsoneditor-poweredBy {
-      display: none !important;
-    }
+.jsoneditor {
+
+  a.jsoneditor-poweredBy {
+    display: none !important;
   }
 }
