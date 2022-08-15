@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { ComponentFactoryResolver, Inject, NgModule, Optional } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { VictorFormDemoRoutingModule } from './victor-form-demo-routing.module';
 import { JsonEditorModule } from '../json-editor/json-editor.module';
@@ -7,14 +7,23 @@ import { RegistrationModule } from 'victor-core/registration';
 import { RunTimeModule as FormRunTimeModule } from 'dynamic-form/run-time';
 import { FormModule as VictorFormModule } from 'victor-renderer/form';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { IconDefinition } from '@ant-design/icons-angular';
+import * as antIcon from '@ant-design/icons-angular/icons';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 import { RunTimeModule as TabsRunTimeModule } from 'dynamic-tabs/run-time';
-import { DYNAMIC_VALIDATOR } from 'victor-core';
+import { DynamicComponentRegistry, DYNAMIC_COMPONENT_REGISTRY, DYNAMIC_VALIDATOR } from 'victor-core';
 import { TextRequiredValidatorService } from './services/text-required-validator.service';
 import { SpecifyTextRequiredValidatorService } from './services/specify-required-validator.service copy';
+import { MyPasswordComponent } from './components/my-password/my-password.component';
+import { TranslateService } from '@ngx-translate/core';
+import { NzInputModule } from 'ng-zorro-antd/input';
+
+const icons: Array<IconDefinition> = [antIcon.CloseCircleOutline];
 
 @NgModule({
   declarations: [
-    HomeComponent
+    HomeComponent,
+    MyPasswordComponent
   ],
   imports: [
     CommonModule,
@@ -22,6 +31,8 @@ import { SpecifyTextRequiredValidatorService } from './services/specify-required
     JsonEditorModule,
     FormsModule,
     ReactiveFormsModule,
+    NzInputModule,
+    NzIconModule.forChild(icons),
     // victor engine
     RegistrationModule,
     VictorFormModule,
@@ -33,4 +44,21 @@ import { SpecifyTextRequiredValidatorService } from './services/specify-required
     // { provide: DYNAMIC_VALIDATOR, useClass: SpecifyTextRequiredValidatorService, multi: true },
   ]
 })
-export class VictorFormDemoModule { }
+export class VictorFormDemoModule {
+  constructor(
+    @Optional()
+    @Inject(DYNAMIC_COMPONENT_REGISTRY)
+    componentRegistry: DynamicComponentRegistry,
+    cfr: ComponentFactoryResolver,
+    translater: TranslateService
+  ) {
+    if (componentRegistry) {
+      componentRegistry.registry({
+        type: 'my-password',
+        title: translater.instant(`dynamicComponent.password`),
+        group: 'form',
+        fac: cfr.resolveComponentFactory(MyPasswordComponent)
+      });
+    }
+  }
+}

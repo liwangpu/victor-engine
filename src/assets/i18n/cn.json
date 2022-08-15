@@ -2,7 +2,8 @@
   "dynamicComponent": {
     "tabs": "页签",
     "tab": "页签",
-    "text": "单行文字"
+    "text": "单行文字",
+    "password": "密码"
   },
   "dynamicComponentGroup": {
     "form": "表单",
