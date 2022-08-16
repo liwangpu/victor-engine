@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, Injector, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
-import { ComponentAction, ComponentEvent, DynamicComponent, DynamicComponentMetadata, LazyService, PropertyEntry } from 'victor-core';
+import { ComponentAction, ComponentEvent, DynamicComponent, ComponentConfiguration, LazyService, PropertyEntry } from 'victor-core';
 
 @Component({
   selector: 'victor-tabs',
@@ -10,8 +10,8 @@ import { ComponentAction, ComponentEvent, DynamicComponent, DynamicComponentMeta
 export class TabsComponent extends DynamicComponent implements OnInit {
 
   selectedTabIndex: number = 0;
-  @PropertyEntry('metadata.body')
-  tabs: DynamicComponentMetadata[];
+  @PropertyEntry('configuration.body')
+  tabs: ComponentConfiguration[];
   @Output()
   @ComponentEvent()
   tabChange = new EventEmitter<string>();
@@ -39,7 +39,7 @@ export class TabsComponent extends DynamicComponent implements OnInit {
     this.tabChange.next(this.tabs[index].id);
   }
 
-  trackById(index: number, it: DynamicComponentMetadata): any {
+  trackById(index: number, it: ComponentConfiguration): any {
     return it.id;
   }
 

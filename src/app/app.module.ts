@@ -20,6 +20,9 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { EffectsModule } from '@ngrx/effects';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { NzConfig, NZ_CONFIG } from 'ng-zorro-antd/core/config';
+import { NativeComponetMarketModule } from 'victor-core/native-componet-market';
+import { RunTimeModule as TabsRunTimeModule } from 'dynamic-tabs/run-time';
+import { RunTimeModule as FormRunTimeModule } from 'dynamic-form/run-time';
 
 registerLocaleData(zh);
 
@@ -62,6 +65,9 @@ const icons: Array<IconDefinition> = [MenuFoldOutline, MenuUnfoldOutline];
     HttpClientModule,
     NzButtonModule,
     NzNotificationModule,
+    // NativeComponetMarketModule,
+    // FormRunTimeModule,
+    // TabsRunTimeModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: zh_CN },

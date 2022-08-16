@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { DynamicComponentMetadata } from 'victor-core';
+import { ComponentConfiguration } from 'victor-core';
 
 const formDemoStorageKey: string = 'victor-form-demo-schema';
 
@@ -12,7 +12,7 @@ const formDemoStorageKey: string = 'victor-form-demo-schema';
 })
 export class HomeComponent implements OnInit {
 
-  schema: DynamicComponentMetadata;
+  schema: ComponentConfiguration;
   control = new FormControl();
   constructor() {
     const schemaStr = sessionStorage.getItem(formDemoStorageKey);
@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onSchemaChange(val: DynamicComponentMetadata): void {
+  onSchemaChange(val: ComponentConfiguration): void {
     this.schema = val;
     sessionStorage.setItem(formDemoStorageKey, JSON.stringify(val))
   }

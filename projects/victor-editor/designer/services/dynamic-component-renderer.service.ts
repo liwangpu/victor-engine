@@ -1,5 +1,5 @@
 import { ComponentRef, Inject, Injectable, Injector, Renderer2, ViewContainerRef } from '@angular/core';
-import { DynamicComponent, DynamicComponentMetadata, DynamicComponentRegistry, DynamicComponentRenderer, DYNAMIC_COMPONENT_METADATA, DYNAMIC_COMPONENT_REGISTRY, LazyService } from 'victor-core';
+import { DynamicComponent, ComponentConfiguration, DynamicComponentRegistry, DynamicComponentRenderer, COMPONENT_CONFIGURATION, DYNAMIC_COMPONENT_REGISTRY, LazyService } from 'victor-core';
 
 @Injectable()
 export class DynamicComponentRendererService implements DynamicComponentRenderer {
@@ -10,10 +10,10 @@ export class DynamicComponentRendererService implements DynamicComponentRenderer
     protected injector: Injector
   ) { }
 
-  async render(parent: Injector, metadata: DynamicComponentMetadata, container: ViewContainerRef): Promise<ComponentRef<DynamicComponent>> {
+  async render(parent: Injector, metadata: ComponentConfiguration, container: ViewContainerRef): Promise<ComponentRef<DynamicComponent>> {
     const ij = Injector.create({
       providers: [
-        { provide: DYNAMIC_COMPONENT_METADATA, useValue: metadata },
+        { provide: COMPONENT_CONFIGURATION, useValue: metadata },
       ],
       parent
     });

@@ -1,4 +1,4 @@
-import { createSelector, DefaultProjectorFn, MemoizedSelector } from '@ngrx/store';
+import { createSelector, MemoizedSelector } from '@ngrx/store';
 import { VictorDesignerState, selectVictorDesignerState } from '../state';
 import { ComponentTreeState } from './state';
 
@@ -10,7 +10,7 @@ export const selectFirstLevelBodyComponents: (id: string) => MemoizedSelector<Vi
     if (!tree?.body?.length) { return []; }
     const bodys = [];
     tree.body.forEach(cid => {
-      const md = state.componentMetadatas[cid];
+      const md = state.componentConfigurations[cid];
       bodys.push({ id: cid, type: state.componentTrees[cid].type, title: md?.title });
     });
     return bodys;

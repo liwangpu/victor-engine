@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, Injector, Inject, Optional, ChangeDetectorRef, ViewChild, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
-import { CustomRenderProvider, CUSTOM_RENDER_PROVIDER, DynamicComponentMetadata, DYNAMIC_COMPONENT_METADATA, LazyService } from 'victor-core';
+import { CustomRenderProvider, CUSTOM_RENDER_PROVIDER, ComponentConfiguration, COMPONENT_CONFIGURATION, LazyService } from 'victor-core';
 import { RowLayoutContainerComponent } from '../row-layout-container/row-layout-container.component';
 
 @Component({
@@ -11,7 +11,7 @@ import { RowLayoutContainerComponent } from '../row-layout-container/row-layout-
 export class LayoutWrapperComponent implements OnInit {
 
   @Input()
-  row: DynamicComponentMetadata;
+  row: ComponentConfiguration;
   @ViewChild('container', { static: true, read: ViewContainerRef })
   protected container: ViewContainerRef;
   @LazyService(ChangeDetectorRef)
@@ -28,7 +28,7 @@ export class LayoutWrapperComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     const ij = Injector.create({
       providers: [
-        { provide: DYNAMIC_COMPONENT_METADATA, useValue: this.row }
+        { provide: COMPONENT_CONFIGURATION, useValue: this.row }
       ],
       parent: this.injector
     });

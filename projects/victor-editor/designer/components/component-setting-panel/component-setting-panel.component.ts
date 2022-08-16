@@ -92,7 +92,7 @@ export class ComponentSettingPanelComponent implements OnInit, OnDestroy {
               .pipe(debounceTime(120))
               .subscribe(val => {
                 this.store.dispatch(
-                  setComponentMetadata({ id: cfg.id, metadata: { ...val, id: cfg.id, type: cfg.type }, source: ComponentSettingPanelComponent.name })
+                  setComponentMetadata({ id: cfg.id, configuration: { ...val, id: cfg.id, type: cfg.type }, source: ComponentSettingPanelComponent.name })
                 );
               });
             ref.onDestroy(() => {

@@ -2,7 +2,7 @@ import { Action, createReducer } from '@ngrx/store';
 import { VictorDesignerState, VICTOR_DESIGNER_INITIAL_STATE } from '../state';
 import { ons } from './reducer';
 import * as fromAction from './action';
-import { DynamicComponentMetadata } from 'victor-core';
+import { ComponentConfiguration } from 'victor-core';
 import { flatComponentTree } from '../utils/data-transfer';
 
 const formDesignerReducer = createReducer<VictorDesignerState, Action>(VICTOR_DESIGNER_INITIAL_STATE, ...ons);
@@ -12,7 +12,7 @@ describe('Visual Editing Reducer', () => {
   describe('moveComponent', () => {
 
     it('同层级移动', () => {
-      const pageMd: DynamicComponentMetadata = {
+      const pageMd: ComponentConfiguration = {
         id: 'page',
         type: 'page',
         body: [
@@ -39,7 +39,7 @@ describe('Visual Editing Reducer', () => {
         ]
       };
       const state: VictorDesignerState = {
-        componentMetadatas: {},
+        componentConfigurations: {},
         componentTrees: flatComponentTree(pageMd)
       };
       const action = fromAction.moveComponent({ id: 'tabs2', parentId: 'page', index: 0, source: 'test' });
@@ -51,7 +51,7 @@ describe('Visual Editing Reducer', () => {
     });
 
     it('跨层级向前移动', () => {
-      const pageMd: DynamicComponentMetadata = {
+      const pageMd: ComponentConfiguration = {
         id: 'page',
         type: 'page',
         body: [
@@ -80,7 +80,7 @@ describe('Visual Editing Reducer', () => {
         ]
       };
       const state: VictorDesignerState = {
-        componentMetadatas: {},
+        componentConfigurations: {},
         componentTrees: flatComponentTree(pageMd)
       };
       const action = fromAction.moveComponent({ id: 'tabs2', parentId: 'page', index: 0, source: 'test' });
@@ -92,7 +92,7 @@ describe('Visual Editing Reducer', () => {
     });
 
     it('跨层级向后移动', () => {
-      const pageMd: DynamicComponentMetadata = {
+      const pageMd: ComponentConfiguration = {
         id: 'page',
         type: 'page',
         body: [
@@ -121,7 +121,7 @@ describe('Visual Editing Reducer', () => {
         ]
       };
       const state: VictorDesignerState = {
-        componentMetadatas: {},
+        componentConfigurations: {},
         componentTrees: flatComponentTree(pageMd)
       };
       const action = fromAction.moveComponent({ id: 'tabs2', parentId: 'page', index: 1, source: 'test' });

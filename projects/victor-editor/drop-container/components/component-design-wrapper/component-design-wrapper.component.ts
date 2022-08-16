@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, Injector, ViewChild, ViewContainerRef, ChangeDetectorRef, OnDestroy, HostListener, Input, NgZone, ElementRef, Renderer2 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { DesignInteractionOpsat, DESIGN_INTERACTION_OPSAT, DynamicComponentMetadata, DynamicComponentRenderer, DYNAMIC_COMPONENT_RENDERER, LazyService } from 'victor-core';
-import { activeComponent, selectActiveComponentId, selectComponentMetadata } from 'victor-editor/state-store';
+import { DesignInteractionOpsat, DESIGN_INTERACTION_OPSAT, ComponentConfiguration, DynamicComponentRenderer, DYNAMIC_COMPONENT_RENDERER, LazyService } from 'victor-core';
+import { activeComponent, selectActiveComponentId, selectComponentConfiguration } from 'victor-editor/state-store';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs';
 import { distinctUntilChanged, filter } from 'rxjs/operators';
@@ -17,7 +17,7 @@ import { DropContainerOpsatService } from '../../services/drop-container-opsat.s
 export class ComponentDesignWrapperComponent implements OnInit, OnDestroy {
 
   @Input()
-  metadata: DynamicComponentMetadata;
+  configuration: ComponentConfiguration;
   @ViewChild('container', { static: true, read: ViewContainerRef })
   readonly container: ViewContainerRef;
 
@@ -57,7 +57,7 @@ export class ComponentDesignWrapperComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit(): Promise<void> {
-    this.subs.sink = this.store.select(selectComponentMetadata(this.metadata.id))
+    this.subs.sink = this.store.select(selectComponentConfiguration(this.configuration.id))
       .pipe(distinctUntilChanged(_.isEqual))
       .subscribe(metadata => {
         this.renderComponent(metadata);
@@ -67,7 +67,7 @@ export class ComponentDesignWrapperComponent implements OnInit, OnDestroy {
       const nel: HTMLElement = this.el.nativeElement;
       this.subs.sink = this.store.select(selectActiveComponentId)
         .subscribe(id => {
-          if (this.metadata.id === id) {
+          if (this.configuration.id === id) {
             this.renderer.addClass(nel, 'actived');
           } else {
             this.renderer.removeClass(nel, 'actived');
@@ -75,7 +75,7 @@ export class ComponentDesignWrapperComponent implements OnInit, OnDestroy {
         });
       if (this.opsat) {
         this.mouseEnterListenFn = () => {
-          this.opsat.publishComponentHover(this.metadata.id);
+          this.opsat.publishComponentHover(this.configuration.id);
         };
         this.mouseLeaveListenFn = () => {
           this.opsat.publishComponentUnHover();
@@ -85,7 +85,7 @@ export class ComponentDesignWrapperComponent implements OnInit, OnDestroy {
 
         this.subs.sink = this.opsat.componentHovering$
           .subscribe(id => {
-            if (this.metadata.id === id) {
+            if (this.configuration.id === id) {
               this.renderer.addClass(nel, 'hover');
             } else {
               this.renderer.removeClass(nel, 'hover');
@@ -98,17 +98,17 @@ export class ComponentDesignWrapperComponent implements OnInit, OnDestroy {
   @HostListener('click', ['$event'])
   onActive(event: MouseEvent): void {
     event.stopPropagation();
-    this.store.dispatch(activeComponent({ id: this.metadata.id, source: ComponentDesignWrapperComponent.name }));
+    this.store.dispatch(activeComponent({ id: this.configuration.id, source: ComponentDesignWrapperComponent.name }));
   }
 
-  private async renderComponent(metadata: DynamicComponentMetadata): Promise<void> {
+  private async renderComponent(metadata: ComponentConfiguration): Promise<void> {
     // console.log(`render:`,metadata);
     if (this.container.length) { this.container.clear(); }
     if (!metadata?.type) { return; }
 
     const ref = await this.componentRenderer.render(this.injector, metadata, this.container);
     this.renderer.addClass(ref.location.nativeElement, 'design-time');
-    const { events, actions } = ref.instance['getMetaDataDescription']();
+    const { events, actions } = ref.instance['getMetadata']();
     const subs = new SubSink();
     events.forEach(e => {
       if (this.interactionOpsat) {

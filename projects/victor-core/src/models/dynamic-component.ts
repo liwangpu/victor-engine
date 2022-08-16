@@ -1,4 +1,4 @@
-import { ComponentFactory, InjectionToken, Injector } from '@angular/core';
+import { InjectionToken, Injector } from '@angular/core';
 import { LazyService, PropertyEntry } from '../utils/common-decorator';
 import 'reflect-metadata';
 import { ComponentValidatorRule } from 'victor-core';
@@ -10,17 +10,17 @@ enum metadataType {
 }
 
 
-export interface DynamicComponentMetadata {
+export interface ComponentConfiguration {
   id: string;
   type: string;
   title?: string;
-  configuration?: { [key: string]: any };
   validators?: ComponentValidatorRule[];
-  body?: DynamicComponentMetadata[];
+  body?: ComponentConfiguration[];
+  [key: string]: any;
 }
 
 
-export const DYNAMIC_COMPONENT_METADATA = new InjectionToken<DynamicComponent>('dynamic component metadata');
+export const COMPONENT_CONFIGURATION = new InjectionToken<DynamicComponent>('component configuration');
 
 export interface DynamicComponentScopes {
   [scopeName: string]: { value: any, source?: any };
@@ -58,7 +58,7 @@ export function ComponentAction(): Function {
   }
 }
 
-export interface ComponentMetadataDescription {
+export interface ComponentMetadata {
   scopes: Array<{ key: string; type: string }>;
   actions: Array<{ key: string; type: string }>;
   events: Array<{ key: string; type: string }>;
@@ -66,14 +66,14 @@ export interface ComponentMetadataDescription {
 
 export abstract class DynamicComponent {
 
-  @PropertyEntry('metadata.id')
+  @PropertyEntry('configuration.id')
   id: string;
-  @PropertyEntry('metadata.type')
+  @PropertyEntry('configuration.type')
   type: string;
-  @PropertyEntry('metadata.title')
+  @PropertyEntry('configuration.title')
   title: string;
-  @LazyService(DYNAMIC_COMPONENT_METADATA)
-  metadata: DynamicComponentMetadata;
+  @LazyService(COMPONENT_CONFIGURATION)
+  configuration: ComponentConfiguration;
   @LazyService(DYNAMIC_COMPONENT_SCOPES, {})
   scopes: DynamicComponentScopes;
   protected scopeChangeFn: (scope: string, value: any) => void;
@@ -81,7 +81,7 @@ export abstract class DynamicComponent {
     public injector: Injector
   ) { }
 
-  protected getMetaDataDescription(): ComponentMetadataDescription {
+  protected getMetadata(): ComponentMetadata {
     const keys: Array<any> = Reflect.getMetadataKeys(this);
     const scopes: Array<{ key: string; type: string }> = [];
     const actions: Array<{ key: string; type: string }> = [];

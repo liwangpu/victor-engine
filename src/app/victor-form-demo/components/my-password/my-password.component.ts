@@ -13,7 +13,7 @@ import { ComponentScope, DynamicComponent, IHasValidator, LazyService, PropertyE
 export class MyPasswordComponent extends DynamicComponent implements IHasValidator, OnInit, OnDestroy {
 
   control = new FormControl();
-  @PropertyEntry('metadata.placeholder')
+  @PropertyEntry('configuration.placeholder')
   placeholder: string;
   @HostBinding('class.error')
   hasError: boolean;
@@ -59,6 +59,10 @@ export class MyPasswordComponent extends DynamicComponent implements IHasValidat
     }
     this.hasError = this.errorMessages.length > 0;
     this.cdr.markForCheck();
+  }
+
+  async onScopeDataChange(scope: { [scopeName: string]: any; }): Promise<void> {
+    //
   }
 
 }

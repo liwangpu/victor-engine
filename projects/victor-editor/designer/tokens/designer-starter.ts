@@ -1,13 +1,13 @@
 import { InjectionToken } from '@angular/core';
-import { DynamicComponentMetadata } from 'victor-core';
+import { ComponentConfiguration } from 'victor-core';
 
 export interface EditorHandler {
   save(): Promise<void>;
 }
 
 export interface DesignerStarter {
-  getSchema(): Promise<DynamicComponentMetadata>;
-  saveSchema(schema: DynamicComponentMetadata): Promise<void>;
+  getSchema(): Promise<ComponentConfiguration>;
+  saveSchema(schema: ComponentConfiguration): Promise<void>;
   registryEditorHandler(handler: EditorHandler): void;
 }
 

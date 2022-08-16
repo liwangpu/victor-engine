@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, Injector, ViewChild, ViewContainerRef, ChangeDetectorRef } from '@angular/core';
 import { SubSink } from 'subsink';
-import { DynamicComponent, DynamicComponentMetadata, DynamicComponentRenderer, DYNAMIC_COMPONENT_RENDERER, LazyService } from 'victor-core';
+import { DynamicComponent, ComponentConfiguration, DynamicComponentRenderer, DYNAMIC_COMPONENT_RENDERER, LazyService } from 'victor-core';
 
 @Component({
   selector: 'app-row-layout-container',
@@ -25,8 +25,8 @@ export class RowLayoutContainerComponent extends DynamicComponent implements OnI
 
   async ngOnInit(): Promise<void> {
     if (this.container.length) { this.container.clear(); }
-    if (!this.metadata?.type) { return; }
-    const body: DynamicComponentMetadata[] = this.metadata.body || [];
+    if (!this.configuration?.type) { return; }
+    const body: ComponentConfiguration[] = this.configuration.body || [];
     if (body.length) {
       for (let md of body) {
         await this.componentRenderer.render(this.injector, md, this.container);

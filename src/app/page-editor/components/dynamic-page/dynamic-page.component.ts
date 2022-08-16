@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { OpsatService } from 'src/app/services/opsat.service';
 import { SubSink } from 'subsink';
-import { DynamicComponentMetadata } from 'victor-core';
+import { ComponentConfiguration } from 'victor-core';
 import { RendererStarter, RENDERER_STARTER } from 'victor-renderer/renderer';
 import { PageStoreService } from '../../services/page-store.service';
 import * as _ from 'lodash';
@@ -21,8 +21,8 @@ import * as _ from 'lodash';
 export class DynamicPageComponent implements RendererStarter, OnInit, OnDestroy {
 
   editorVisible: boolean;
-  pageSchema$ = new BehaviorSubject<DynamicComponentMetadata>(null);
-  pageSchema: DynamicComponentMetadata;
+  pageSchema$ = new BehaviorSubject<ComponentConfiguration>(null);
+  pageSchema: ComponentConfiguration;
   private readonly subs = new SubSink();
   constructor(
     private acr: ActivatedRoute,
@@ -55,7 +55,7 @@ export class DynamicPageComponent implements RendererStarter, OnInit, OnDestroy 
     this.editorVisible = true;
   }
 
-  getSchema(): Observable<DynamicComponentMetadata> {
+  getSchema(): Observable<ComponentConfiguration> {
     return this.pageSchema$;
   }
 

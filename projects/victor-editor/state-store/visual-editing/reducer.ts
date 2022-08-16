@@ -4,31 +4,31 @@ import * as fromAction from './action';
 import { ComponentTreeState } from './state';
 
 export const ons: ReducerTypes<VictorDesignerState, readonly ActionCreator<string, Creator<any[], object>>[]>[] = [
-  on(fromAction.addNewComponent, (state: VictorDesignerState, { metadata, parentId, index }) => {
+  on(fromAction.addNewComponent, (state: VictorDesignerState, { configuration, parentId, index }) => {
     const componentTrees = { ...state.componentTrees };
-    if (componentTrees[metadata.id]) { return state; }
-    const componentMetadatas = { ...state.componentMetadatas };
-    const tree: ComponentTreeState = { id: metadata.id, type: metadata.type, parentId };
+    if (componentTrees[configuration.id]) { return state; }
+    const componentConfigurations = { ...state.componentConfigurations };
+    const tree: ComponentTreeState = { id: configuration.id, type: configuration.type, parentId };
     // 
-    componentTrees[metadata.id] = tree;
+    componentTrees[configuration.id] = tree;
     const parentTree = { ...componentTrees[parentId] };
     parentTree.body = parentTree.body?.length ? [...parentTree.body] : [];
     // parentTree.body.push(metadata.id);
-    parentTree.body.splice(index, 0, metadata.id);
+    parentTree.body.splice(index, 0, configuration.id);
     componentTrees[parentId] = parentTree;
-    componentMetadatas[metadata.id] = { ...metadata, body: [] };
+    componentConfigurations[configuration.id] = { ...configuration, body: [] };
     // 容器组件的body需要维护到tree上
-    if (metadata.body?.length) {
-      for (let cmd of metadata.body) {
+    if (configuration.body?.length) {
+      for (let cmd of configuration.body) {
         if (!componentTrees[cmd.id]) {
-          const ctree: ComponentTreeState = { id: cmd.id, type: cmd.type, parentId: metadata.id };
+          const ctree: ComponentTreeState = { id: cmd.id, type: cmd.type, parentId: configuration.id };
           componentTrees[ctree.id] = ctree;
-          componentMetadatas[cmd.id] = cmd;
+          componentConfigurations[cmd.id] = cmd;
         }
       }
-      tree.body = metadata.body.map(c => c.id);
+      tree.body = configuration.body.map(c => c.id);
     }
-    return { ...state, componentTrees, componentMetadatas, activeComponentId: state.activeComponentId || metadata.id };
+    return { ...state, componentTrees, componentConfigurations, activeComponentId: state.activeComponentId || configuration.id };
   }),
   on(fromAction.activeComponent, (state: VictorDesignerState, { id }) => {
     if (state.activeComponentId === id) { return state; }

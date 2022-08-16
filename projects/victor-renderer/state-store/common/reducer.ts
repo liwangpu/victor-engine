@@ -3,11 +3,11 @@ import { VictorRendererState } from '../state';
 import * as fromAction from './action';
 
 export const ons: ReducerTypes<VictorRendererState, readonly ActionCreator<string, Creator<any[], object>>[]>[] = [
-  on(fromAction.setComponentMetadata, (state: VictorRendererState, { id, metadata, description }) => {
-    const componentDescriptions = { ...state.componentDescriptions };
+  on(fromAction.setComponentMetadata, (state: VictorRendererState, { id, metadata, configuration }) => {
     const componentMetadatas = { ...state.componentMetadatas };
-    componentDescriptions[id] = description;
+    const componentConfigurations = { ...state.componentConfigurations };
     componentMetadatas[id] = metadata;
-    return { ...state, componentDescriptions, componentMetadatas };
+    componentConfigurations[id] = configuration;
+    return { ...state, componentMetadatas, componentConfigurations };
   })
 ];

@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, Injector, Inject, Optional, ChangeDetectorRef, ViewChild, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
-import { CustomRenderProvider, CUSTOM_RENDER_PROVIDER, DynamicComponentMetadata, DYNAMIC_COMPONENT_METADATA, LazyService } from 'victor-core';
+import { CustomRenderProvider, CUSTOM_RENDER_PROVIDER, ComponentConfiguration, COMPONENT_CONFIGURATION, LazyService } from 'victor-core';
 import { TabComponent } from '../tab/tab.component';
 
 @Component({
@@ -11,7 +11,7 @@ import { TabComponent } from '../tab/tab.component';
 export class TabWrapperComponent implements OnInit {
 
   @Input()
-  tab: DynamicComponentMetadata;
+  tab: ComponentConfiguration;
   @ViewChild('container', { static: true, read: ViewContainerRef })
   protected container: ViewContainerRef;
   @LazyService(ChangeDetectorRef)
@@ -28,7 +28,7 @@ export class TabWrapperComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     const ij = Injector.create({
       providers: [
-        { provide: DYNAMIC_COMPONENT_METADATA, useValue: this.tab }
+        { provide: COMPONENT_CONFIGURATION, useValue: this.tab }
       ],
       parent: this.injector
     });

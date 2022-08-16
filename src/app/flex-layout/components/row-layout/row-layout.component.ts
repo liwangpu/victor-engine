@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, Injector, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
-import { ComponentAction, ComponentEvent, DynamicComponent, DynamicComponentMetadata, LazyService, PropertyEntry } from 'victor-core';
+import { ComponentAction, ComponentEvent, DynamicComponent, ComponentConfiguration, LazyService, PropertyEntry } from 'victor-core';
 
 
 @Component({
@@ -11,15 +11,15 @@ import { ComponentAction, ComponentEvent, DynamicComponent, DynamicComponentMeta
 export class RowLayoutComponent extends DynamicComponent {
 
 
-  @PropertyEntry('metadata.body')
-  rows: DynamicComponentMetadata[];
+  @PropertyEntry('configuration.body')
+  rows: ComponentConfiguration[];
   constructor(
     injector: Injector
   ) {
     super(injector);
   }
 
-  trackById(index: number, it: DynamicComponentMetadata): any {
+  trackById(index: number, it: ComponentConfiguration): any {
     return it.id;
   }
 }

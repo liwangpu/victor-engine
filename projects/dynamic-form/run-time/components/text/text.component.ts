@@ -16,9 +16,9 @@ export class TextComponent extends DynamicComponent implements IHasValidator, On
   hasError: boolean;
   errorMessages: string[];
   control = new FormControl();
-  @PropertyEntry('metadata.title')
+  @PropertyEntry('configuration.title')
   title: string;
-  @PropertyEntry('metadata.placeholder')
+  @PropertyEntry('configuration.placeholder')
   placeholder: string;
   @LazyService(ChangeDetectorRef)
   private readonly cdr: ChangeDetectorRef;
@@ -28,6 +28,7 @@ export class TextComponent extends DynamicComponent implements IHasValidator, On
   ) {
     super(injector);
   }
+
 
 
   ngOnDestroy(): void {
@@ -61,6 +62,10 @@ export class TextComponent extends DynamicComponent implements IHasValidator, On
     }
     this.hasError = this.errorMessages.length > 0;
     this.cdr.markForCheck();
+  }
+
+  async onScopeDataChange(scope: { [scopeName: string]: any; }): Promise<void> {
+    //
   }
 
 }

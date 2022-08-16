@@ -1,6 +1,6 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, forwardRef, Injector, ComponentFactoryResolver, ViewContainerRef, ViewChild, HostListener, NgZone, Renderer2, ElementRef } from '@angular/core';
-import { DynamicComponent, DynamicComponentMetadata, DynamicComponentRegistry, DYNAMIC_COMPONENT, DYNAMIC_COMPONENT_METADATA, DYNAMIC_COMPONENT_REGISTRY, LazyService } from 'victor-core';
+import { DynamicComponent, ComponentConfiguration, DynamicComponentRegistry, DYNAMIC_COMPONENT, COMPONENT_CONFIGURATION, DYNAMIC_COMPONENT_REGISTRY, LazyService } from 'victor-core';
 import { DropContainerComponent, DropContainerOpsatService } from 'victor-editor/drop-container';
 import { SubSink } from 'subsink';
 import { v4 as uuidv4 } from 'uuid';
@@ -38,7 +38,7 @@ export class PagePresentationComponent implements OnInit {
   private readonly renderer: Renderer2;
   private mouseEnterListenFn: (e: MouseEvent) => void;
   private mouseLeaveListenFn: (e: MouseEvent) => void;
-  private metadata: DynamicComponentMetadata;
+  private configuration: ComponentConfiguration;
   private subs = new SubSink();
   constructor(
     protected injector: Injector
@@ -60,11 +60,11 @@ export class PagePresentationComponent implements OnInit {
     this.subs.sink = this.store.select(selectPageTree)
       .pipe(filter(t => t ? true : false), first())
       .subscribe(md => {
-        this.metadata = md as any;
+        this.configuration = md as any;
         const fac = this.cfr.resolveComponentFactory(DropContainerComponent);
         const ij = Injector.create({
           providers: [
-            { provide: DYNAMIC_COMPONENT_METADATA, useValue: md }
+            { provide: COMPONENT_CONFIGURATION, useValue: md }
           ],
           parent: this.injector
         });
@@ -75,9 +75,9 @@ export class PagePresentationComponent implements OnInit {
     this.zone.runOutsideAngular(() => {
       const nel: HTMLElement = this.el.nativeElement;
       this.subs.sink = this.store.select(selectActiveComponentId)
-        .pipe(filter(() => this.metadata ? true : false))
+        .pipe(filter(() => this.configuration ? true : false))
         .subscribe(id => {
-          if (this.metadata.id === id) {
+          if (this.configuration.id === id) {
             this.renderer.addClass(nel, 'actived');
           } else {
             this.renderer.removeClass(nel, 'actived');
@@ -85,7 +85,7 @@ export class PagePresentationComponent implements OnInit {
         });
       if (this.opsat) {
         this.mouseEnterListenFn = () => {
-          this.opsat.publishComponentHover(this.metadata.id);
+          this.opsat.publishComponentHover(this.configuration.id);
         };
         this.mouseLeaveListenFn = () => {
           this.opsat.publishComponentUnHover();
@@ -95,7 +95,7 @@ export class PagePresentationComponent implements OnInit {
 
         this.subs.sink = this.opsat.componentHovering$
           .subscribe(id => {
-            if (this.metadata.id === id) {
+            if (this.configuration.id === id) {
               this.renderer.addClass(nel, 'hover');
             } else {
               this.renderer.removeClass(nel, 'hover');
@@ -108,7 +108,7 @@ export class PagePresentationComponent implements OnInit {
   @HostListener('click', ['$event'])
   onActive(event: MouseEvent): void {
     event.stopPropagation();
-    this.store.dispatch(activeComponent({ id: this.metadata.id, source: PagePresentationComponent.name }));
+    this.store.dispatch(activeComponent({ id: this.configuration.id, source: PagePresentationComponent.name }));
   }
 }
 

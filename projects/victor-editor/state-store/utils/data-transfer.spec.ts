@@ -1,6 +1,6 @@
 import { flatComponentTree, generateDesignState, nestComponentTree } from './data-transfer';
-import { DynamicComponentMetadata } from 'victor-core';
 import { VictorDesignerState, VICTOR_DESIGNER_INITIAL_STATE } from '../state';
+import { ComponentConfiguration } from 'victor-core';
 
 describe('data transfer', () => {
 
@@ -12,7 +12,7 @@ describe('data transfer', () => {
     });
 
     it('单层级', () => {
-      const metadata: DynamicComponentMetadata = {
+      const metadata: ComponentConfiguration = {
         id: 'page',
         type: 'page'
       };
@@ -23,7 +23,7 @@ describe('data transfer', () => {
     });
 
     it('多层级', () => {
-      const tabs1Md: DynamicComponentMetadata = {
+      const tabs1Md: ComponentConfiguration = {
         id: 'tabs1',
         type: 'tabs',
         body: [
@@ -33,7 +33,7 @@ describe('data transfer', () => {
           }
         ]
       };
-      const tabs2Md: DynamicComponentMetadata = {
+      const tabs2Md: ComponentConfiguration = {
         id: 'tabs2',
         type: 'tabs',
         body: [
@@ -43,7 +43,7 @@ describe('data transfer', () => {
           }
         ]
       };
-      const pageMd: DynamicComponentMetadata = {
+      const pageMd: ComponentConfiguration = {
         id: 'page',
         type: 'page',
         body: [
@@ -78,10 +78,10 @@ describe('data transfer', () => {
 
     it('仅有page且有配置', () => {
       const state: VictorDesignerState = {
-        componentMetadata: {
+        componentConfigurations: {
           'page': { id: 'page', type: 'page', title: '我是页面标题' }
         },
-        componentTree: {
+        componentTrees: {
           'page': { id: 'page', type: 'page' }
         }
       };
@@ -95,11 +95,11 @@ describe('data transfer', () => {
 
     it('多层级组件', () => {
       const state: VictorDesignerState = {
-        componentMetadata: {
+        componentConfigurations: {
           'page': { id: 'page', type: 'page', title: '我是页面标题' },
           'text1': { id: 'text1', type: 'text', title: '姓名' },
         },
-        componentTree: {
+        componentTrees: {
           'page': { id: 'page', type: 'page', body: ['tabs1'] },
           'tabs1': { id: 'tabs1', type: 'tabs', parentId: 'page', body: ['tabs1_tab1'] },
           'tabs1_tab1': { id: 'tabs1_tab1', type: 'tab', parentId: 'tabs1', body: ['text1'] },
@@ -143,7 +143,7 @@ describe('data transfer', () => {
     });
 
     fit('多层级', () => {
-      const metadata: DynamicComponentMetadata = {
+      const metadata: ComponentConfiguration = {
         id: 'page',
         type: 'page',
         title: '我是页面标题',

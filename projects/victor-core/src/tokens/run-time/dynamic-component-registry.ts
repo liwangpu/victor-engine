@@ -1,8 +1,8 @@
 import { ComponentFactory, InjectionToken } from '@angular/core';
 import 'reflect-metadata';
-import { DynamicComponent, DynamicComponentMetadata } from '../../models';
+import { DynamicComponent, ComponentConfiguration } from '../../models';
 
-export type PartialComponentMetadata = { [P in keyof DynamicComponentMetadata]?: DynamicComponentMetadata[P] };
+export type PartialComponentMetadata = { [P in keyof ComponentConfiguration]?: ComponentConfiguration[P] };
 
 export interface ComponentDescription {
   type: string;

@@ -4,7 +4,7 @@ import { PageStoreService } from '../../services/page-store.service';
 import { filter } from 'rxjs/operators';
 import { PageDetailComponent } from '../page-detail/page-detail.component';
 import { Router } from '@angular/router';
-import { DynamicComponentMetadata } from 'victor-core';
+import { ComponentConfiguration } from 'victor-core';
 import { OpsatService, topicFilter } from 'src/app/services/opsat.service';
 import { SubSink } from 'subsink';
 
@@ -16,7 +16,7 @@ import { SubSink } from 'subsink';
 })
 export class PageManagementComponent implements OnInit, OnDestroy {
 
-  pages: DynamicComponentMetadata[];
+  pages: ComponentConfiguration[];
   private subs = new SubSink();
   constructor(
     private modal: NzModalService,

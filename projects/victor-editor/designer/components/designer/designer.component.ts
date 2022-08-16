@@ -44,7 +44,7 @@ export class DesignerComponent implements EditorHandler, OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subs.unsubscribe();
     this.store.dispatch(resetDesignerState({ source: DesignerComponent.name }));
-    document.getElementById('victor-editor-drop-preview').remove();
+    document.getElementById('victor-editor-drop-preview')?.remove();
   }
 
   async ngOnInit(): Promise<void> {

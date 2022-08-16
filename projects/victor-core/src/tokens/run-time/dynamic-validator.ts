@@ -2,12 +2,12 @@ export class DynamicValidatorRegistry {
 }
 import { InjectionToken } from '@angular/core';
 import 'reflect-metadata';
-import { ComponentMetadataDescription, ComponentValidatorRule, DynamicComponentMetadata } from 'victor-core';
+import { ComponentMetadata, ComponentValidatorRule, ComponentConfiguration } from 'victor-core';
 
 export interface ValidatorConfiguration {
   pageId: string;
-  metadata: DynamicComponentMetadata;
-  description: ComponentMetadataDescription;
+  metadata: ComponentConfiguration;
+  description: ComponentMetadata;
 }
 
 export interface ValidatorAction {

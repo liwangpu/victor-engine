@@ -3,10 +3,10 @@ import * as _ from 'lodash';
 import { DropContainerOpsatService } from '../../services/drop-container-opsat.service';
 import { SubSink } from 'subsink';
 import SortableJs from 'sortablejs';
-import { ComponentIdGenerator, COMPONENT_ID_GENERATOR, DynamicComponent, DynamicComponentMetadata, DynamicComponentRegistry, DYNAMIC_COMPONENT, DYNAMIC_COMPONENT_REGISTRY, LazyService, UNIQUE_ID } from 'victor-core';
+import { ComponentIdGenerator, COMPONENT_ID_GENERATOR, DynamicComponent, ComponentConfiguration, DynamicComponentRegistry, DYNAMIC_COMPONENT, DYNAMIC_COMPONENT_REGISTRY, LazyService, UNIQUE_ID } from 'victor-core';
 import { v4 as uuidv4 } from 'uuid';
 import { Store } from '@ngrx/store';
-import { addNewComponent, moveComponent, selectFirstLevelBodyComponents, selectComponentMetadata, selectFirstLevelBodyComponentIds } from 'victor-editor/state-store';
+import { addNewComponent, moveComponent, selectFirstLevelBodyComponents, selectComponentConfiguration, selectFirstLevelBodyComponentIds } from 'victor-editor/state-store';
 import { ComponentDesignWrapperComponent } from '../component-design-wrapper/component-design-wrapper.component';
 import { first, take } from 'rxjs/operators';
 import Sortable from 'sortablejs';
@@ -21,7 +21,7 @@ export class DropContainerComponent extends DynamicComponent implements OnInit, 
 
   @HostBinding('class.actived')
   actived?: boolean;
-  components: DynamicComponentMetadata[] = [];
+  components: ComponentConfiguration[] = [];
   @ViewChild('dropContainer', { static: true })
   private readonly dropContainer: ElementRef;
   private subs = new SubSink();
@@ -53,7 +53,7 @@ export class DropContainerComponent extends DynamicComponent implements OnInit, 
   }
 
   ngOnInit(): void {
-    this.subs.sink = this.store.select(selectFirstLevelBodyComponents(this.metadata.id))
+    this.subs.sink = this.store.select(selectFirstLevelBodyComponents(this.configuration.id))
       .subscribe(async components => {
         this.components = components;
         this.generateSortable();
@@ -61,7 +61,7 @@ export class DropContainerComponent extends DynamicComponent implements OnInit, 
       });
   }
 
-  trackById(index: number, it: DynamicComponentMetadata): any {
+  trackById(index: number, it: ComponentConfiguration): any {
     return it.id;
   }
 
@@ -95,23 +95,23 @@ export class DropContainerComponent extends DynamicComponent implements OnInit, 
         }
 
         dataTransfer.setDragImage(this.previewNode, 0, 0);
-        const metadata = await this.store.select(selectComponentMetadata(id)).pipe(first()).toPromise();
-        this.previewNode.innerHTML = metadata.title;
-        dataTransfer.setData('Text', JSON.stringify({ id, type: metadata.type }));
+        const configuration = await this.store.select(selectComponentConfiguration(id)).pipe(first()).toPromise();
+        this.previewNode.innerHTML = configuration.title;
+        dataTransfer.setData('Text', JSON.stringify({ id, type: configuration.type }));
       },
       onAdd: async (evt: SortableJs.SortableEvent) => {
         const dragEvt: DragEvent = (evt as any).originalEvent;
-        const metadataStr = dragEvt.dataTransfer.getData('Text');
-        if (!metadataStr) { return; }
-        let metadata: DynamicComponentMetadata = JSON.parse(metadataStr);
-        if (metadata.id) { return; }
-        const des = await this.dynamicComponentRegistry.getComponentDescription(metadata.type);
+        const configurationStr = dragEvt.dataTransfer.getData('Text');
+        if (!configurationStr) { return; }
+        let configuration: ComponentConfiguration = JSON.parse(configurationStr);
+        if (configuration.id) { return; }
+        const des = await this.dynamicComponentRegistry.getComponentDescription(configuration.type);
         if (typeof des.metadataProvider === 'function') {
-          const partialMetadata = await des.metadataProvider(metadata);
-          metadata = { ...metadata, ...partialMetadata };
+          const partialConfiguration = await des.metadataProvider(configuration);
+          configuration = { ...configuration, ...partialConfiguration };
         }
-        const componetId = await this.idGenerator.generate(metadata.type);
-        this.store.dispatch(addNewComponent({ metadata: { ...metadata, id: componetId }, parentId: this.metadata.id, index: evt.newIndex, source: DropContainerComponent.name }));
+        const componetId = await this.idGenerator.generate(configuration.type);
+        this.store.dispatch(addNewComponent({ configuration: { ...configuration, id: componetId }, parentId: this.configuration.id, index: evt.newIndex, source: DropContainerComponent.name }));
       },
       onStart: (evt: SortableJs.SortableEvent) => {
         // const dragEvt: DragEvent = (evt as any).originalEvent;
@@ -129,13 +129,13 @@ export class DropContainerComponent extends DynamicComponent implements OnInit, 
         const containerId = evt.to.getAttribute('container-id');
         if (!containerId) { return; }
         const dragEvt: DragEvent = (evt as any).originalEvent;
-        const metadataStr = dragEvt.dataTransfer.getData('Text');
-        if (!metadataStr) { return; }
-        const metadata: DynamicComponentMetadata = JSON.parse(metadataStr);
+        const configurationStr = dragEvt.dataTransfer.getData('Text');
+        if (!configurationStr) { return; }
+        const configuration: ComponentConfiguration = JSON.parse(configurationStr);
         if (evt.from !== evt.to) {
           itemEl.parentElement.removeChild(itemEl);
         }
-        this.store.dispatch(moveComponent({ id: metadata.id, parentId: containerId, index: evt.newIndex, source: DropContainerComponent.name }));
+        this.store.dispatch(moveComponent({ id: configuration.id, parentId: containerId, index: evt.newIndex, source: DropContainerComponent.name }));
       }
     });
   }

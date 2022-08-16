@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, Injector, ViewChild, ViewContainerRef, ChangeDetectorRef } from '@angular/core';
 import { SubSink } from 'subsink';
-import { DynamicComponent, DynamicComponentMetadata, DynamicComponentRenderer, DYNAMIC_COMPONENT_RENDERER, LazyService } from 'victor-core';
+import { DynamicComponent, ComponentConfiguration, DynamicComponentRenderer, DYNAMIC_COMPONENT_RENDERER, LazyService } from 'victor-core';
 
 @Component({
   selector: 'victor-tab',
@@ -24,10 +24,9 @@ export class TabComponent extends DynamicComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    // console.log('mm:', this.metadata);
     if (this.container.length) { this.container.clear(); }
-    if (!this.metadata?.type) { return; }
-    const body: DynamicComponentMetadata[] = this.metadata.body || [];
+    if (!this.configuration?.type) { return; }
+    const body: ComponentConfiguration[] = this.configuration.body || [];
     if (body.length) {
       for (let md of body) {
         await this.componentRenderer.render(this.injector, md, this.container);

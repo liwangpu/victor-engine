@@ -37,22 +37,6 @@ export class OptionalComponentPanelComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit(): Promise<void> {
-    // this.componentGroups = [];
-    // for (let i = 0; i < 10; i++) {
-    //     const components = [];
-    //     for (let j = 0; j < 10; j++) {
-    //         components.push({
-    //             type: faker.datatype.string(5),
-    //             title: faker.random.words(1)
-    //         });
-    //     }
-    //     this.componentGroups?.push({
-    //         title: faker.random.words(1),
-    //         components
-    //     });
-    // }
-
-
     const des = await this.dynamicComponentRegistry.getComponentDescriptions();
     const groupTypes = des.map(c => c.group).filter(g => g ? true : false);
     const allGroupTypes = [];

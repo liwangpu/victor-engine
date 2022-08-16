@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, forwardRef, Input, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator } from '@angular/forms';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { DynamicComponentMetadata } from 'victor-core';
+import { ComponentConfiguration } from 'victor-core';
 import { RendererStarter, RENDERER_STARTER } from 'victor-renderer/renderer';
 
 @Component({
@@ -19,8 +19,8 @@ export class FormComponent implements RendererStarter, Validator, ControlValueAc
 
   disabled: boolean;
   @Input()
-  schema: DynamicComponentMetadata;
-  private readonly _schema$ = new BehaviorSubject<DynamicComponentMetadata>(null);
+  schema: ComponentConfiguration;
+  private readonly _schema$ = new BehaviorSubject<ComponentConfiguration>(null);
   private onValidatorChangeFn: () => void;
   private onChangeFn: (val: any) => any;
   private onTouchedFn: () => any;
@@ -33,16 +33,16 @@ export class FormComponent implements RendererStarter, Validator, ControlValueAc
     }
   }
 
-  getSchema(): Observable<DynamicComponentMetadata> {
+  getSchema(): Observable<ComponentConfiguration> {
     return this._schema$;
   }
 
   validate(control: AbstractControl): ValidationErrors {
-    console.log(`trigger:`,);
+    // console.log(`trigger:`,);
     return null;
   }
 
-  writeValue(obj: DynamicComponentMetadata): void {
+  writeValue(obj: ComponentConfiguration): void {
 
   }
 
