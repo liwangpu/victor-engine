@@ -4,8 +4,6 @@ import { VictorFormDemoRoutingModule } from './victor-form-demo-routing.module';
 import { JsonEditorModule } from '../json-editor';
 import { HomeComponent } from './components/home/home.component';
 import { FormModule as VictorFormModule } from 'victor-renderer/form';
-// import { RunTimeModule as TabsRunTimeModule } from 'dynamic-tabs/run-time';
-// import { RunTimeModule as FormRunTimeModule } from 'dynamic-form/run-time';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IconDefinition } from '@ant-design/icons-angular';
 import * as antIcon from '@ant-design/icons-angular/icons';

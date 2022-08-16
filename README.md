@@ -1,27 +1,14 @@
-# victor-engine
+动态引擎本质上是基于schema动态渲染的组件,包含插件机制,组件市场,组件数据采集,校验,联动以及权限等等
+        表单设计器是引擎设计时与运行时涵盖的功能点
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.17.
 
-## Development server
+引擎分为渲染器和设计器两部分，独立工作
+        设计器可视化生成schema,渲染器动态解析schema
+        引擎以组件为单元,只有容器和非容器组件之分
+        插件机制装配
+        每个插件包含运行时组件本身和设计时的配置面板两部分
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+组件设计时与运行时隔离
+        UI与数据隔离
+        数据与副作用隔离（检验，填充）,事件驱动副作用
+        副作用通过监听者形式进行管道处理变更
