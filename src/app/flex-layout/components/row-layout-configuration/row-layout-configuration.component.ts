@@ -37,7 +37,6 @@ export class RowLayoutConfigurationComponent extends ComponentDesignPanel implem
   }
 
   ngOnInit(): void {
-    // console.log(`cfg:`, this.configuration);
     let body = this.configuration.body?.length ? [...this.configuration.body] : [];
     this.form.patchValue({ rows: this.configuration.body?.length || 1 });
     this.form.patchValue(this.configuration, { emitEvent: false });
