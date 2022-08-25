@@ -25,11 +25,11 @@ export class TabsComponent extends DynamicComponent implements OnInit {
 
   ngOnInit(): void {
     // this.id = `${+new Date()}`;
-    // console.log('tabs metadata:', this.metadata);
+    // console.log('tabs:', this.tabs);
     // console.log('tabs:', this.tabs);
   }
 
-  @ComponentAction()
+  @ComponentAction('激活面板')
   activeTab(id: string): void {
     this.selectedTabIndex = this.tabs.findIndex(t => t.id === id);
     this.cdr.markForCheck();

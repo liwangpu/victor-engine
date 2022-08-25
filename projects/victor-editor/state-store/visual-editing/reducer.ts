@@ -1,4 +1,5 @@
 import { ActionCreator, Creator, on, ReducerTypes } from '@ngrx/store';
+import { ComponentConfiguration } from 'victor-core';
 import { VictorDesignerState } from '../state';
 import * as fromAction from './action';
 import { ComponentTreeState } from './state';
@@ -9,24 +10,33 @@ export const ons: ReducerTypes<VictorDesignerState, readonly ActionCreator<strin
     if (componentTrees[configuration.id]) { return state; }
     const componentConfigurations = { ...state.componentConfigurations };
     const tree: ComponentTreeState = { id: configuration.id, type: configuration.type, parentId };
-    // 
     componentTrees[configuration.id] = tree;
     const parentTree = { ...componentTrees[parentId] };
     parentTree.body = parentTree.body?.length ? [...parentTree.body] : [];
-    // parentTree.body.push(metadata.id);
     parentTree.body.splice(index, 0, configuration.id);
     componentTrees[parentId] = parentTree;
     componentConfigurations[configuration.id] = { ...configuration, body: [] };
+    // // 容器组件的body需要维护到tree上
+    const maintainBodyComponent = (bodyCfg: ComponentConfiguration, parentId: string) => {
+      if (!componentTrees[bodyCfg.id]) {
+        const ctree: ComponentTreeState = { id: bodyCfg.id, type: bodyCfg.type, parentId };
+        const parentTree = { ...componentTrees[parentId], body: componentTrees[parentId].body?.length ? [...componentTrees[parentId].body] : [] };
+        componentTrees[bodyCfg.id] = ctree;
+        parentTree.body.push(bodyCfg.id);
+        componentTrees[parentId] = parentTree;
+        if (bodyCfg.body?.length) {
+          for (let cmd of bodyCfg.body) {
+            maintainBodyComponent(cmd, bodyCfg.id);
+          }
+        }
+        componentConfigurations[bodyCfg.id] = { ...bodyCfg, body: [] };
+      }
+    };
     // 容器组件的body需要维护到tree上
     if (configuration.body?.length) {
       for (let cmd of configuration.body) {
-        if (!componentTrees[cmd.id]) {
-          const ctree: ComponentTreeState = { id: cmd.id, type: cmd.type, parentId: configuration.id };
-          componentTrees[ctree.id] = ctree;
-          componentConfigurations[cmd.id] = cmd;
-        }
+        maintainBodyComponent(cmd, configuration.id);
       }
-      tree.body = configuration.body.map(c => c.id);
     }
     return { ...state, componentTrees, componentConfigurations, activeComponentId: state.activeComponentId || configuration.id };
   }),

@@ -1,4 +1,4 @@
-import { InjectionToken, Injector } from '@angular/core';
+import { Directive, HostBinding, InjectionToken, Injector } from '@angular/core';
 import { LazyService, PropertyEntry } from '../utils/common-decorator';
 import 'reflect-metadata';
 import { ComponentValidatorRule } from 'victor-core';
@@ -51,21 +51,23 @@ export function ComponentEvent(): Function {
   }
 }
 
-export function ComponentAction(): Function {
+export function ComponentAction(actionName: string): Function {
   return function (target: object, propertyName: string, propertyDesciptor: PropertyDescriptor): any {
-    Reflect.defineMetadata(propertyName, { metadataType: metadataType.action }, target);
+    Reflect.defineMetadata(propertyName, { metadataType: metadataType.action, name: actionName }, target);
     return propertyDesciptor;
   }
 }
 
 export interface ComponentMetadata {
   scopes: Array<{ key: string; type: string }>;
-  actions: Array<{ key: string; type: string }>;
+  actions: Array<{ key: string; type: string, name: string }>;
   events: Array<{ key: string; type: string }>;
 }
 
+@Directive()
 export abstract class DynamicComponent {
 
+  @HostBinding('attr.id')
   @PropertyEntry('configuration.id')
   id: string;
   @PropertyEntry('configuration.type')
@@ -84,14 +86,14 @@ export abstract class DynamicComponent {
   protected getMetadata(): ComponentMetadata {
     const keys: Array<any> = Reflect.getMetadataKeys(this);
     const scopes: Array<{ key: string; type: string }> = [];
-    const actions: Array<{ key: string; type: string }> = [];
+    const actions: Array<{ key: string; type: string; name: string }> = [];
     const events: Array<{ key: string; type: string }> = [];
     keys.forEach(key => {
 
       let md: { metadataType: metadataType, [key: string]: any } = Reflect.getMetadata(key, this);
       switch (md.metadataType) {
         case metadataType.action:
-          actions.push({ key, type: this.type });
+          actions.push({ key, name: md.name, type: this.type });
           break;
         case metadataType.event:
           events.push({ key, type: this.type });

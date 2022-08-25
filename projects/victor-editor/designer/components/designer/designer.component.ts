@@ -1,9 +1,9 @@
-import { Component, OnInit, ChangeDetectionStrategy, Injector, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Injector, ChangeDetectorRef, OnDestroy, forwardRef } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { CUSTOM_RENDER_PROVIDER, DESIGN_INTERACTION_OPSAT, LazyService } from 'victor-core';
+import { ComponentInfoProvider, COMPONENT_INFO_PROVIDER, CUSTOM_RENDER_PROVIDER, DESIGN_INTERACTION_OPSAT, LazyService } from 'victor-core';
 import { DesignInteractionOpsatService } from '../../services/design-interaction-opsat.service';
 import { DropContainerOpsatService } from 'victor-editor/drop-container';
-import { nestComponentTree, selectVictorDesignerState, setDesignerState, generateDesignState, resetDesignerState } from 'victor-editor/state-store';
+import { nestComponentTree, selectVictorDesignerState, setDesignerState, generateDesignState, resetDesignerState, VICTOR_DESIGNER_INITIAL_STATE, selectComponentBasicInfos } from 'victor-editor/state-store';
 import { SubSink } from 'subsink';
 import { first } from 'rxjs/operators';
 import { DESIGNER_STARTER, DesignerStarter, EditorHandler } from '../../tokens/designer-starter';
@@ -16,11 +16,12 @@ import { CustomRenderProviderService } from 'victor-editor/designer/services/cus
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     DropContainerOpsatService,
+    { provide: COMPONENT_INFO_PROVIDER, useExisting: forwardRef(() => DesignerComponent) },
     { provide: DESIGN_INTERACTION_OPSAT, useClass: DesignInteractionOpsatService },
     { provide: CUSTOM_RENDER_PROVIDER, useClass: CustomRenderProviderService },
   ]
 })
-export class DesignerComponent implements EditorHandler, OnInit, OnDestroy {
+export class DesignerComponent implements EditorHandler, ComponentInfoProvider, OnInit, OnDestroy {
 
   @LazyService(ChangeDetectorRef)
   private readonly cdr: ChangeDetectorRef;
@@ -33,6 +34,15 @@ export class DesignerComponent implements EditorHandler, OnInit, OnDestroy {
     protected injector: Injector
   ) {
     this.starter.registryEditorHandler(this);
+  }
+
+  async getComponentInfo(): Promise<{ id: string; type: string; title: string; }[]> {
+    const infos = this.store.select(selectComponentBasicInfos).pipe(first()).toPromise();
+    return infos;
+  }
+
+  clear(): void {
+    this.store.dispatch(setDesignerState({ state: VICTOR_DESIGNER_INITIAL_STATE, source: DesignerComponent.name }));
   }
 
   async save(): Promise<void> {

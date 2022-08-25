@@ -1,0 +1,16 @@
+<form [formGroup]="form">
+  <nz-tabset>
+    <nz-tab nzTitle="事件">
+      <victor-event-binding-config formControlName="events" [availableEvents]="availableEvents">
+      </victor-event-binding-config>
+    </nz-tab>
+
+    <nz-tab nzTitle="属性">
+      <victor-designer-shared-config-item title="标题">
+        <input nz-input placeholder="请输入标题" formControlName="title" />
+      </victor-designer-shared-config-item>
+    </nz-tab>
+
+  </nz-tabset>
+
+</form>

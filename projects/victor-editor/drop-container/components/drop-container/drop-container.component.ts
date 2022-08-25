@@ -3,13 +3,13 @@ import * as _ from 'lodash';
 import { DropContainerOpsatService } from '../../services/drop-container-opsat.service';
 import { SubSink } from 'subsink';
 import SortableJs from 'sortablejs';
-import { ComponentIdGenerator, COMPONENT_ID_GENERATOR, DynamicComponent, ComponentConfiguration, DynamicComponentRegistry, DYNAMIC_COMPONENT, DYNAMIC_COMPONENT_REGISTRY, LazyService, UNIQUE_ID } from 'victor-core';
+import { ComponentIdGenerator, COMPONENT_ID_GENERATOR, DynamicComponent, ComponentConfiguration, DynamicComponentRegistry, DYNAMIC_COMPONENT, DYNAMIC_COMPONENT_REGISTRY, LazyService, UNIQUE_ID, COMPONENT_CONFIGURATION } from 'victor-core';
 import { v4 as uuidv4 } from 'uuid';
 import { Store } from '@ngrx/store';
 import { addNewComponent, moveComponent, selectFirstLevelBodyComponents, selectComponentConfiguration, selectFirstLevelBodyComponentIds } from 'victor-editor/state-store';
-import { ComponentDesignWrapperComponent } from '../component-design-wrapper/component-design-wrapper.component';
-import { first, take } from 'rxjs/operators';
+import { first, take, distinctUntilChanged } from 'rxjs/operators';
 import Sortable from 'sortablejs';
+import { ComponentDesignWrapperComponent } from '../component-design-wrapper/component-design-wrapper.component';
 
 @Component({
   selector: 'victor-designer-drop-container',
@@ -22,13 +22,15 @@ export class DropContainerComponent extends DynamicComponent implements OnInit, 
   @HostBinding('class.actived')
   actived?: boolean;
   components: ComponentConfiguration[] = [];
+
+  @ViewChild('componentContainer', { static: true, read: ViewContainerRef })
+  private readonly componentContainer: ViewContainerRef;
+
   @ViewChild('dropContainer', { static: true })
   private readonly dropContainer: ElementRef;
   private subs = new SubSink();
   @LazyService(ComponentFactoryResolver)
   private readonly cfr: ComponentFactoryResolver;
-  @LazyService(DropContainerOpsatService)
-  private readonly opsat: DropContainerOpsatService;
   @LazyService(ChangeDetectorRef)
   private readonly cdr: ChangeDetectorRef;
   @LazyService(Renderer2)
@@ -39,6 +41,9 @@ export class DropContainerComponent extends DynamicComponent implements OnInit, 
   private readonly idGenerator: ComponentIdGenerator;
   @LazyService(DYNAMIC_COMPONENT_REGISTRY)
   private readonly dynamicComponentRegistry: DynamicComponentRegistry;
+  @LazyService(NgZone)
+  private readonly zone: NgZone;
+  private componentRefMap = new Map<string, [ComponentRef<DynamicComponent>, number]>();
   private sortable: Sortable;
   private previewNode: HTMLElement;
 
@@ -53,11 +58,14 @@ export class DropContainerComponent extends DynamicComponent implements OnInit, 
   }
 
   ngOnInit(): void {
+    // console.log(`ccc:`, this.configuration.id);
     this.subs.sink = this.store.select(selectFirstLevelBodyComponents(this.configuration.id))
-      .subscribe(async components => {
+      .pipe(distinctUntilChanged(_.isEqual))
+      .subscribe(async (components: { id: string, type: string, title: string }[]) => {
         this.components = components;
-        this.generateSortable();
+        // console.log(`child components:`, components);
         this.cdr.markForCheck();
+        this.generateSortable();
       });
   }
 
@@ -73,14 +81,10 @@ export class DropContainerComponent extends DynamicComponent implements OnInit, 
       group: {
         name: 'victor-editor'
       },
-      // swapThreshold: 0,
-      // fallbackOnBody: true,
-      // draggable: ".drop-item",
-      // dragClass: "drop-item",
       dragoverBubble: false,
       easing: "cubic-bezier(1, 0, 0, 1)",
       setData: async (/** DataTransfer */dataTransfer, /** HTMLElement*/dragEl: HTMLElement) => {
-        const id = dragEl.id;
+        const id = dragEl.getAttribute('component-id');
         const containers = dragEl.querySelectorAll('div.drop-container');
         containers.forEach(e => {
           this.renderer.addClass(e, 'hidden');
@@ -117,7 +121,6 @@ export class DropContainerComponent extends DynamicComponent implements OnInit, 
         // const dragEvt: DragEvent = (evt as any).originalEvent;
       },
       onEnd: async (evt: SortableJs.SortableEvent) => {
-        // console.log(`end:`,);
         if (this.previewNode) {
           this.renderer.addClass(this.previewNode, 'hidden');
         }

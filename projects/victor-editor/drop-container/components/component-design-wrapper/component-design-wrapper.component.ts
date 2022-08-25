@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, Injector, ViewChild, ViewContainerRef, ChangeDetectorRef, OnDestroy, HostListener, Input, NgZone, ElementRef, Renderer2 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { DesignInteractionOpsat, DESIGN_INTERACTION_OPSAT, ComponentConfiguration, DynamicComponentRenderer, DYNAMIC_COMPONENT_RENDERER, LazyService } from 'victor-core';
+import { DesignInteractionOpsat, DESIGN_INTERACTION_OPSAT, ComponentConfiguration, DynamicComponentRenderer, DYNAMIC_COMPONENT_RENDERER, LazyService, DynamicComponent } from 'victor-core';
 import { activeComponent, selectActiveComponentId, selectComponentConfiguration } from 'victor-editor/state-store';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs';
@@ -14,10 +14,11 @@ import { DropContainerOpsatService } from '../../services/drop-container-opsat.s
   styleUrls: ['./component-design-wrapper.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ComponentDesignWrapperComponent implements OnInit, OnDestroy {
+export class ComponentDesignWrapperComponent extends DynamicComponent implements OnInit, OnDestroy {
 
-  @Input()
-  configuration: ComponentConfiguration;
+  // @Input()
+  // configuration: ComponentConfiguration;
+
   @ViewChild('container', { static: true, read: ViewContainerRef })
   readonly container: ViewContainerRef;
 
@@ -41,8 +42,9 @@ export class ComponentDesignWrapperComponent implements OnInit, OnDestroy {
   private mouseLeaveListenFn: (e: MouseEvent) => void;
   private subs = new SubSink();
   constructor(
-    protected injector: Injector
+     injector: Injector
   ) {
+    super(injector);
   }
 
   ngOnDestroy(): void {

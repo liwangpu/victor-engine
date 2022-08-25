@@ -20,6 +20,8 @@ import { RunTimeModule as TabsRunTimeModule } from 'dynamic-tabs/run-time';
 import { DesignTimeModule as TabsDesignTimeModule } from 'dynamic-tabs/design-time';
 import { RunTimeModule as FormRunTimeModule } from 'dynamic-form/run-time';
 import { DesignTimeModule as FormDesignTimeModule } from 'dynamic-form/design-time';
+import { RunTimeModule as ButtonRunTimeModule } from 'dynamic-button/run-time';
+import { DesignTimeModule as ButtonDesignTimeModule } from 'dynamic-button/design-time';
 import { COMPONENT_GROUP_SORT_RULE } from 'victor-editor';
 import { RendererModule } from 'victor-renderer/renderer';
 import { PageDefinitionResolver } from './services/page-definition.resolver';
@@ -28,6 +30,7 @@ import { JsonEditorModule } from '../json-editor';
 import { NativeComponetMarketModule } from 'victor-core/native-componet-market';
 import { FlexLayoutModule } from '../flex-layout';
 import { PageListPreviewGuard } from './services/page-list-preview.guard';
+import { AppLoginModule } from '../app-login';
 
 
 const icons: Array<IconDefinition> = [antIcon.PlusOutline, antIcon.EditOutline, antIcon.LeftOutline, antIcon.FileFill];
@@ -60,7 +63,10 @@ const icons: Array<IconDefinition> = [antIcon.PlusOutline, antIcon.EditOutline, 
     TabsRunTimeModule,
     FormRunTimeModule,
     FormDesignTimeModule,
+    ButtonRunTimeModule,
+    ButtonDesignTimeModule,
     FlexLayoutModule,
+    AppLoginModule
   ],
   providers: [
     PageStoreService,

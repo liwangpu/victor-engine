@@ -52,6 +52,12 @@
       "dynamic-form/*": [
         "projects/dynamic-form/*",
       ],
+      "dynamic-button": [
+        "projects/dynamic-button/src/public-api.ts"
+      ],
+      "dynamic-button/*": [
+        "projects/dynamic-button/*"
+      ],
     },
   },
   "angularCompilerOptions": {

@@ -3,10 +3,13 @@
     "tabs": "页签",
     "tab": "页签",
     "text": "单行文字",
-    "password": "密码"
+    "password": "密码",
+    "button": "按钮"
   },
   "dynamicComponentGroup": {
     "form": "表单",
-    "container": "容器"
+    "container": "容器",
+    "button": "按钮",
+    "other": "其他"
   }
 }

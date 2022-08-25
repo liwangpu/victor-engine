@@ -1,4 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { ComponentConfiguration } from 'victor-core';
+import { ComponentMetadata, ComponentConfiguration } from 'victor-core';
 
-export const setComponentMetadata = createAction('[victor-editor] 设置组件配置', props<{ id: string, configuration: ComponentConfiguration, source: string }>());
+export const setComponentMetadata = createAction('[victor-editor] 设置组件元数据信息', props<{ id: string, metadata: ComponentMetadata, source: string }>());
+

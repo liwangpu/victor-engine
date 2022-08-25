@@ -1,5 +1,5 @@
 <div class="drop-container" #dropContainer [attr.container-id]="configuration?.id">
-  <victor-designer-component-design-wrapper class="drop-item" *ngFor="let config of components;trackBy:trackById"
-    [configuration]="config" [attr.id]="config.id">
-  </victor-designer-component-design-wrapper>
+  <victor-drop-item-wrapper class="drop-item" *ngFor="let config of components;trackBy:trackById"
+    [configuration]="config" [attr.component-id]="config.id">
+  </victor-drop-item-wrapper>
 </div>

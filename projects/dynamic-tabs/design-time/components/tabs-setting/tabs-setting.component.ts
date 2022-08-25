@@ -66,11 +66,9 @@ export class TabsSettingComponent implements ControlValueAccessor, OnInit {
   }
 
   ngOnInit(): void {
-    // console.log('interactionOpsat:', this.interactionOpsat);
     this.subs.sink = this.form.valueChanges
       .pipe(filter(() => !this.controlAdding))
       .subscribe((val: FormValue) => {
-        // console.log('vvv:', val);
         if (typeof this.onChangeFn === 'function') {
           this.onChangeFn(val.tabs);
         }

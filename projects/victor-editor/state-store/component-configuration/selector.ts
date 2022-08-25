@@ -42,3 +42,15 @@ export const selectComponentConfiguration: (id: string) => MemoizedSelector<Vict
     return { ...metadata, id: tree.id, type: tree.type, body };
   }
 );
+
+export const selectComponentBasicInfos: MemoizedSelector<VictorDesignerState, { id: string; type: string; title: string }[]> = createSelector(
+  selectVictorDesignerState,
+  (state: VictorDesignerState) => {
+    const ids = Object.keys(state.componentConfigurations);
+    return ids.map(id => {
+      const c = state.componentConfigurations[id];
+
+      return { id: c.id, type: c.type, title: c.title };
+    });
+  }
+);

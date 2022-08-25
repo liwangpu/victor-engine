@@ -3,6 +3,7 @@ import { ComponentConfiguration } from 'victor-core';
 
 export interface EditorHandler {
   save(): Promise<void>;
+  clear(): void;
 }
 
 export interface DesignerStarter {

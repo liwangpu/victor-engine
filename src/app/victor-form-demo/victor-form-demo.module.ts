@@ -61,6 +61,7 @@ export class VictorFormDemoModule {
         group: 'form',
         fac: cfr.resolveComponentFactory(MyPasswordComponent)
       });
+
     }
   }
 }

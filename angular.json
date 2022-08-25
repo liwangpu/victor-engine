@@ -343,6 +343,45 @@
           }
         }
       }
+    },
+    "dynamic-button": {
+      "projectType": "library",
+      "root": "projects/dynamic-button",
+      "sourceRoot": "projects/dynamic-button/src",
+      "prefix": "victor",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        },
+        "@schematics/angular:application": {
+          "strict": true
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/dynamic-button/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/dynamic-button/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/dynamic-button/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/dynamic-button/src/test.ts",
+            "tsConfig": "projects/dynamic-button/tsconfig.spec.json",
+            "karmaConfig": "projects/dynamic-button/karma.conf.js"
+          }
+        }
+      }
     }
   },
   "defaultProject": "victor-engine"

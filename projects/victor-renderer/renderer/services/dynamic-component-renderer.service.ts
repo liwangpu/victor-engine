@@ -138,11 +138,6 @@ export class DynamicComponentRendererService implements DynamicComponentRenderer
             <IHasValidator>(ref.instance as any).onValidatedChange(errors);
           }
         });
-
-      // subs.sink = this.store.select(selectComonentScopes(configuration.id))
-      //   .pipe(delay(20))
-      //   .subscribe(s => {
-      //   });
     }
 
     ref.onDestroy(() => {

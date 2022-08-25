@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewChild, ViewContainerRef, OnDestroy, Injector, ChangeDetectorRef, ComponentRef, Renderer2 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ComponentDesignPanel, ComponentDesignPanelRegistry, COMPONENT_DESIGN_CONFIGURATION, COMPONENT_DESIGN_PANEL_REGISTRY, DesignInteractionOpsat, DESIGN_INTERACTION_OPSAT, DynamicComponentRegistry, DYNAMIC_COMPONENT_REGISTRY, INTERACTION_ACTION_EXECUTOR, INTERACTION_EVENT_OBSERVER, LazyService } from 'victor-core';
-import { selectActiveComponentMetadata, setComponentMetadata, selectAllComponentIds } from 'victor-editor/state-store';
+import { selectActiveComponentMetadata, setComponentConfiguration, selectAllComponentIds } from 'victor-editor/state-store';
 import { Subject } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
 import { SubSink } from 'subsink';
@@ -92,7 +92,7 @@ export class ComponentSettingPanelComponent implements OnInit, OnDestroy {
               .pipe(debounceTime(120))
               .subscribe(val => {
                 this.store.dispatch(
-                  setComponentMetadata({ id: cfg.id, configuration: { ...val, id: cfg.id, type: cfg.type }, source: ComponentSettingPanelComponent.name })
+                  setComponentConfiguration({ id: cfg.id, configuration: { ...val, id: cfg.id, type: cfg.type }, source: ComponentSettingPanelComponent.name })
                 );
               });
             ref.onDestroy(() => {

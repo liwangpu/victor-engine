@@ -39,7 +39,14 @@ export class PageEditorComponent implements DesignerStarter, OnInit {
   }
 
   async saveSchema(schema: ComponentConfiguration): Promise<void> {
-    await this.pageStore.update(schema.id as any, schema);
+    const origin = this.acr.snapshot.data['schema'];
+    await this.pageStore.update(origin.id as any, schema || ({ id: origin.id, title: origin.title, type: origin.type, body: [] } as any));
+  }
+
+  async clear(): Promise<void> {
+    this.editorHandler.clear();
+    await this.editorHandler.save();
+    location.reload();
   }
 
   async save(): Promise<void> {
