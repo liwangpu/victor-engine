@@ -6,7 +6,7 @@ export interface VictorDesignerState {
   activeComponentId?: string;
   componentConfigurations: { [id: string]: ComponentConfiguration };
   componentTrees: { [id: string]: ComponentTreeState };
-  componentMetadatas: { [id: string]: ComponentMetadata };
+  componentMetadatas: { [type: string]: ComponentMetadata };
 }
 
 export const VICTOR_DESIGNER_INITIAL_STATE: VictorDesignerState = {

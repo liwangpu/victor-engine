@@ -9,12 +9,14 @@ import * as antIcon from '@ant-design/icons-angular/icons';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NormalButtonComponent } from './components/normal-button/normal-button.component';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { TextButtonComponent } from './components/text-button/text-button.component';
 
 const icons: Array<IconDefinition> = [antIcon.CloseCircleOutline];
 
 @NgModule({
   declarations: [
-    NormalButtonComponent
+    NormalButtonComponent,
+    TextButtonComponent
   ],
   imports: [
     CommonModule,
@@ -36,6 +38,13 @@ export class RunTimeModule {
         title: translater.instant(`dynamicComponent.button`),
         group: 'button',
         fac: cfr.resolveComponentFactory(NormalButtonComponent)
+      });
+
+      componentRegistry.registry({
+        type: 'text-button',
+        title: translater.instant(`dynamicComponent.text-button`),
+        group: 'button',
+        fac: cfr.resolveComponentFactory(TextButtonComponent)
       });
     }
   }

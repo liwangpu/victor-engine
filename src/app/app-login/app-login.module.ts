@@ -47,6 +47,7 @@ export class AppLoginModule {
             {
               id: await idGenerator.generate('login_tabs', partial.id),
               type: 'tabs',
+              title: '登录页签',
               body: [
                 {
                   id: await idGenerator.generate('tab'),
@@ -79,6 +80,11 @@ export class AppLoginModule {
                       id: await idGenerator.generate('button'),
                       type: 'button',
                       title: '登录'
+                    },
+                    {
+                      id: await idGenerator.generate('text-button'),
+                      type: 'text-button',
+                      title: '没有账号，点我注册一个吧'
                     }
                   ]
                 },

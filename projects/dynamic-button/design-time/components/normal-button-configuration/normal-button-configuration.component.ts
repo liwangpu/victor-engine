@@ -23,7 +23,7 @@ export class NormalButtonConfigurationComponent extends ComponentDesignPanel imp
     super(injector);
     this.form = this.fb.group({
       title: [],
-      events: []
+      eventBindings: []
     });
   }
 

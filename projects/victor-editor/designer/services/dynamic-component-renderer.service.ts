@@ -37,7 +37,7 @@ export class DynamicComponentRendererService implements DynamicComponentRenderer
     const ref = container.createComponent(fac, null, ij);
     if(hasBeenwrapped){
       const metadata = ref.instance['getMetadata']();
-      this.store.dispatch(setComponentMetadata({ id: config.id, metadata, source: DynamicComponentRendererService.name }));
+      this.store.dispatch(setComponentMetadata({ componentType: config.type, metadata, source: DynamicComponentRendererService.name }));
     }
     const nel: HTMLElement = ref.location.nativeElement;
     nel.classList.add('dynamic-component');

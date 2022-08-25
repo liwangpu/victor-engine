@@ -8,8 +8,6 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 
-
-
 @NgModule({
   declarations: [
     NormalButtonConfigurationComponent
@@ -32,6 +30,11 @@ export class DesignTimeModule {
     if (designPanelRegistry) {
       designPanelRegistry.registry({
         type: 'button',
+        fac: cfr.resolveComponentFactory(NormalButtonConfigurationComponent)
+      });
+
+      designPanelRegistry.registry({
+        type: 'text-button',
         fac: cfr.resolveComponentFactory(NormalButtonConfigurationComponent)
       });
     }

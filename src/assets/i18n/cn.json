@@ -4,7 +4,8 @@
     "tab": "页签",
     "text": "单行文字",
     "password": "密码",
-    "button": "按钮"
+    "button": "按钮",
+    "text-button": "文本按钮"
   },
   "dynamicComponentGroup": {
     "form": "表单",

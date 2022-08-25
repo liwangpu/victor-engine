@@ -1,14 +1,19 @@
-import { Component, OnInit, ChangeDetectionStrategy, forwardRef, ChangeDetectorRef, Injector, Input, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, forwardRef, ChangeDetectorRef, Injector, Input, ViewContainerRef, OnDestroy } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { filter } from 'rxjs/operators';
 import { SubSink } from 'subsink';
-import { LazyService } from 'victor-core';
+import { ComponentEventBinding, LazyService } from 'victor-core';
 import { EventAddingSettingComponent } from './event-adding-setting/event-adding-setting.component';
 
 export interface AvailabelEventBinding {
   key: string;
   title: string;
+}
+
+interface EventBindingGroup {
+  eventName: string;
+  bindings: Array<{ componentId: string; componentTitle: string; actionName: string }>;
 }
 
 @Component({
@@ -24,12 +29,14 @@ export interface AvailabelEventBinding {
     }
   ]
 })
-export class EventBindingConfigComponent implements ControlValueAccessor, OnInit {
+export class EventBindingConfigComponent implements ControlValueAccessor, OnInit, OnDestroy {
 
   disabled: boolean;
   form: FormGroup;
   @Input()
   availableEvents: AvailabelEventBinding[];
+  groups: EventBindingGroup[] = [];
+  protected eventBindings: ComponentEventBinding[];
   @LazyService(FormBuilder)
   protected readonly fb: FormBuilder;
   @LazyService(NzModalService)
@@ -40,17 +47,22 @@ export class EventBindingConfigComponent implements ControlValueAccessor, OnInit
   private readonly vr: ViewContainerRef;
   private onChangeFn: (val: any) => any;
   private onTouchedFn: () => any;
-  private subs = new SubSink();
+  private readonly subs = new SubSink();
   constructor(
     protected injector: Injector
   ) { }
+
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
+  }
 
 
   ngOnInit(): void {
   }
 
-  writeValue(obj: any): void {
-
+  writeValue(events: ComponentEventBinding[]): void {
+    this.eventBindings = events?.length ? [...events] : [];
+    console.log(`events:`, events);
   }
 
   registerOnChange(fn: any): void {
@@ -82,10 +94,17 @@ export class EventBindingConfigComponent implements ControlValueAccessor, OnInit
       },
     });
     ref.afterClose
-      .pipe(filter(id => id ? true : false))
-      .subscribe(id => {
-
+      .pipe(filter(evt => evt ? true : false))
+      .subscribe(evt => {
+        this.eventBindings.push(evt);
+        this.publishBinding();
       });
+  }
+
+  private publishBinding(): void {
+    if (typeof this.onChangeFn === 'function') {
+      this.onChangeFn([...this.eventBindings]);
+    }
   }
 
 }

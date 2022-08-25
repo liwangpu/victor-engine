@@ -9,13 +9,14 @@
     flex: 1;
     padding: 20px 20px 0;
     display: flex;
+    justify-content: space-around;
 
     &>* {
-      flex: 1;
+      flex: 0 0 30%;
       height: 32px;
     }
 
-    // justify-content: space-around;
+    // 
   }
 
   &>.footer {

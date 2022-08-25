@@ -1,7 +1,8 @@
 import { Directive, HostBinding, InjectionToken, Injector } from '@angular/core';
 import { LazyService, PropertyEntry } from '../utils/common-decorator';
 import 'reflect-metadata';
-import { ComponentValidatorRule } from 'victor-core';
+import { ComponentValidatorRule } from './component-validator-rule';
+import { ComponentEventBinding } from './component-event-binding';
 
 enum metadataType {
   scope = 'scope',
@@ -15,6 +16,7 @@ export interface ComponentConfiguration {
   type: string;
   title?: string;
   validators?: ComponentValidatorRule[];
+  eventBindings?: ComponentEventBinding[];
   body?: ComponentConfiguration[];
   [key: string]: any;
 }

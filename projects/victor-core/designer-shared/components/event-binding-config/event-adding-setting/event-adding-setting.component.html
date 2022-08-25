@@ -1,7 +1,7 @@
 <form class="content" [formGroup]="form">
   <nz-select formControlName="event" [nzOptions]="availableEvents" nzPlaceHolder="事件"></nz-select>
-  <nz-select formControlName="component" [nzOptions]="[]" nzPlaceHolder="组件"></nz-select>
-  <nz-select formControlName="action" [nzOptions]="[]" nzPlaceHolder="动作"></nz-select>
+  <nz-select formControlName="component" [nzOptions]="components" nzPlaceHolder="组件"></nz-select>
+  <nz-select formControlName="action" [nzOptions]="componentActions" nzPlaceHolder="动作"></nz-select>
 </form>
 <div class="footer">
   <button nz-button nzType="default" (click)="cancel()">取消</button>
