@@ -52,13 +52,13 @@ export class AppLoginModule {
                 {
                   id: await idGenerator.generate('tab'),
                   type: 'tab',
-                  title: '单点登录',
+                  title: '账号登录',
                   body: [
                     {
                       id: await idGenerator.generate('login_username', partial.id),
                       type: 'text',
-                      placeholder: '请输入用户名',
-                      title: '用户名',
+                      placeholder: '手机号/邮箱/用户名',
+                      title: '账号',
                       validators: [
                         {
                           type: 'required'
@@ -75,25 +75,25 @@ export class AppLoginModule {
                           type: 'required'
                         }
                       ]
-                    },
-                    {
-                      id: await idGenerator.generate('button'),
-                      type: 'button',
-                      title: '登录'
-                    },
-                    {
-                      id: await idGenerator.generate('text-button'),
-                      type: 'text-button',
-                      title: '没有账号，点我注册一个吧'
                     }
                   ]
                 },
                 {
                   id: await idGenerator.generate('tab'),
                   type: 'tab',
-                  title: '账号登录'
+                  title: '扫描登录'
                 }
               ]
+            },
+            {
+              id: await idGenerator.generate('button'),
+              type: 'button',
+              title: '登录'
+            },
+            {
+              id: await idGenerator.generate('text-button'),
+              type: 'text-button',
+              title: '没有账号，点我注册一个吧'
             }
           ]
         })

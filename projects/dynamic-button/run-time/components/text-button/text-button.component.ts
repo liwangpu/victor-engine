@@ -1,5 +1,5 @@
-import { Component, OnInit, ChangeDetectionStrategy, Injector } from '@angular/core';
-import { DynamicComponent } from 'victor-core';
+import { Component, ChangeDetectionStrategy, Injector, EventEmitter } from '@angular/core';
+import { ComponentEvent, DynamicComponent } from 'victor-core';
 
 @Component({
   selector: 'victor-text-button',
@@ -7,15 +7,18 @@ import { DynamicComponent } from 'victor-core';
   styleUrls: ['./text-button.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TextButtonComponent extends DynamicComponent implements OnInit {
+export class TextButtonComponent extends DynamicComponent {
 
+  @ComponentEvent()
+  onclick = new EventEmitter<void>();
   constructor(
     injector: Injector
   ) {
     super(injector);
   }
 
-  ngOnInit(): void {
+  onClick(evt: MouseEvent): void {
+    evt.stopPropagation();
+    this.onclick.next();
   }
-
 }

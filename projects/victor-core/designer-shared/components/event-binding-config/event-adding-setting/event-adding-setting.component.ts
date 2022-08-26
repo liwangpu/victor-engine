@@ -31,7 +31,8 @@ export class EventAddingSettingComponent implements OnInit, OnDestroy {
     this.form = this.fb.group({
       event: [],
       component: [],
-      action: []
+      action: [],
+      params: []
     });
   }
 

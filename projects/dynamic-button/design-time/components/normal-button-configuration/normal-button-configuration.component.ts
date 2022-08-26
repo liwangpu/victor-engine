@@ -33,7 +33,7 @@ export class NormalButtonConfigurationComponent extends ComponentDesignPanel imp
 
   ngOnInit(): void {
     this.availableEvents = [
-      { key: 'click', title: '点击' }
+      { key: 'onclick', title: '点击' }
     ];
     this.form.patchValue(this.configuration, { emitEvent: false });
     this.subs.sink = this.form.valueChanges

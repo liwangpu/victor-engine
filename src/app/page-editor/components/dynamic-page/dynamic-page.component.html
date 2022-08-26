@@ -4,7 +4,7 @@
   <i nz-icon nzType="setting" nzTheme="outline"></i>
 </div>
 
-<nz-drawer [nzClosable]="false" [nzVisible]="editorVisible" nzWidth="500px" nzWrapClassName="page-json-editor-wrapper" nzPlacement="right" nzTitle="Schema编辑"
+<nz-drawer [nzClosable]="false" [nzVisible]="editorVisible" nzWidth="800px" nzWrapClassName="page-json-editor-wrapper" nzPlacement="right" nzTitle="Schema编辑"
   (nzOnClose)="onEditorClose()">
   <ng-container *nzDrawerContent>
     <app-json-editor [(ngModel)]="pageSchema"></app-json-editor>

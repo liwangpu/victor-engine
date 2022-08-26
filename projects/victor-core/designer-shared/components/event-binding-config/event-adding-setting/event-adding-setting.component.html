@@ -2,6 +2,7 @@
   <nz-select formControlName="event" [nzOptions]="availableEvents" nzPlaceHolder="事件"></nz-select>
   <nz-select formControlName="component" [nzOptions]="components" nzPlaceHolder="组件"></nz-select>
   <nz-select formControlName="action" [nzOptions]="componentActions" nzPlaceHolder="动作"></nz-select>
+  <input nz-input formControlName="params" placeholder="参数" />
 </form>
 <div class="footer">
   <button nz-button nzType="default" (click)="cancel()">取消</button>

@@ -1,8 +1,23 @@
 <div class="buttons">
-  <button nz-button nzType="default" nzBlock (click)="addEventBinding()">绑定事件</button>
+  <button nz-button nzType="default" nzBlock (click)="addEventBinding()">
+    <i nz-icon nzType="plus" nzTheme="outline"></i>
+    <span>绑定事件</span>
+  </button>
 </div>
 <div class="content">
-  <div *ngFor="let g of groups">
-
+  <div class="event-group" *ngFor="let g of groups">
+    <div class="event">
+      <i nz-icon nzType="link" nzTheme="outline"></i>
+      <span>{{g.eventName}}</span>
+    </div>
+    <div class="bindings">
+      <div class="binding" *ngFor="let b of g.bindings">
+        <p class="info">
+          <span>{{b.componentTitle}}</span>
+          <span>{{b.actionName}}</span>
+        </p>
+        <i nz-icon class="operate delete" nzType="delete" nzTheme="outline" (click)="deleteBinding(b.index)"></i>
+      </div>
+    </div>
   </div>
 </div>

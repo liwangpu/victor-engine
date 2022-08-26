@@ -1,12 +1,12 @@
 import { ComponentRef, Injectable, Injector, OnDestroy, ViewContainerRef } from '@angular/core';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { BehaviorSubject } from 'rxjs';
-import { debounceTime, delay, distinctUntilChanged, first, skip } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { debounceTime, delay, distinctUntilChanged, filter, first, skip } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 import * as _ from 'lodash';
 import { ComponentMetadata, DynamicComponent, ComponentConfiguration, DynamicComponentRegistry, DynamicComponentRenderer, COMPONENT_CONFIGURATION, DYNAMIC_COMPONENT_REGISTRY, DYNAMIC_PAGE_ID, LazyService, DynamicValidator, DYNAMIC_VALIDATOR, IHasValidator } from 'victor-core';
-import { setComponentMetadata, setComponentScope, selectVictorRendererState, selectComonentValidatedErrors } from 'victor-renderer/state-store';
+import { setComponentMetadata, setComponentScope, selectVictorRendererState, selectComonentValidatedErrors, eventBindingTrigger } from 'victor-renderer/state-store';
 import { setComponentValidatedError } from 'victor-renderer/state-store/component-validated-error';
 
 @Injectable()
@@ -132,7 +132,6 @@ export class DynamicComponentRendererService implements DynamicComponentRenderer
       subs.sink = this.store.select(selectComonentValidatedErrors(configuration.id))
         .pipe(distinctUntilChanged(_.isEqual), skip(1))
         .subscribe(errors => {
-          // console.log(`eeee:`, errors);
           const implementHasError = typeof <IHasValidator>(ref.instance as any).onValidatedChange === 'function';
           if (implementHasError) {
             <IHasValidator>(ref.instance as any).onValidatedChange(errors);
@@ -140,9 +139,28 @@ export class DynamicComponentRendererService implements DynamicComponentRenderer
         });
     }
 
+    if (metadata.events?.length) {
+      metadata.events.forEach(e => {
+        const refEventBindings = configuration.eventBindings?.filter(b => b.event === e.key)
+        if (refEventBindings?.length) {
+          subs.sink = (ref.instance[e.key] as Observable<any>).subscribe(p => {
+            refEventBindings.forEach(b => {
+              this.store.dispatch(eventBindingTrigger({ sourceComponentId: configuration.id, targetComponentId: b.component, event: e.key, action: b.action, params: b.params, source: DynamicComponentRendererService.name }));
+            });
+          });
+        }
+      });
+    }
+
+    subs.sink = this.actions$
+      .pipe(ofType(eventBindingTrigger))
+      .pipe(filter(evt => evt.targetComponentId === configuration.id))
+      .subscribe(evt => {
+        ref.instance[evt.action](evt.params);
+      });
+
     ref.onDestroy(() => {
       subs.unsubscribe();
-
     });
     return ref;
   }

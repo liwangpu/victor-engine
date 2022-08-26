@@ -3,8 +3,9 @@ import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR } from 
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { filter } from 'rxjs/operators';
 import { SubSink } from 'subsink';
-import { ComponentEventBinding, LazyService } from 'victor-core';
+import { ComponentEventBinding, ComponentInfoProvider, COMPONENT_INFO_PROVIDER, LazyService } from 'victor-core';
 import { EventAddingSettingComponent } from './event-adding-setting/event-adding-setting.component';
+import * as _ from 'lodash';
 
 export interface AvailabelEventBinding {
   key: string;
@@ -12,8 +13,16 @@ export interface AvailabelEventBinding {
 }
 
 interface EventBindingGroup {
+  event: string;
   eventName: string;
-  bindings: Array<{ componentId: string; componentTitle: string; actionName: string }>;
+  bindings?: Array<EventGroupBindingItem>;
+}
+
+interface EventGroupBindingItem {
+  componentId: string;
+  componentTitle: string;
+  actionName: string;
+  index: number;
 }
 
 @Component({
@@ -29,7 +38,7 @@ interface EventBindingGroup {
     }
   ]
 })
-export class EventBindingConfigComponent implements ControlValueAccessor, OnInit, OnDestroy {
+export class EventBindingConfigComponent implements ControlValueAccessor {
 
   disabled: boolean;
   form: FormGroup;
@@ -41,6 +50,8 @@ export class EventBindingConfigComponent implements ControlValueAccessor, OnInit
   protected readonly fb: FormBuilder;
   @LazyService(NzModalService)
   protected readonly modal: NzModalService;
+  @LazyService(COMPONENT_INFO_PROVIDER)
+  protected readonly infoProvider: ComponentInfoProvider;
   @LazyService(ChangeDetectorRef)
   private readonly cdr: ChangeDetectorRef;
   @LazyService(ViewContainerRef)
@@ -52,17 +63,10 @@ export class EventBindingConfigComponent implements ControlValueAccessor, OnInit
     protected injector: Injector
   ) { }
 
-  ngOnDestroy(): void {
-    this.subs.unsubscribe();
-  }
-
-
-  ngOnInit(): void {
-  }
-
-  writeValue(events: ComponentEventBinding[]): void {
+  async writeValue(events: ComponentEventBinding[]): Promise<void> {
     this.eventBindings = events?.length ? [...events] : [];
-    console.log(`events:`, events);
+    await this.generateBindingGroup();
+    this.cdr.markForCheck();
   }
 
   registerOnChange(fn: any): void {
@@ -86,6 +90,7 @@ export class EventBindingConfigComponent implements ControlValueAccessor, OnInit
       nzOkText: null,
       nzFooter: null,
       nzCentered: false,
+      nzWidth: '640px',
       nzWrapClassName: 'page-editor-modal-wrapper',
       nzClassName: 'page-editor-modal',
       nzViewContainerRef: this.vr,
@@ -95,15 +100,58 @@ export class EventBindingConfigComponent implements ControlValueAccessor, OnInit
     });
     ref.afterClose
       .pipe(filter(evt => evt ? true : false))
-      .subscribe(evt => {
+      .subscribe(async evt => {
         this.eventBindings.push(evt);
         this.publishBinding();
+        await this.generateBindingGroup();
+        this.cdr.markForCheck();
       });
+  }
+
+  async deleteBinding(index: number): Promise<void> {
+    this.eventBindings.splice(index, 1);
+    await this.generateBindingGroup();
+    this.publishBinding();
+    this.cdr.markForCheck();
   }
 
   private publishBinding(): void {
     if (typeof this.onChangeFn === 'function') {
       this.onChangeFn([...this.eventBindings]);
+    }
+  }
+
+  private async generateBindingGroup(): Promise<void> {
+    const infos = await this.infoProvider.getComponentInfo();
+    const metadatas = await this.infoProvider.getComponentMetadata();
+    const componentIdTitleMap = new Map(infos.map(x => ([x.id, x.title])));
+    const componentActionMap = new Map<string, { label: string, value: string }[]>();
+    infos.forEach(io => {
+      const md = metadatas[io.type];
+      if (md?.actions?.length) {
+        componentActionMap.set(io.id, md.actions.map(x => ({ label: x.name, value: x.key })));
+      }
+    });
+    this.groups = [];
+    const eventKeys = _.uniq(this.eventBindings.map(e => e.event));
+    for (let ek of eventKeys) {
+      const g: EventBindingGroup = { event: ek, eventName: this.availableEvents.find(e => e.key === ek).title };
+      const bindings: EventGroupBindingItem[] = [];
+      for (let i = 0; i < this.eventBindings.length; i++) {
+        const b = this.eventBindings[i];
+        const actions = componentActionMap.get(b.component);
+        bindings.push({
+          componentId: b.component,
+          componentTitle: componentIdTitleMap.get(b.component) || '已删除',
+          actionName: actions.find(a => a.value === b.action)?.label || '无',
+          index: i
+        });
+      }
+
+      if (bindings.length) {
+        g.bindings = bindings;
+        this.groups.push(g);
+      }
     }
   }
 

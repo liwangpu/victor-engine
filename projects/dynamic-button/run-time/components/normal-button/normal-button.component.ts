@@ -1,8 +1,5 @@
-import { Component, OnInit, ChangeDetectionStrategy, Injector, OnDestroy, ChangeDetectorRef, HostBinding } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { debounceTime } from 'rxjs/operators';
-import { SubSink } from 'subsink';
-import { ComponentScope, DynamicComponent, IHasValidator, LazyService, PropertyEntry } from 'victor-core';
+import { Component, ChangeDetectionStrategy, Injector, EventEmitter } from '@angular/core';
+import { ComponentEvent, DynamicComponent } from 'victor-core';
 
 @Component({
   selector: 'victor-normal-button',
@@ -10,15 +7,19 @@ import { ComponentScope, DynamicComponent, IHasValidator, LazyService, PropertyE
   styleUrls: ['./normal-button.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NormalButtonComponent extends DynamicComponent implements OnInit {
+export class NormalButtonComponent extends DynamicComponent {
 
+  @ComponentEvent()
+  onclick = new EventEmitter<void>();
   constructor(
     injector: Injector
   ) {
     super(injector);
   }
 
-  ngOnInit(): void {
+  onClick(evt: MouseEvent): void {
+    evt.stopPropagation();
+    this.onclick.next();
   }
 
 }

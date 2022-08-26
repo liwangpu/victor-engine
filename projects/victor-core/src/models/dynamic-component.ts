@@ -55,6 +55,7 @@ export function ComponentEvent(): Function {
 
 export function ComponentAction(actionName: string): Function {
   return function (target: object, propertyName: string, propertyDesciptor: PropertyDescriptor): any {
+
     Reflect.defineMetadata(propertyName, { metadataType: metadataType.action, name: actionName }, target);
     return propertyDesciptor;
   }

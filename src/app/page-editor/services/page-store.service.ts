@@ -31,7 +31,6 @@ export class PageStoreService {
 
   async update(id: string, definition: ComponentConfiguration): Promise<void> {
     const nid = Number.parseInt(id as any);
-    console.log(`definition:`, { ...definition, id: nid });
     await this.db.table('pages').update(nid, { ...definition, id: nid });
   }
 

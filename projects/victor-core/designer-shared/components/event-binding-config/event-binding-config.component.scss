@@ -1,3 +1,52 @@
 :host {
   display: block;
+
+  &>.content {
+    padding: 12px 0 0;
+
+    .event-group {
+      &>.event {
+        display: flex;
+        align-items: center;
+        height: 28px;
+        font-size: 15px;
+        font-weight: 500;
+
+        &>i {
+          margin-right: 8px;
+        }
+      }
+
+      &>.bindings {
+        padding: 0 0 0 20px;
+
+        .binding {
+          display: flex;
+          align-items: center;
+          border: 1px solid #cacdd1;
+          padding: 4px 8px;
+          border-radius: 3px;
+          margin-bottom: 8px;
+
+          &>.info {
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+            margin: 0;
+          }
+
+          &>.operate {
+            cursor: pointer;
+            margin-left: 12px;
+
+            &.delete {
+              &:hover {
+                color: red;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }
