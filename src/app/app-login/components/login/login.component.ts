@@ -58,6 +58,11 @@ export class LoginComponent extends DynamicComponent implements OnInit, OnDestro
     this.cdr.markForCheck();
   }
 
+  @ComponentAction('登录')
+  async login(): Promise<void> {
+    alert(`你点登录啦`);
+  }
+
 
   @ComponentAction('注册')
   async registry(): Promise<void> {
