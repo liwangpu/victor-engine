@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { PageStoreService } from '../../services/page-store.service';
+import * as faker from 'faker';
 
 @Component({
   selector: 'app-page-detail',

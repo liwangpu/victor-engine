@@ -8,18 +8,24 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { VedioPlayerComponent } from './components/vedio-player/vedio-player.component';
+import { VedioPlayerConfigurationComponent } from './components/vedio-player-configuration/vedio-player-configuration.component';
 
 @NgModule({
   declarations: [
     LoginComponent,
     LoginConfigurationComponent,
+    VedioPlayerComponent,
+    VedioPlayerConfigurationComponent,
   ],
   imports: [
     DesignerSharedModule,
     NzInputModule,
     NzButtonModule,
     NzCheckboxModule,
-    NzTabsModule
+    NzTabsModule,
+    NzSwitchModule
   ]
 })
 export class AppLoginModule {
@@ -37,7 +43,7 @@ export class AppLoginModule {
     if (componentRegistry) {
       componentRegistry.registry({
         type: 'login',
-        title: '登录',
+        title: '登录表单',
         group: 'other',
         fac: cfr.resolveComponentFactory(LoginComponent),
         metadataProvider: async (partial: PartialComponentMetadata) => ({
@@ -47,7 +53,7 @@ export class AppLoginModule {
             {
               id: await idGenerator.generate('login_tabs', partial.id),
               type: 'tabs',
-              title: '登录页签',
+              title: '登录选项页签',
               body: [
                 {
                   id: await idGenerator.generate('tab'),
@@ -98,12 +104,26 @@ export class AppLoginModule {
           ]
         })
       });
+
+      componentRegistry.registry({
+        type: 'vedio-player',
+        title: '视频播放器',
+        group: 'other',
+        fac: cfr.resolveComponentFactory(VedioPlayerComponent), metadataProvider: async (partial: PartialComponentMetadata) => ({
+          vedioUrl: "https://www.runoob.com/try/demo_source/movie.ogg"
+        })
+      });
     }
 
     if (designPanelRegistry) {
       designPanelRegistry.registry({
         type: 'login',
         fac: cfr.resolveComponentFactory(LoginConfigurationComponent)
+      });
+
+      designPanelRegistry.registry({
+        type: 'vedio-player',
+        fac: cfr.resolveComponentFactory(VedioPlayerConfigurationComponent)
       });
     }
   }

@@ -1,10 +1,11 @@
 :host {
-  position: relative;
   display: flex;
-  height: 260px;
+  // height: 1px;
+  height: 60px;
   background-color: #fff;
 
   &>.row-item {
+    position: relative;
     flex: 1;
     height: 100%;
 

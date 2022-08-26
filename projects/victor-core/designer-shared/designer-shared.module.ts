@@ -12,6 +12,8 @@ import * as antIcon from '@ant-design/icons-angular/icons';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { ComponentSizeConfigComponent } from './components/component-size-config/component-size-config.component';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 
 const icons: Array<IconDefinition> = [antIcon.LinkOutline, antIcon.PlusOutline];
 
@@ -19,7 +21,8 @@ const icons: Array<IconDefinition> = [antIcon.LinkOutline, antIcon.PlusOutline];
   declarations: [
     ConfigItemComponent,
     EventBindingConfigComponent,
-    EventAddingSettingComponent
+    EventAddingSettingComponent,
+    ComponentSizeConfigComponent
   ],
   imports: [
     CommonModule,
@@ -28,6 +31,7 @@ const icons: Array<IconDefinition> = [antIcon.LinkOutline, antIcon.PlusOutline];
     NzModalModule,
     NzFormModule,
     NzSelectModule,
+    NzInputNumberModule,
     NzInputModule,
     NzIconModule.forChild(icons),
   ],
@@ -39,8 +43,10 @@ const icons: Array<IconDefinition> = [antIcon.LinkOutline, antIcon.PlusOutline];
     NzInputModule,
     NzSelectModule,
     NzFormModule,
+    NzInputNumberModule,
     ConfigItemComponent,
-    EventBindingConfigComponent
+    EventBindingConfigComponent,
+    ComponentSizeConfigComponent
   ]
 })
 export class DesignerSharedModule { }

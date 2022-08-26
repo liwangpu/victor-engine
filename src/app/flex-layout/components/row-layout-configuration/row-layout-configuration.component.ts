@@ -28,7 +28,8 @@ export class RowLayoutConfigurationComponent extends ComponentDesignPanel implem
     super(injector);
     this.form = this.fb.group({
       title: [],
-      rows: [1]
+      rows: [1],
+      size: []
     });
   }
 

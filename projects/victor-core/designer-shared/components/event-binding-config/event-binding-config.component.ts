@@ -58,7 +58,6 @@ export class EventBindingConfigComponent implements ControlValueAccessor {
   private readonly vr: ViewContainerRef;
   private onChangeFn: (val: any) => any;
   private onTouchedFn: () => any;
-  private readonly subs = new SubSink();
   constructor(
     protected injector: Injector
   ) { }

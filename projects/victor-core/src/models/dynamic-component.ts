@@ -15,8 +15,11 @@ export interface ComponentConfiguration {
   id: string;
   type: string;
   title?: string;
+  height?: string;
+  width?: string;
   validators?: ComponentValidatorRule[];
   eventBindings?: ComponentEventBinding[];
+  size?: { width?: number; height?: number; };
   body?: ComponentConfiguration[];
   [key: string]: any;
 }

@@ -11,6 +11,12 @@
     height: 46px;
     padding: 0 20px 0 6px;
     border-bottom: 1px solid #cacdd1;
+
+    &>.operate {
+      &>* {
+        margin-left: 12px;
+      }
+    }
   }
 
   &>.content {

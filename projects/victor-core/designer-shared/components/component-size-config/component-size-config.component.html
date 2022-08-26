@@ -1,0 +1,13 @@
+<form [formGroup]="form">
+  <div class="item">
+    <label>宽度</label>
+    <nz-input-number class="ipt" [nzStep]="1" [nzMin]="0" formControlName="width">
+    </nz-input-number>
+  </div>
+
+  <div class="item">
+    <label>高度</label>
+    <nz-input-number class="ipt" [nzStep]="1" [nzMin]="0" formControlName="height">
+    </nz-input-number>
+  </div>
+</form>

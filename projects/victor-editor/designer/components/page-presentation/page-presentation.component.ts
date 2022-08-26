@@ -3,7 +3,6 @@ import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, forwardR
 import { DynamicComponent, ComponentConfiguration, DynamicComponentRegistry, DYNAMIC_COMPONENT, COMPONENT_CONFIGURATION, DYNAMIC_COMPONENT_REGISTRY, LazyService } from 'victor-core';
 import { DropContainerComponent, DropContainerOpsatService } from 'victor-editor/drop-container';
 import { SubSink } from 'subsink';
-import { v4 as uuidv4 } from 'uuid';
 import { Store } from '@ngrx/store';
 import { activeComponent, selectActiveComponentId, selectPageTree } from 'victor-editor/state-store';
 import { filter, first } from 'rxjs/operators';
