@@ -24,7 +24,7 @@ import { JsonEditorModule } from '../json-editor';
 import { PageListPreviewGuard } from './services/page-list-preview.guard';
 import { PrimaryMarketModule } from 'primary-market';
 import { LocalMarketModule as VideoMarketModule } from '../video-player';
-import { LocalMarketModule as FlexLayoutModule} from '../flex-layout';
+import { LocalMarketModule as FlexLayoutModule } from '../flex-layout';
 
 
 const icons: Array<IconDefinition> = [antIcon.PlusOutline, antIcon.EditOutline, antIcon.LeftOutline, antIcon.FileFill];
@@ -60,7 +60,7 @@ const icons: Array<IconDefinition> = [antIcon.PlusOutline, antIcon.EditOutline, 
     PageStoreService,
     PageDefinitionResolver,
     PageListPreviewGuard,
-    { provide: COMPONENT_GROUP_SORT_RULE, useValue: ['form', 'container'] }
+    { provide: COMPONENT_GROUP_SORT_RULE, useValue: ['form', 'container', 'button', 'other'] }
   ]
 })
 export class PageEditorModule { }

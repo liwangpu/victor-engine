@@ -69,6 +69,12 @@
       "dynamic-tabs/*": [
         "projects/dynamic-tabs/*",
       ],
+      "dynamic-form": [
+        "projects/dynamic-form/src/public-api.ts",
+      ],
+      "dynamic-form/*": [
+        "projects/dynamic-form/*",
+      ],
     }
   },
   "angularCompilerOptions": {

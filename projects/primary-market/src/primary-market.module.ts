@@ -21,6 +21,8 @@ export class PrimaryMarketModule implements ComponentMarket {
         return import(/* webpackPrefetch:true */'dynamic-page/run-time/run-time.module').then(m => m.RunTimeModule as any);
       case 'dynamic-tabs':
         return import(/* webpackPrefetch:true */'dynamic-tabs/run-time/run-time.module').then(m => m.RunTimeModule as any);
+        case 'dynamic-form':
+          return import(/* webpackPrefetch:true */'dynamic-form/run-time/run-time.module').then(m => m.RunTimeModule as any);
       default:
         return Promise.resolve(null);
     }
@@ -36,6 +38,8 @@ export class PrimaryMarketModule implements ComponentMarket {
         return import(/* */'dynamic-page/design-time/design-time.module').then(m => m.DesignTimeModule as any);
       case 'dynamic-tabs':
         return import(/* */'dynamic-tabs/design-time/design-time.module').then(m => m.DesignTimeModule as any);
+        case 'dynamic-form':
+          return import(/* */'dynamic-form/design-time/design-time.module').then(m => m.DesignTimeModule as any);
       default:
         return Promise.resolve(null);
     }

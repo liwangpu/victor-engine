@@ -24,6 +24,15 @@ export const PRIMARY_PACKAGES: Array<ComponentPackageDetail> = [
     runTime: true,
     designTime: true,
     canDesign: true
+  },
+  {
+    type: 'text',
+    title: '文本',
+    group: 'form',
+    package: 'dynamic-form',
+    runTime: true,
+    designTime: true,
+    canDesign: true
   }
 ];
 

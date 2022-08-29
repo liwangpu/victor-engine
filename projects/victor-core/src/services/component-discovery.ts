@@ -14,9 +14,7 @@ export class ComponentDiscoveryService {
     @Inject(COMPONENT_MARKET)
     protected markets: ComponentMarket[],
     protected injector: Injector
-  ) {
-    // console.log(`markets:`, this.markets);
-  }
+  ) { }
 
   async loadComponentRunTimeModuleRef(type: string): Promise<NgModuleRef<ComponentRunTimeModule>> {
     if (this.componentTypeRunTimeModuleRefMap.has(type)) {
@@ -40,7 +38,6 @@ export class ComponentDiscoveryService {
   }
 
   async loadComponentDesignTimeModuleRef(type: string): Promise<NgModuleRef<ComponentDesignTimeModule>> {
-    console.log(`type:`, type);
     if (this.componentTypeDesignTimeModuleRefMap.has(type)) {
       return this.componentTypeDesignTimeModuleRefMap.get(type);
     }

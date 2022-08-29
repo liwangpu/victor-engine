@@ -1,5 +1,4 @@
 import { NgModule, Type } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { CommonModule as ShareCommonModule } from 'victor-editor-shared/common';
 import { RowLayoutConfigurationComponent } from './row-layout-configuration/row-layout-configuration.component';
 import { ComponentDesignPanel, ComponentDesignTimeModule } from 'victor-core';

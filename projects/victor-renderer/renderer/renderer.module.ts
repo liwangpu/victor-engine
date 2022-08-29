@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RendererComponent } from './components/renderer/renderer.component';
 import { StateStoreModule } from 'victor-renderer/state-store';
 import { ComponentDiscoveryService } from 'victor-core';
+import { ValidatorModule } from 'victor-renderer/validator';
 
 @NgModule({
   declarations: [
@@ -10,7 +11,8 @@ import { ComponentDiscoveryService } from 'victor-core';
   ],
   imports: [
     CommonModule,
-    StateStoreModule
+    StateStoreModule,
+    ValidatorModule
   ],
   exports: [
     RendererComponent

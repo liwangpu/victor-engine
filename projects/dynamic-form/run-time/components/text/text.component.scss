@@ -1,0 +1,26 @@
+:host {
+  display: block;
+
+  &.error {
+    ::ng-deep {
+      .ant-input-affix-wrapper{
+        border-color: red !important;
+      }
+    }
+  }
+
+  &>div.title {
+    &>p {
+      padding: 0 0 4px;
+      margin: 0;
+    }
+  }
+
+  &>div.errors {
+    color: red;
+
+    &>p {
+      margin-bottom: 4px;
+    }
+  }
+}

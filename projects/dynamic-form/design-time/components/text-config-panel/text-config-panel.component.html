@@ -1,0 +1,14 @@
+<form [formGroup]="form">
+  <victor-designer-shared-config-item title="标签">
+    <input nz-input placeholder="请输入标签" formControlName="key" />
+  </victor-designer-shared-config-item>
+  <victor-designer-shared-config-item title="标题">
+    <input nz-input placeholder="请输入标题" formControlName="title" />
+  </victor-designer-shared-config-item>
+
+  <victor-designer-shared-config-item title="提示">
+    <input nz-input placeholder="请输入提示" formControlName="placeholder" />
+  </victor-designer-shared-config-item>
+
+  <victor-dynamic-text-validator formControlName="validators"></victor-dynamic-text-validator>
+</form>
