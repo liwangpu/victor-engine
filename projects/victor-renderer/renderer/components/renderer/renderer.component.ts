@@ -1,8 +1,8 @@
-import { Component, OnInit, ChangeDetectionStrategy, Injector, OnDestroy, ViewChild, ViewContainerRef, ChangeDetectorRef, Renderer2 } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Injector, ViewChild, ViewContainerRef, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { SubSink } from 'subsink';
 import { ComponentConfiguration, DynamicComponentRenderer, DYNAMIC_COMPONENT_RENDERER, DYNAMIC_PAGE_ID, LazyService } from 'victor-core';
-import { RENDERER_STARTER, RendererStarter } from '../../tokens/renderer-starter';
 import { DynamicComponentRendererService } from '../../services/dynamic-component-renderer.service';
+import { RENDERER_STARTER, RendererStarter } from '../../tokens/renderer-starter';
 
 @Component({
   selector: 'victor-renderer',
@@ -21,10 +21,8 @@ export class RendererComponent implements OnInit, OnDestroy {
   private readonly starter: RendererStarter;
   @LazyService(DYNAMIC_COMPONENT_RENDERER)
   private readonly componentRenderer: DynamicComponentRenderer;
-  @LazyService(Renderer2)
-  private readonly renderer: Renderer2;
   @LazyService(ChangeDetectorRef)
-  private readonly cdr: ChangeDetectorRef;
+  protected readonly cdr: ChangeDetectorRef;
   private readonly subs = new SubSink();
   constructor(
     protected injector: Injector
@@ -36,28 +34,29 @@ export class RendererComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subs.sink = this.starter.getSchema()
-      .subscribe(async metadata => {
+      .subscribe(async configuration => {
         if (this.container.length) { this.container.clear(); }
-        if (!metadata) { return; }
-        await this.renderComponent(metadata);
+        if (!configuration) { return; }
+        await this.renderComponent(configuration);
       });
   }
 
-  private async renderComponent(metadata: ComponentConfiguration): Promise<void> {
+  private async renderComponent(configuration: ComponentConfiguration): Promise<void> {
     if (this.container.length) { this.container.clear(); }
-    if (!metadata?.type) { return; }
-    const body: ComponentConfiguration[] = metadata.body || [];
+    if (!configuration?.type) { return; }
+    // console.log(`config:`, configuration);
+    // const body: ComponentConfiguration[] = configuration.body || [];
     const ij = Injector.create({
       providers: [
-        { provide: DYNAMIC_PAGE_ID, useValue: metadata.id }
+        { provide: DYNAMIC_PAGE_ID, useValue: configuration.id }
       ],
       parent: this.injector
     });
-    if (body.length) {
-      for (let md of body) {
-        await this.componentRenderer.render(ij, md, this.container);
-      }
-    }
+    // if (body.length) {
+    //   await Promise.all(body.map(md => this.componentRenderer.render(ij, md, this.container)));
+    // }
+    await this.componentRenderer.render(ij, configuration, this.container);
     this.cdr.markForCheck();
   }
+
 }

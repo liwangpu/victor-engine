@@ -7,8 +7,8 @@ const routes: Routes = [
     loadChildren: () => import('./page-editor/page-editor.module').then(m => m.PageEditorModule)
   },
   {
-    path: 'victor-form-demo',
-    loadChildren: () => import('./victor-form-demo/victor-form-demo.module').then(m => m.VictorFormDemoModule)
+    path: 'victor-form',
+    loadChildren: () => import('./victor-form/victor-form.module').then(m => m.VictorFormModule)
   },
   { path: '', pathMatch: 'full', redirectTo: 'pages' },
   { path: '**', redirectTo: 'pages' }

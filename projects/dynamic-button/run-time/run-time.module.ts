@@ -1,22 +1,17 @@
-import { ComponentFactoryResolver, Inject, NgModule, Optional } from '@angular/core';
+import { NgModule, Type } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DynamicComponentRegistry, DYNAMIC_COMPONENT_REGISTRY } from 'victor-core';
-import { TranslateService } from '@ngx-translate/core';
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IconDefinition } from '@ant-design/icons-angular';
 import * as antIcon from '@ant-design/icons-angular/icons';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NormalButtonComponent } from './components/normal-button/normal-button.component';
+import { ButtonComponent } from './components/button/button.component';
+import { ComponentRunTimeModule, DynamicComponent } from 'victor-core';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { TextButtonComponent } from './components/text-button/text-button.component';
 
 const icons: Array<IconDefinition> = [antIcon.CloseCircleOutline];
 
 @NgModule({
   declarations: [
-    NormalButtonComponent,
-    TextButtonComponent
+    ButtonComponent
   ],
   imports: [
     CommonModule,
@@ -24,28 +19,14 @@ const icons: Array<IconDefinition> = [antIcon.CloseCircleOutline];
     NzIconModule.forChild(icons),
   ]
 })
-export class RunTimeModule {
-  constructor(
-    @Optional()
-    @Inject(DYNAMIC_COMPONENT_REGISTRY)
-    componentRegistry: DynamicComponentRegistry,
-    cfr: ComponentFactoryResolver,
-    translater: TranslateService
-  ) {
-    if (componentRegistry) {
-      componentRegistry.registry({
-        type: 'button',
-        title: translater.instant(`dynamicComponent.button`),
-        group: 'button',
-        fac: cfr.resolveComponentFactory(NormalButtonComponent)
-      });
+export class RunTimeModule implements ComponentRunTimeModule {
 
-      componentRegistry.registry({
-        type: 'text-button',
-        title: translater.instant(`dynamicComponent.text-button`),
-        group: 'button',
-        fac: cfr.resolveComponentFactory(TextButtonComponent)
-      });
+  getComponentType(type: string): Type<DynamicComponent> {
+    switch (type) {
+      case 'button':
+        return ButtonComponent;
+      default:
+        return null;
     }
   }
 }

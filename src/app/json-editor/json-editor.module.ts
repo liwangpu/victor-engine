@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { JsonEditorComponent } from './json-editor/json-editor.component';
 
-
-
 @NgModule({
   declarations: [
     JsonEditorComponent

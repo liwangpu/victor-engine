@@ -1,19 +1,17 @@
-import { ComponentFactoryResolver, Inject, NgModule, Optional } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { DesignerComponent } from './components/designer/designer.component';
 import { OptionalComponentPanelComponent } from './components/optional-component-panel/optional-component-panel.component';
 import { PagePresentationComponent } from './components/page-presentation/page-presentation.component';
 import { DropContainerModule } from 'victor-editor/drop-container';
 import { ComponentSettingPanelComponent } from './components/component-setting-panel/component-setting-panel.component';
 import { StateStoreModule } from 'victor-editor/state-store';
-import { ComponentDesignPanelRegistry, COMPONENT_DESIGN_PANEL_REGISTRY, COMPONENT_ID_GENERATOR, DYNAMIC_COMPONENT_RENDERER } from 'victor-core';
-import { ComponentDesignPanelRegistryService } from './services/component-design-panel-registry.service';
+import { ComponentDiscoveryService, COMPONENT_ID_GENERATOR, DYNAMIC_COMPONENT_RENDERER } from 'victor-core';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { ComponentIdGeneratorService } from './services/component-id-generator.service';
-import { PageSettingPanelComponent } from './components/page-setting-panel/page-setting-panel.component';
-import { DesignerSharedModule } from 'victor-core/designer-shared';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { DynamicComponentRendererService } from './services/dynamic-component-renderer.service';
+import { CommonModule as ShareCommonModule } from 'victor-editor-shared/common';
 
 @NgModule({
   declarations: [
@@ -21,10 +19,10 @@ import { DynamicComponentRendererService } from './services/dynamic-component-re
     OptionalComponentPanelComponent,
     PagePresentationComponent,
     ComponentSettingPanelComponent,
-    PageSettingPanelComponent
+    // PageSettingPanelComponent
   ],
   imports: [
-    DesignerSharedModule,
+    ShareCommonModule,
     DropContainerModule,
     StateStoreModule,
     NzButtonModule,
@@ -32,9 +30,10 @@ import { DynamicComponentRendererService } from './services/dynamic-component-re
     NzEmptyModule,
   ],
   providers: [
+    ComponentDiscoveryService,
     { provide: COMPONENT_ID_GENERATOR, useClass: ComponentIdGeneratorService },
     { provide: DYNAMIC_COMPONENT_RENDERER, useClass: DynamicComponentRendererService },
-    { provide: COMPONENT_DESIGN_PANEL_REGISTRY, useClass: ComponentDesignPanelRegistryService },
+    // { provide: COMPONENT_DESIGN_PANEL_REGISTRY, useClass: ComponentDesignPanelRegistryService },
   ],
   exports: [
     DesignerComponent
@@ -42,18 +41,18 @@ import { DynamicComponentRendererService } from './services/dynamic-component-re
 })
 export class DesignerModule {
 
-  constructor(
-    @Optional()
-    @Inject(COMPONENT_DESIGN_PANEL_REGISTRY)
-    designPanelRegistry: ComponentDesignPanelRegistry,
-    cfr: ComponentFactoryResolver
-  ) {
-    if (designPanelRegistry) {
-      designPanelRegistry.registry({
-        type: 'page',
-        fac: cfr.resolveComponentFactory(PageSettingPanelComponent)
-      });
-    }
-  }
-  
+  // constructor(
+  //   @Optional()
+  //   @Inject(COMPONENT_DESIGN_PANEL_REGISTRY)
+  //   designPanelRegistry: ComponentDesignPanelRegistry,
+  //   cfr: ComponentFactoryResolver
+  // ) {
+  //   if (designPanelRegistry) {
+  //     designPanelRegistry.registry({
+  //       type: 'page',
+  //       fac: cfr.resolveComponentFactory(PageSettingPanelComponent)
+  //     });
+  //   }
+  // }
+
 }

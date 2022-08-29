@@ -1,42 +1,32 @@
-import { ComponentFactoryResolver, Inject, NgModule, Optional } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgModule, Type } from '@angular/core';
 import { NormalButtonConfigurationComponent } from './components/normal-button-configuration/normal-button-configuration.component';
-import { ComponentDesignPanelRegistry, COMPONENT_DESIGN_PANEL_REGISTRY } from 'victor-core';
-import { DesignerSharedModule } from 'victor-core/designer-shared';
+import { CommonModule as ShareCommonModule } from 'victor-editor-shared/common';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import { ComponentDesignTimeModule } from 'victor-core';
 
 @NgModule({
   declarations: [
     NormalButtonConfigurationComponent
   ],
   imports: [
-    DesignerSharedModule,
+    ShareCommonModule,
     NzInputModule,
     NzButtonModule,
     NzCheckboxModule,
     NzTabsModule
   ]
 })
-export class DesignTimeModule {
-  constructor(
-    @Optional()
-    @Inject(COMPONENT_DESIGN_PANEL_REGISTRY)
-    designPanelRegistry: ComponentDesignPanelRegistry,
-    cfr: ComponentFactoryResolver
-  ) {
-    if (designPanelRegistry) {
-      designPanelRegistry.registry({
-        type: 'button',
-        fac: cfr.resolveComponentFactory(NormalButtonConfigurationComponent)
-      });
+export class DesignTimeModule implements ComponentDesignTimeModule {
 
-      designPanelRegistry.registry({
-        type: 'text-button',
-        fac: cfr.resolveComponentFactory(NormalButtonConfigurationComponent)
-      });
+  getComponentType(type: string): Type<any> {
+    switch (type) {
+      case 'button':
+        return NormalButtonConfigurationComponent;
+      default:
+        return null;
     }
   }
 }

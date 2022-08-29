@@ -1,10 +1,11 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewChild, ViewContainerRef, OnDestroy, Injector, ChangeDetectorRef, ComponentRef, Renderer2 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { ComponentDesignPanel, ComponentDesignPanelRegistry, COMPONENT_DESIGN_CONFIGURATION, COMPONENT_DESIGN_PANEL_REGISTRY, DesignInteractionOpsat, DESIGN_INTERACTION_OPSAT, DynamicComponentRegistry, DYNAMIC_COMPONENT_REGISTRY, INTERACTION_ACTION_EXECUTOR, INTERACTION_EVENT_OBSERVER, LazyService } from 'victor-core';
-import { selectActiveComponentMetadata, setComponentConfiguration, selectAllComponentIds } from 'victor-editor/state-store';
+import { ComponentDesignPanel, ComponentDiscoveryService, COMPONENT_DESIGN_CONFIGURATION, DesignInteractionOpsat, DESIGN_INTERACTION_OPSAT, INTERACTION_ACTION_EXECUTOR, INTERACTION_EVENT_OBSERVER, LazyService } from 'victor-core';
+import { selectActiveComponentConfiguration, setComponentConfiguration, selectAllComponentIds } from 'victor-editor/state-store';
 import { Subject } from 'rxjs';
-import { debounceTime, filter } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
 import { SubSink } from 'subsink';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'victor-designer-component-setting-panel',
@@ -20,10 +21,8 @@ export class ComponentSettingPanelComponent implements OnInit, OnDestroy {
   protected readonly container: ViewContainerRef;
   @LazyService(ChangeDetectorRef)
   private readonly cdr: ChangeDetectorRef;
-  @LazyService(COMPONENT_DESIGN_PANEL_REGISTRY)
-  private readonly designPanelRegistry: ComponentDesignPanelRegistry;
-  @LazyService(DYNAMIC_COMPONENT_REGISTRY)
-  private readonly componentRegistry: DynamicComponentRegistry;
+  @LazyService(ComponentDiscoveryService)
+  protected readonly componentDiscovery: ComponentDiscoveryService;
   @LazyService(DESIGN_INTERACTION_OPSAT)
   private readonly interactionOpsat: DesignInteractionOpsat;
   @LazyService(Store)
@@ -42,7 +41,8 @@ export class ComponentSettingPanelComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit(): Promise<void> {
-    const componentDes = await this.componentRegistry.getComponentDescriptions();
+    const componentDes = await this.componentDiscovery.getComponentDescriptions();
+    // console.log(`componentDes:`,componentDes);
     componentDes.forEach(d => {
       this.componentTypeTitleMap.set(d.type, d.title);
     });
@@ -64,12 +64,14 @@ export class ComponentSettingPanelComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.subs.sink = this.store.select(selectActiveComponentMetadata)
+    this.subs.sink = this.store.select(selectActiveComponentConfiguration)
       .pipe(filter(cfg => cfg ? true : false))
+      .pipe(distinctUntilChanged(_.isEqual))
       .subscribe(async cfg => {
         let newPanel = false;
+        console.log(`cccc:`,cfg);
         if (!this.panelMap.has(cfg.id)) {
-          const panelDes = await this.designPanelRegistry.getComponentDescription(cfg.type);
+          const panelDes = await this.componentDiscovery.getComponentDescription(cfg.type);
           if (panelDes) {
             const actionExecutor = (actionName: string, data?: any) => {
               this.interactionOpsat.execAction({ componentId: cfg.id, actionName, data });
@@ -82,7 +84,13 @@ export class ComponentSettingPanelComponent implements OnInit, OnDestroy {
               ],
               parent: this.injector
             });
-            const ref = this.container.createComponent(panelDes.fac, null, ij);
+
+            const moduleRef = await this.componentDiscovery.loadComponentDesignTimeModuleRef(cfg.type);
+            if (!moduleRef) { return null; }
+            const componentType = moduleRef.instance.getComponentType(cfg.type);
+            const ref = this.container.createComponent(componentType, {
+              injector: ij
+            });
             const valueChange$ = new Subject<any>();
             const sub = new SubSink();
             ref.instance.registerOnChange(val => {

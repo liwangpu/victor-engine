@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, Injector, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
-import { ComponentAction, ComponentEvent, DynamicComponent, ComponentConfiguration, LazyService, PropertyEntry } from 'victor-core';
+import { ComponentAction, ComponentEvent, DynamicComponent, ComponentConfiguration, LazyService, PropertyEntry, InitialConfigurationProvider, IHasInitialConfiguration, PartialComponentConfiguration, ComponentIdGenerator } from 'victor-core';
 
 @Component({
   selector: 'victor-tabs',
@@ -7,7 +7,7 @@ import { ComponentAction, ComponentEvent, DynamicComponent, ComponentConfigurati
   styleUrls: ['./tabs.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TabsComponent extends DynamicComponent implements OnInit {
+export class TabsComponent extends DynamicComponent implements OnInit, InitialConfigurationProvider<IHasInitialConfiguration, typeof TabsComponent> {
 
   selectedTabIndex: number = 0;
   @PropertyEntry('configuration.body')
@@ -45,6 +45,18 @@ export class TabsComponent extends DynamicComponent implements OnInit {
 
   trackById(index: number, it: ComponentConfiguration): any {
     return it.id;
+  }
+
+  static async configurationProvider(partial: PartialComponentConfiguration, context: { injector: Injector, idGenerator: ComponentIdGenerator }): Promise<PartialComponentConfiguration> {
+    return {
+      body: [
+        {
+          id: await context.idGenerator.generate('tab', partial.id),
+          type: 'tab',
+          title: '页签1'
+        }
+      ]
+    };
   }
 
 }

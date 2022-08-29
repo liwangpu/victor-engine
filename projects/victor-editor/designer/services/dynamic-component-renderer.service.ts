@@ -1,16 +1,17 @@
-import { ComponentFactory, ComponentFactoryResolver, ComponentRef, Inject, Injectable, Injector, Renderer2, ViewContainerRef } from '@angular/core';
+import { ComponentRef, Injectable, Injector, ViewContainerRef } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { DynamicComponent, ComponentConfiguration, DynamicComponentRegistry, DynamicComponentRenderer, COMPONENT_CONFIGURATION, DYNAMIC_COMPONENT_REGISTRY, LazyService } from 'victor-core';
+import { DynamicComponent, ComponentConfiguration, DynamicComponentRenderer, COMPONENT_CONFIGURATION, LazyService, ComponentDiscoveryService, InitialConfigurationProvider, IHasInitialConfiguration, COMPONENT_ID_GENERATOR, ComponentIdGenerator } from 'victor-core';
 import { ComponentDesignWrapperComponent } from 'victor-editor/drop-container';
 import { setComponentMetadata } from 'victor-editor/state-store';
+import * as _ from 'lodash';
 
 @Injectable()
 export class DynamicComponentRendererService implements DynamicComponentRenderer {
 
-  @LazyService(DYNAMIC_COMPONENT_REGISTRY)
-  protected readonly registry: DynamicComponentRegistry;
-  @LazyService(ComponentFactoryResolver)
-  protected readonly cfr: ComponentFactoryResolver;
+  @LazyService(ComponentDiscoveryService)
+  protected readonly componentDiscovery: ComponentDiscoveryService;
+  @LazyService(COMPONENT_ID_GENERATOR)
+  protected idGenerator: ComponentIdGenerator;
   @LazyService(Store)
   private readonly store: Store;
   constructor(
@@ -18,29 +19,43 @@ export class DynamicComponentRendererService implements DynamicComponentRenderer
   ) { }
 
   async render(parent: Injector, config: ComponentConfiguration, container: ViewContainerRef): Promise<ComponentRef<DynamicComponent>> {
+    const moduleRef = await this.componentDiscovery.loadComponentRunTimeModuleRef(config.type);
+    if (!moduleRef) { return null; }
+    const hasBeenwrapped = container['_hostLView'][0].nodeName === 'VICTOR-DESIGNER-COMPONENT-DESIGN-WRAPPER';
+    let componentRef: ComponentRef<any>;
     const ij = Injector.create({
       providers: [
         { provide: COMPONENT_CONFIGURATION, useValue: config },
       ],
       parent
     });
-
-    const hasBeenwrapped = container['_hostLView'][0].nodeName === 'VICTOR-DESIGNER-COMPONENT-DESIGN-WRAPPER';
-    let fac: ComponentFactory<DynamicComponent>;
     if (hasBeenwrapped) {
-      const des = await this.registry.getComponentDescription(config.type);
-      fac = des.fac;
+      const componentType = moduleRef.instance.getComponentType(config.type);
+      // const implementInitalConfigurationProvider = typeof (componentType as any).configurationProvider === 'function';
+      // if (implementInitalConfigurationProvider) {
+      //   const context = { injector: parent, idGenerator: this.idGenerator };
+      //   const partialConfig = await (componentType as any).configurationProvider(_.cloneDeep(config), context);
+      //   if (partialConfig) {
+      //     config = { ...config, ...partialConfig };
+      //   }
+      // }
+      componentRef = container.createComponent(componentType, {
+        injector: ij,
+        ngModuleRef: moduleRef
+      });
     } else {
-      fac = this.cfr.resolveComponentFactory(ComponentDesignWrapperComponent);
+      componentRef = container.createComponent(ComponentDesignWrapperComponent, {
+        injector: ij
+      });
     }
     // 设计器模式下,手动包一层design wrapper
-    const ref = container.createComponent(fac, null, ij);
-    if(hasBeenwrapped){
-      const metadata = ref.instance['getMetadata']();
+
+    if (hasBeenwrapped) {
+      const metadata = componentRef.instance['getMetadata']();
       this.store.dispatch(setComponentMetadata({ componentType: config.type, metadata, source: DynamicComponentRendererService.name }));
     }
-    const nel: HTMLElement = ref.location.nativeElement;
+    const nel: HTMLElement = componentRef.location.nativeElement;
     nel.classList.add('dynamic-component');
-    return ref;
+    return componentRef;
   }
 }

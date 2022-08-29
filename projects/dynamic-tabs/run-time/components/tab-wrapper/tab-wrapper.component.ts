@@ -16,8 +16,6 @@ export class TabWrapperComponent implements OnInit {
   protected container: ViewContainerRef;
   @LazyService(ChangeDetectorRef)
   protected readonly cdr: ChangeDetectorRef;
-  @LazyService(ComponentFactoryResolver)
-  protected cfr: ComponentFactoryResolver;
   constructor(
     @Optional()
     @Inject(CUSTOM_RENDER_PROVIDER)
@@ -32,16 +30,16 @@ export class TabWrapperComponent implements OnInit {
       ],
       parent: this.injector
     });
-    let fac = null;
+    let componentType = null;
     if (this.customRenderProvider) {
-      fac = await this.customRenderProvider.getRenderFactory(this.tab);
+      componentType = await this.customRenderProvider.getRenderComponent(this.tab);
     }
 
-    fac = fac || this.cfr.resolveComponentFactory(TabComponent);
+    componentType = componentType || TabComponent;
 
-    if (fac) {
-      this.container.createComponent(fac, null, ij);
-    }
+    this.container.createComponent(componentType, {
+      injector: ij
+    });
     this.cdr.markForCheck();
   }
 

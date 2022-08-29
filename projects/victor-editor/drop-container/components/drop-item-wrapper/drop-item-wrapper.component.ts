@@ -1,5 +1,5 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, ViewContainerRef, ViewChild, Injector, ComponentFactoryResolver } from '@angular/core';
-import { ComponentConfiguration, COMPONENT_CONFIGURATION, LazyService } from 'victor-core';
+import { Component, OnInit, ChangeDetectionStrategy, Input, ViewContainerRef, ViewChild, Injector } from '@angular/core';
+import { ComponentConfiguration, COMPONENT_CONFIGURATION } from 'victor-core';
 import { ComponentDesignWrapperComponent } from '../component-design-wrapper/component-design-wrapper.component';
 
 @Component({
@@ -14,22 +14,21 @@ export class DropItemWrapperComponent implements OnInit {
   configuration: ComponentConfiguration;
   @ViewChild('container', { static: true, read: ViewContainerRef })
   readonly container: ViewContainerRef;
-  @LazyService(ComponentFactoryResolver)
-  private readonly cdr: ComponentFactoryResolver;
   constructor(
     protected injector: Injector
   ) {
   }
 
   async ngOnInit(): Promise<void> {
-    const fac = this.cdr.resolveComponentFactory(ComponentDesignWrapperComponent);
     const ij = Injector.create({
       providers: [
         { provide: COMPONENT_CONFIGURATION, useValue: this.configuration },
       ],
       parent: this.injector
     });
-    const ref = this.container.createComponent(fac, null, ij);
+    const ref = this.container.createComponent(ComponentDesignWrapperComponent, {
+      injector: ij
+    });
   }
 
 }

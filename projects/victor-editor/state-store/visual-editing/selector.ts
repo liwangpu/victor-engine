@@ -46,3 +46,14 @@ export const selectPageTree: MemoizedSelector<VictorDesignerState, ComponentTree
     return pageTree;
   }
 );
+
+export const selectTopComponentTree: MemoizedSelector<VictorDesignerState, ComponentTreeState> = createSelector(
+  selectVictorDesignerState,
+  (state: VictorDesignerState) => {
+    if (!state.componentTrees) { return null; }
+    const componentIds = Object.keys(state.componentTrees);
+    const componentTrees: ComponentTreeState[] = componentIds.map(id => state.componentTrees[id]);
+    let pageTree = componentTrees.find(t => !t.parentId);
+    return pageTree;
+  }
+);

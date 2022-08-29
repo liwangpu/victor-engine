@@ -1,0 +1,6 @@
+<div class="editor">
+  <app-json-editor [ngModel]="schema" (ngModelChange)="onSchemaChange($event)"></app-json-editor>
+</div>
+<div class="form">
+  <victor-form [schema]="schema" [formControl]="control"></victor-form>
+</div>

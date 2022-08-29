@@ -3,10 +3,9 @@ import { OptionalComponentDefinition, OptionalComponentGroup } from '../../model
 import { SubSink } from 'subsink';
 import * as _ from 'lodash';
 import { DropContainerOpsatService } from 'victor-editor/drop-container';
-import { DynamicComponentRegistry, DYNAMIC_COMPONENT_REGISTRY, LazyService } from 'victor-core';
+import { ComponentDiscoveryService, LazyService } from 'victor-core';
 import { TranslateService } from '@ngx-translate/core';
 import { COMPONENT_GROUP_SORT_RULE } from 'victor-editor';
-import * as faker from 'faker';
 @Component({
   selector: 'victor-designer-optional-component-panel',
   templateUrl: './optional-component-panel.component.html',
@@ -21,8 +20,8 @@ export class OptionalComponentPanelComponent implements OnInit, OnDestroy {
   private readonly opsat: DropContainerOpsatService;
   @LazyService(ChangeDetectorRef)
   private readonly cdr: ChangeDetectorRef;
-  @LazyService(DYNAMIC_COMPONENT_REGISTRY)
-  private readonly dynamicComponentRegistry: DynamicComponentRegistry;
+  @LazyService(ComponentDiscoveryService)
+  protected readonly componentDiscovery: ComponentDiscoveryService;
   @LazyService(COMPONENT_GROUP_SORT_RULE, [])
   private readonly componentGroupSortRule: string[];
   @LazyService(TranslateService)
@@ -37,7 +36,8 @@ export class OptionalComponentPanelComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit(): Promise<void> {
-    const des = await this.dynamicComponentRegistry.getComponentDescriptions();
+    const des = await this.componentDiscovery.getComponentDescriptions();
+    console.log(`des:`,des);
     const groupTypes = des.map(c => c.group).filter(g => g ? true : false);
     const allGroupTypes = [];
     const typeMap = new Set(groupTypes);

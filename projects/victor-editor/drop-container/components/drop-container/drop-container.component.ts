@@ -1,15 +1,12 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, HostBinding, ElementRef, ViewChild, ChangeDetectorRef, Injector, ViewContainerRef, ComponentRef, ComponentFactoryResolver, Renderer2, NgZone } from '@angular/core';
 import * as _ from 'lodash';
-import { DropContainerOpsatService } from '../../services/drop-container-opsat.service';
 import { SubSink } from 'subsink';
 import SortableJs from 'sortablejs';
-import { ComponentIdGenerator, COMPONENT_ID_GENERATOR, DynamicComponent, ComponentConfiguration, DynamicComponentRegistry, DYNAMIC_COMPONENT, DYNAMIC_COMPONENT_REGISTRY, LazyService, UNIQUE_ID, COMPONENT_CONFIGURATION } from 'victor-core';
-import { v4 as uuidv4 } from 'uuid';
+import { ComponentIdGenerator, COMPONENT_ID_GENERATOR, DynamicComponent, ComponentConfiguration, LazyService, ComponentDiscoveryService } from 'victor-core';
 import { Store } from '@ngrx/store';
-import { addNewComponent, moveComponent, selectFirstLevelBodyComponents, selectComponentConfiguration, selectFirstLevelBodyComponentIds } from 'victor-editor/state-store';
-import { first, take, distinctUntilChanged } from 'rxjs/operators';
+import { addNewComponent, moveComponent, selectFirstLevelBodyComponents, selectComponentConfiguration } from 'victor-editor/state-store';
+import { first, distinctUntilChanged } from 'rxjs/operators';
 import Sortable from 'sortablejs';
-import { ComponentDesignWrapperComponent } from '../component-design-wrapper/component-design-wrapper.component';
 
 @Component({
   selector: 'victor-designer-drop-container',
@@ -29,8 +26,6 @@ export class DropContainerComponent extends DynamicComponent implements OnInit, 
   @ViewChild('dropContainer', { static: true })
   private readonly dropContainer: ElementRef;
   private subs = new SubSink();
-  @LazyService(ComponentFactoryResolver)
-  private readonly cfr: ComponentFactoryResolver;
   @LazyService(ChangeDetectorRef)
   private readonly cdr: ChangeDetectorRef;
   @LazyService(Renderer2)
@@ -39,8 +34,8 @@ export class DropContainerComponent extends DynamicComponent implements OnInit, 
   private readonly store: Store;
   @LazyService(COMPONENT_ID_GENERATOR)
   private readonly idGenerator: ComponentIdGenerator;
-  @LazyService(DYNAMIC_COMPONENT_REGISTRY)
-  private readonly dynamicComponentRegistry: DynamicComponentRegistry;
+  @LazyService(ComponentDiscoveryService)
+  protected readonly componentDiscovery: ComponentDiscoveryService;
   @LazyService(NgZone)
   private readonly zone: NgZone;
   private componentRefMap = new Map<string, [ComponentRef<DynamicComponent>, number]>();
@@ -109,10 +104,16 @@ export class DropContainerComponent extends DynamicComponent implements OnInit, 
         if (!configurationStr) { return; }
         let configuration: ComponentConfiguration = JSON.parse(configurationStr);
         if (configuration.id) { return; }
-        const des = await this.dynamicComponentRegistry.getComponentDescription(configuration.type);
-        if (typeof des.metadataProvider === 'function') {
-          const partialConfiguration = await des.metadataProvider(configuration);
-          configuration = { ...configuration, ...partialConfiguration };
+        const moduleRef = await this.componentDiscovery.loadComponentRunTimeModuleRef(configuration.type);
+        if (!moduleRef) { return null; }
+        const componentType = moduleRef.instance.getComponentType(configuration.type);
+        const implementInitalConfigurationProvider = typeof (componentType as any).configurationProvider === 'function';
+        if (implementInitalConfigurationProvider) {
+          const context = { injector: parent, idGenerator: this.idGenerator };
+          const partialConfig = await (componentType as any).configurationProvider(_.cloneDeep(configuration), context);
+          if (partialConfig) {
+            configuration = { ...configuration, ...partialConfig };
+          }
         }
         const componetId = await this.idGenerator.generate(configuration.type);
         this.store.dispatch(addNewComponent({ configuration: { ...configuration, id: componetId }, parentId: this.configuration.id, index: evt.newIndex, source: DropContainerComponent.name }));

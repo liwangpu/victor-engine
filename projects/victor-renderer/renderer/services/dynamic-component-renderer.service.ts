@@ -1,13 +1,11 @@
 import { ComponentRef, Injectable, Injector, OnDestroy, ViewContainerRef } from '@angular/core';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { debounceTime, delay, distinctUntilChanged, filter, first, skip } from 'rxjs/operators';
+import { BehaviorSubject, debounceTime, delay, distinctUntilChanged, filter, first, Observable, skip } from 'rxjs';
 import { SubSink } from 'subsink';
+import { ComponentConfiguration, ComponentDiscoveryService, ComponentMetadata, COMPONENT_CONFIGURATION, DynamicComponent, DynamicComponentRenderer, DynamicValidator, DYNAMIC_PAGE_ID, DYNAMIC_VALIDATOR, IHasValidator, LazyService } from 'victor-core';
+import { eventBindingTrigger, selectComonentValidatedErrors, selectVictorRendererState, setComponentMetadata, setComponentScope, setComponentValidatedError } from 'victor-renderer/state-store';
 import * as _ from 'lodash';
-import { ComponentMetadata, DynamicComponent, ComponentConfiguration, DynamicComponentRegistry, DynamicComponentRenderer, COMPONENT_CONFIGURATION, DYNAMIC_COMPONENT_REGISTRY, DYNAMIC_PAGE_ID, LazyService, DynamicValidator, DYNAMIC_VALIDATOR, IHasValidator } from 'victor-core';
-import { setComponentMetadata, setComponentScope, selectVictorRendererState, selectComonentValidatedErrors, eventBindingTrigger } from 'victor-renderer/state-store';
-import { setComponentValidatedError } from 'victor-renderer/state-store/component-validated-error';
 
 @Injectable()
 export class DynamicComponentRendererService implements DynamicComponentRenderer, OnDestroy {
@@ -16,12 +14,12 @@ export class DynamicComponentRendererService implements DynamicComponentRenderer
   private readonly store: Store;
   @LazyService(Actions)
   private readonly actions$: Actions;
-  @LazyService(DYNAMIC_COMPONENT_REGISTRY)
-  private readonly registry: DynamicComponentRegistry;
   @LazyService(DYNAMIC_VALIDATOR, [])
   private readonly validators: DynamicValidator[];
   private validatorMap: Map<string, DynamicValidator>;
   private readonly subs = new SubSink();
+  @LazyService(ComponentDiscoveryService)
+  protected readonly componentDiscovery: ComponentDiscoveryService;
   constructor(
     protected injector: Injector
   ) {
@@ -96,19 +94,23 @@ export class DynamicComponentRendererService implements DynamicComponentRenderer
   }
 
   async render(parent: Injector, configuration: ComponentConfiguration, container: ViewContainerRef): Promise<ComponentRef<DynamicComponent>> {
+    const moduleRef = await this.componentDiscovery.loadComponentRunTimeModuleRef(configuration.type);
+    if (!moduleRef) { return null; }
+    const componentType = moduleRef.instance.getComponentType(configuration.type);
+    if (!componentType) {
+      return null;
+    }
     const ij = Injector.create({
       providers: [
         { provide: COMPONENT_CONFIGURATION, useValue: configuration },
       ],
       parent
     });
+    const ref = container.createComponent(componentType, {
+      injector: ij,
+      ngModuleRef: moduleRef
+    });
     const pageId = parent.get(DYNAMIC_PAGE_ID);
-    const des = await this.registry.getComponentDescription(configuration.type);
-    if (!des) {
-      console.warn(`未在组件市场找到类型为:${configuration.type}的组件,引擎将忽略该组件的渲染`);
-      return null;
-    }
-    const ref = container.createComponent(des.fac, null, ij);
     const nel: HTMLElement = ref.location.nativeElement;
     nel.classList.add('dynamic-component');
     const metadata = ref.instance['getMetadata']();
@@ -164,5 +166,4 @@ export class DynamicComponentRendererService implements DynamicComponentRenderer
     });
     return ref;
   }
-
 }

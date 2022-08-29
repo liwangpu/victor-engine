@@ -9,7 +9,7 @@ export class PageDefinitionResolver implements Resolve<any> {
   ) { }
 
   async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<any> {
-    const definition = await this.pageStore.get(route.params.id);
+    const definition = await this.pageStore.get(route.params['id']);
     // const schema = definition;
     return definition;
   }

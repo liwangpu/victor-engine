@@ -6,6 +6,8 @@
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": false,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "allowSyntheticDefaultImports": true,
@@ -18,7 +20,7 @@
     "target": "es2017",
     "module": "es2020",
     "lib": [
-      "es2018",
+      "es2020",
       "dom"
     ],
     "paths": {
@@ -28,17 +30,38 @@
       "victor-core/*": [
         "projects/victor-core/*",
       ],
+      "victor-renderer": [
+        "projects/victor-renderer/src/public-api.ts",
+      ],
+      "victor-renderer/*": [
+        "projects/victor-renderer/*",
+      ],
       "victor-editor": [
         "projects/victor-editor/src/public-api.ts",
       ],
       "victor-editor/*": [
         "projects/victor-editor/*",
       ],
-      "victor-renderer": [
-        "projects/victor-renderer/src/public-api.ts",
+      "primary-market": [
+        "projects/primary-market/src/public-api.ts",
       ],
-      "victor-renderer/*": [
-        "projects/victor-renderer/*",
+      "victor-editor-shared": [
+        "projects/victor-editor-shared/src/public-api.ts",
+      ],
+      "victor-editor-shared/*": [
+        "projects/victor-editor-shared/*",
+      ],
+      "dynamic-button": [
+        "projects/dynamic-button/src/public-api.ts",
+      ],
+      "dynamic-button/*": [
+        "projects/dynamic-button/*",
+      ],
+      "dynamic-page": [
+        "projects/dynamic-page/src/public-api.ts"
+      ],
+      "dynamic-page/*": [
+        "projects/dynamic-page/*"
       ],
       "dynamic-tabs": [
         "projects/dynamic-tabs/src/public-api.ts",
@@ -46,19 +69,7 @@
       "dynamic-tabs/*": [
         "projects/dynamic-tabs/*",
       ],
-      "dynamic-form": [
-        "projects/dynamic-form/src/public-api.ts",
-      ],
-      "dynamic-form/*": [
-        "projects/dynamic-form/*",
-      ],
-      "dynamic-button": [
-        "projects/dynamic-button/src/public-api.ts"
-      ],
-      "dynamic-button/*": [
-        "projects/dynamic-button/*"
-      ],
-    },
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

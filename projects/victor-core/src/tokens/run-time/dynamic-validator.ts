@@ -1,5 +1,3 @@
-export class DynamicValidatorRegistry {
-}
 import { InjectionToken } from '@angular/core';
 import 'reflect-metadata';
 import { ComponentMetadata, ComponentValidatorRule, ComponentConfiguration } from 'victor-core';

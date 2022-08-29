@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, Injector, OnDestroy } from 
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { SubSink } from 'subsink';
 import { ComponentDesignPanel, LazyService } from 'victor-core';
-import { AvailabelEventBinding } from 'victor-core/designer-shared';
+import { AvailabelEventBinding } from 'victor-editor-shared/common';
 
 @Component({
   selector: 'victor-normal-button-configuration',

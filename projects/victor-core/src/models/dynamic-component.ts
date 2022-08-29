@@ -10,7 +10,6 @@ enum metadataType {
   event = 'event'
 }
 
-
 export interface ComponentConfiguration {
   id: string;
   type: string;
@@ -24,6 +23,7 @@ export interface ComponentConfiguration {
   [key: string]: any;
 }
 
+export type PartialComponentConfiguration = { [P in keyof ComponentConfiguration]?: ComponentConfiguration[P] };
 
 export const COMPONENT_CONFIGURATION = new InjectionToken<DynamicComponent>('component configuration');
 
@@ -95,11 +95,10 @@ export abstract class DynamicComponent {
     const actions: Array<{ key: string; type: string; name: string }> = [];
     const events: Array<{ key: string; type: string }> = [];
     keys.forEach(key => {
-
       let md: { metadataType: metadataType, [key: string]: any } = Reflect.getMetadata(key, this);
       switch (md.metadataType) {
         case metadataType.action:
-          actions.push({ key, name: md.name, type: this.type });
+          actions.push({ key, name: md['name'], type: this.type });
           break;
         case metadataType.event:
           events.push({ key, type: this.type });
@@ -109,7 +108,6 @@ export abstract class DynamicComponent {
           break;
         default:
           break;
-
       }
     });
 

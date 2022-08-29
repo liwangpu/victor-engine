@@ -16,7 +16,7 @@ function getBodyConfiguration(state: VictorDesignerState, bodyIds: string[]): Co
 }
 
 // 注意,这里body只选择第一级
-export const selectActiveComponentMetadata: MemoizedSelector<VictorDesignerState, ComponentConfiguration> = createSelector(
+export const selectActiveComponentConfiguration: MemoizedSelector<VictorDesignerState, ComponentConfiguration> = createSelector(
   selectVictorDesignerState,
   (state: VictorDesignerState) => {
     if (!state.activeComponentId) { return null; }

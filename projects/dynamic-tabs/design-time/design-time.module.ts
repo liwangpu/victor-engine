@@ -1,10 +1,10 @@
-import { ComponentFactoryResolver, Inject, NgModule, Optional } from '@angular/core';
-import { ComponentDesignPanelRegistry, COMPONENT_DESIGN_PANEL_REGISTRY } from 'victor-core';
+import { NgModule, Type } from '@angular/core';
 import { TabsSettingComponent } from './components/tabs-setting/tabs-setting.component';
-import { DesignerSharedModule } from 'victor-core/designer-shared';
+import { CommonModule as ShareCommonModule } from 'victor-editor-shared/common';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { TabsConfigPanelComponent } from './components/tabs-config-panel/tabs-config-panel.component';
+import { ComponentDesignTimeModule } from 'victor-core';
 
 @NgModule({
   declarations: [
@@ -12,23 +12,19 @@ import { TabsConfigPanelComponent } from './components/tabs-config-panel/tabs-co
     TabsConfigPanelComponent
   ],
   imports: [
-    DesignerSharedModule,
+    ShareCommonModule,
     NzInputModule,
     NzButtonModule
   ]
 })
-export class DesignTimeModule {
-  constructor(
-    @Optional()
-    @Inject(COMPONENT_DESIGN_PANEL_REGISTRY)
-    designPanelRegistry: ComponentDesignPanelRegistry,
-    cfr: ComponentFactoryResolver
-  ) {
-    if (designPanelRegistry) {
-      designPanelRegistry.registry({
-        type: 'tabs',
-        fac: cfr.resolveComponentFactory(TabsConfigPanelComponent)
-      });
+export class DesignTimeModule implements ComponentDesignTimeModule {
+
+  getComponentType(type: string): Type<any> {
+    switch (type) {
+      case 'tabs':
+        return TabsConfigPanelComponent;
+      default:
+        return null;
     }
   }
 }

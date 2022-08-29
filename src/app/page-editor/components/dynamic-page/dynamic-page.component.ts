@@ -36,7 +36,7 @@ export class DynamicPageComponent implements RendererStarter, OnInit, OnDestroy 
 
   async ngOnInit(): Promise<void> {
     this.subs.sink = this.acr.data
-      .pipe(map(d => d.definition))
+      .pipe(map(d => d['definition']))
       .subscribe(schema => {
         this.pageSchema$.next(schema);
       });
