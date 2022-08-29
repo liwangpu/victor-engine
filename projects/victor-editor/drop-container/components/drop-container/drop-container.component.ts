@@ -84,9 +84,10 @@ export class DropContainerComponent extends DynamicComponent implements OnInit, 
         containers.forEach(e => {
           this.renderer.addClass(e, 'hidden');
         });
+        const pid = 'victor-editor-drop-preview';
+        this.previewNode = document.getElementById(pid)
         if (!this.previewNode) {
-          const pid = 'victor-editor-drop-preview';
-          this.previewNode = document.getElementById(pid) || document.createElement('div');
+          this.previewNode = document.createElement('div');
           this.previewNode.id = pid;
           document.body.appendChild(this.previewNode);
         } else {

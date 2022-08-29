@@ -37,7 +37,7 @@ export class OptionalComponentPanelComponent implements OnInit, OnDestroy {
 
   async ngOnInit(): Promise<void> {
     const des = await this.componentDiscovery.getComponentDescriptions();
-    console.log(`des:`,des);
+    // console.log(`des:`, des);
     const groupTypes = des.map(c => c.group).filter(g => g ? true : false);
     const allGroupTypes = [];
     const typeMap = new Set(groupTypes);

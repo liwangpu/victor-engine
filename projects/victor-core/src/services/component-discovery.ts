@@ -40,6 +40,7 @@ export class ComponentDiscoveryService {
   }
 
   async loadComponentDesignTimeModuleRef(type: string): Promise<NgModuleRef<ComponentDesignTimeModule>> {
+    console.log(`type:`, type);
     if (this.componentTypeDesignTimeModuleRefMap.has(type)) {
       return this.componentTypeDesignTimeModuleRefMap.get(type);
     }
@@ -77,7 +78,7 @@ export class ComponentDiscoveryService {
     if (!this.markets?.length) { return null; }
     for (let mk of this.markets) {
       const d = await mk.getComponentDescription(type);
-      if (!d) { return null; }
+      if (!d) { continue; }
       if (d.type === type) {
         this.componentTypeMarketMap.set(d.type, mk);
         return { ...d, market: mk.name };

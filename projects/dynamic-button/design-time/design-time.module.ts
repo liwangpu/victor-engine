@@ -5,7 +5,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
-import { ComponentDesignTimeModule } from 'victor-core';
+import { ComponentDesignPanel, ComponentDesignTimeModule } from 'victor-core';
 
 @NgModule({
   declarations: [
@@ -21,7 +21,7 @@ import { ComponentDesignTimeModule } from 'victor-core';
 })
 export class DesignTimeModule implements ComponentDesignTimeModule {
 
-  getComponentType(type: string): Type<any> {
+  getComponentType(type: string): Type<ComponentDesignPanel> {
     switch (type) {
       case 'button':
         return NormalButtonConfigurationComponent;

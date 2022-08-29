@@ -23,6 +23,8 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { JsonEditorModule } from '../json-editor';
 import { PageListPreviewGuard } from './services/page-list-preview.guard';
 import { PrimaryMarketModule } from 'primary-market';
+import { LocalMarketModule as VideoMarketModule } from '../video-player';
+import { LocalMarketModule as FlexLayoutModule} from '../flex-layout';
 
 
 const icons: Array<IconDefinition> = [antIcon.PlusOutline, antIcon.EditOutline, antIcon.LeftOutline, antIcon.FileFill];
@@ -49,6 +51,8 @@ const icons: Array<IconDefinition> = [antIcon.PlusOutline, antIcon.EditOutline, 
     NzDrawerModule,
     // victor engine 
     PrimaryMarketModule,
+    VideoMarketModule,
+    FlexLayoutModule,
     RendererModule,
     DesignerModule,
   ],

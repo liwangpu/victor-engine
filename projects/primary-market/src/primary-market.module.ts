@@ -1,5 +1,5 @@
 import { forwardRef, NgModule } from '@angular/core';
-import { ComponentDescription, ComponentDesignTimeModule, ComponentRunTimeModule, COMPONENT_MARKET } from 'victor-core';
+import { ComponentDescription, ComponentDesignTimeModule, ComponentMarket, ComponentRunTimeModule, COMPONENT_MARKET } from 'victor-core';
 import { ComponentPackageDetail, PRIMARY_PACKAGES } from './primary-components';
 
 @NgModule({
@@ -7,7 +7,7 @@ import { ComponentPackageDetail, PRIMARY_PACKAGES } from './primary-components';
     { provide: COMPONENT_MARKET, useExisting: forwardRef(() => PrimaryMarketModule), multi: true }
   ]
 })
-export class PrimaryMarketModule {
+export class PrimaryMarketModule implements ComponentMarket {
   readonly name: string = 'primary';
   private readonly componentMap = new Map<string, ComponentPackageDetail>(PRIMARY_PACKAGES.map(p => ([p.type, p])));
 

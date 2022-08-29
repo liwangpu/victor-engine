@@ -1,1 +1,15 @@
-<router-outlet></router-outlet>
+<div class="header">
+  <ul nz-menu nzMode="horizontal">
+    <li nz-menu-item nzMatchRouter routerLink="/pages">
+      <span nz-icon nzType="layout" nzTheme="outline"></span>
+      <span>页面设计器</span>
+    </li>
+    <li nz-menu-item nzMatchRouter routerLink="/victor-form">
+      <span nz-icon nzType="form" nzTheme="outline"></span>
+      <span>渲染引擎运行时</span>
+    </li>
+  </ul>
+</div>
+<div class="content">
+  <router-outlet></router-outlet>
+</div>

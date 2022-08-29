@@ -4,7 +4,7 @@ import { CommonModule as ShareCommonModule } from 'victor-editor-shared/common';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { TabsConfigPanelComponent } from './components/tabs-config-panel/tabs-config-panel.component';
-import { ComponentDesignTimeModule } from 'victor-core';
+import { ComponentDesignPanel, ComponentDesignTimeModule } from 'victor-core';
 
 @NgModule({
   declarations: [
@@ -19,7 +19,7 @@ import { ComponentDesignTimeModule } from 'victor-core';
 })
 export class DesignTimeModule implements ComponentDesignTimeModule {
 
-  getComponentType(type: string): Type<any> {
+  getComponentType(type: string): Type<ComponentDesignPanel> {
     switch (type) {
       case 'tabs':
         return TabsConfigPanelComponent;

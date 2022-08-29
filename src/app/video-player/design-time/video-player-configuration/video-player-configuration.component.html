@@ -1,0 +1,17 @@
+<form [formGroup]="form">
+  <victor-designer-shared-config-item title="标题">
+    <input nz-input placeholder="请输入标题" formControlName="title" />
+  </victor-designer-shared-config-item>
+
+  <victor-designer-shared-config-item title="视频地址">
+    <input nz-input placeholder="请输入视频地址" formControlName="vedioUrl" />
+  </victor-designer-shared-config-item>
+
+  <victor-designer-shared-config-item title="自动播放">
+    <nz-switch formControlName="autoplay"></nz-switch>
+  </victor-designer-shared-config-item>
+
+  <victor-designer-shared-config-item title="显示控件">
+    <nz-switch formControlName="showControl"></nz-switch>
+  </victor-designer-shared-config-item>
+</form>

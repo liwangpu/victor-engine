@@ -1,6 +1,6 @@
 import { NgModule, Type } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DynamicComponent } from 'victor-core';
+import { ComponentRunTimeModule, DynamicComponent } from 'victor-core';
 import { TabsComponent } from './components/tabs/tabs.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { TabComponent } from './components/tab/tab.component';
@@ -19,7 +19,7 @@ import { TabWrapperComponent } from './components/tab-wrapper/tab-wrapper.compon
     NzTabsModule
   ]
 })
-export class RunTimeModule implements RunTimeModule {
+export class RunTimeModule implements ComponentRunTimeModule {
 
   getComponentType(type: string): Type<DynamicComponent> {
     console.log(`type type:`, type);

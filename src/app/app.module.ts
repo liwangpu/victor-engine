@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IconDefinition } from '@ant-design/icons-angular';
-import { MenuFoldOutline, MenuUnfoldOutline } from '@ant-design/icons-angular/icons';
+import * as antIcon from '@ant-design/icons-angular/icons';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -19,6 +19,7 @@ import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { NzConfig, NZ_CONFIG } from 'ng-zorro-antd/core/config';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
 
 registerLocaleData(zh);
 
@@ -35,7 +36,7 @@ export function createTranslateLoader(http: HttpClient) {
 }
 
 
-const icons: Array<IconDefinition> = [MenuFoldOutline, MenuUnfoldOutline];
+const icons: Array<IconDefinition> = [antIcon.MenuFoldOutline, antIcon.MenuUnfoldOutline, antIcon.LayoutOutline, antIcon.FormOutline];
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ const icons: Array<IconDefinition> = [MenuFoldOutline, MenuUnfoldOutline];
     EffectsModule.forRoot(),
     StoreDevtoolsModule.instrument(),
     NzIconModule.forRoot(icons),
-    NzNotificationModule
+    NzNotificationModule,
+    NzMenuModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: zh_CN },
