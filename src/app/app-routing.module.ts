@@ -10,6 +10,10 @@ const routes: Routes = [
     path: 'victor-form',
     loadChildren: () => import('./victor-form/victor-form.module').then(m => m.VictorFormModule)
   },
+  {
+    path: 'custom-market',
+    loadChildren: () => import('./custom-market/custom-market.module').then(m => m.CustomMarketModule)
+  },
   { path: '', pathMatch: 'full', redirectTo: 'pages' },
   { path: '**', redirectTo: 'pages' }
 ];

@@ -36,7 +36,7 @@ export function createTranslateLoader(http: HttpClient) {
 }
 
 
-const icons: Array<IconDefinition> = [antIcon.MenuFoldOutline, antIcon.MenuUnfoldOutline, antIcon.LayoutOutline, antIcon.FormOutline];
+const icons: Array<IconDefinition> = [antIcon.MenuFoldOutline, antIcon.MenuUnfoldOutline, antIcon.LayoutOutline, antIcon.FormOutline, antIcon.ShopOutline];
 
 @NgModule({
   declarations: [
