@@ -12,6 +12,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { IconDefinition } from '@ant-design/icons-angular';
 import * as antIcon from '@ant-design/icons-angular/icons';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NzUploadModule } from 'ng-zorro-antd/upload';
 
 const icons: Array<IconDefinition> = [];
 
@@ -31,6 +32,7 @@ const icons: Array<IconDefinition> = [];
     NzModalModule,
     NzFormModule,
     NzInputModule,
+    NzUploadModule
   ]
 })
 export class CustomMarketModule { }

@@ -6,6 +6,7 @@
 /out-tsc
 /bazel-out
 /.angular
+/custom-components
 
 # Node
 /node_modules

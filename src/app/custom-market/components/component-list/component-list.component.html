@@ -4,24 +4,22 @@
   </div>
 </div>
 <div class="content">
-  <nz-table #basicTable>
+  <nz-table #basicTable [nzData]="components" [nzShowPagination]="false">
     <thead>
       <tr>
-        <th>组件名称</th>
+        <th>名称</th>
         <th>标识</th>
-        <th>操作</th>
+        <th nzWidth="120px">操作</th>
       </tr>
     </thead>
     <tbody>
-      <!-- <tr *ngFor="let data of basicTable.data">
-        <td>{{data.name}}</td>
-        <td>{{data.age}}</td>
-        <td>{{data.address}}</td>
+      <tr *ngFor="let data of basicTable.data">
+        <td>{{data.title}}</td>
+        <td>{{data.type}}</td>
         <td>
-          <a>Action 一 {{data.name}}</a>
-          <a>Delete</a>
+          <a (click)="deleteComponent(data)">Delete</a>
         </td>
-      </tr> -->
+      </tr>
     </tbody>
   </nz-table>
 </div>

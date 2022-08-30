@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { filter } from 'rxjs';
 import { SubSink } from 'subsink';
+import { CustomComponentDescription, CustomComponentStoreService } from '../../services/custom-component-store.service';
 import { ComponentEditComponent } from '../component-edit/component-edit.component';
 
 @Component({
@@ -13,18 +14,21 @@ import { ComponentEditComponent } from '../component-edit/component-edit.compone
 })
 export class ComponentListComponent implements OnInit, OnDestroy {
 
+  components: CustomComponentDescription[];
   private subs = new SubSink();
   constructor(
     private modal: NzModalService,
     private cdr: ChangeDetectorRef,
-    private router: Router,
+    private componentStore: CustomComponentStoreService
   ) { }
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    await this.refreshComponents();
+    this.cdr.markForCheck();
   }
 
   async addComponent(): Promise<void> {
@@ -42,9 +46,20 @@ export class ComponentListComponent implements OnInit, OnDestroy {
     });
     ref.afterClose
       .pipe(filter(id => id ? true : false))
-      .subscribe(id => {
-        // this.router.navigate(['/pages', 'editor', id]);
+      .subscribe(async id => {
+        await this.refreshComponents();
+        this.cdr.markForCheck();
       });
+  }
+
+  async deleteComponent(component: CustomComponentDescription): Promise<void> {
+    await this.componentStore.delete(component.id);
+    await this.refreshComponents();
+    this.cdr.markForCheck();
+  }
+
+  private async refreshComponents(): Promise<void> {
+    this.components = await this.componentStore.query();
   }
 
 }

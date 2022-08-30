@@ -12,6 +12,19 @@
       <input nz-input formControlName="type" id="type" />
     </nz-form-control>
   </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="type">组件包</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请输入组件标识">
+      <nz-upload [nzCustomRequest]="fileUploadRequest" [(nzFileList)]="fileList" [nzBeforeUpload]='beforeUpload'
+        [nzAccept]='".zip"'>
+        <button nz-button>
+          <i nz-icon nzType="upload"></i>
+          点击选取
+        </button>
+      </nz-upload>
+    </nz-form-control>
+  </nz-form-item>
 </form>
 <div class="footer">
   <button nz-button nzType="default" (click)="cancel()">取消</button>
