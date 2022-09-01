@@ -5,6 +5,8 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:engine": "ng build victor-core && ng build victor-renderer && ng build victor-editor",
+    "build:primary-market": "ng build victor-editor-shared && ng build dynamic-button && ng build dynamic-form && ng build dynamic-page && ng build dynamic-tabs && ng build primary-market",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "server": "nodemon server/startup.js"

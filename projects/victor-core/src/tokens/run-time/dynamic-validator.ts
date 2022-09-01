@@ -1,6 +1,6 @@
 import { InjectionToken } from '@angular/core';
 import 'reflect-metadata';
-import { ComponentMetadata, ComponentValidatorRule, ComponentConfiguration } from 'victor-core';
+import { ComponentConfiguration, ComponentMetadata, ComponentValidatorRule } from '../../models';
 
 export interface ValidatorConfiguration {
   pageId: string;

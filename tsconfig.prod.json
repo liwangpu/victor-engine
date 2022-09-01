@@ -1,0 +1,68 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/app",
+    "types": [],
+    "paths": {
+      "victor-core": [
+        "dist/victor-core",
+      ],
+      "victor-core/*": [
+        "dist/victor-core/*",
+      ],
+      "victor-renderer": [
+        "dist/victor-renderer",
+      ],
+      "victor-renderer/*": [
+        "dist/victor-renderer/*",
+      ],
+      "victor-editor": [
+        "dist/victor-editor",
+      ],
+      "victor-editor/*": [
+        "dist/victor-editor/*",
+      ],
+      "primary-market": [
+        "dist/primary-market",
+      ],
+      "victor-editor-shared": [
+        "dist/victor-editor-shared",
+      ],
+      "victor-editor-shared/*": [
+        "dist/victor-editor-shared/*",
+      ],
+      "dynamic-button": [
+        "dist/dynamic-button",
+      ],
+      "dynamic-button/*": [
+        "dist/dynamic-button/*",
+      ],
+      "dynamic-page": [
+        "dist/dynamic-page"
+      ],
+      "dynamic-page/*": [
+        "dist/dynamic-page/*"
+      ],
+      "dynamic-tabs": [
+        "dist/dynamic-tabs",
+      ],
+      "dynamic-tabs/*": [
+        "dist/dynamic-tabs/*",
+      ],
+      "dynamic-form": [
+        "dist/dynamic-form",
+      ],
+      "dynamic-form/*": [
+        "dist/dynamic-form/*",
+      ],
+    }
+  },
+  "files": [
+    "src/main.ts",
+    "src/polyfills.ts"
+  ],
+  "include": [
+    "src/**/*.d.ts"
+  ]
+}

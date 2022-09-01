@@ -7,7 +7,7 @@ import { nestComponentTree, selectVictorDesignerState, setDesignerState, generat
 import { SubSink } from 'subsink';
 import { first } from 'rxjs/operators';
 import { DESIGNER_STARTER, DesignerStarter, EditorHandler } from '../../tokens/designer-starter';
-import { CustomRenderProviderService } from 'victor-editor/designer/services/custom-render-provider.service';
+import { CustomRenderProviderService } from '../../services/custom-render-provider.service';
 
 @Component({
   selector: 'victor-designer',

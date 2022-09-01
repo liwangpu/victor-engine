@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { DropContainer } from '../models/drop-container';
 
 @Injectable()
 export class DropContainerOpsatService {

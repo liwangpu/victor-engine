@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, ElementRef, InjectionToken, Injector, Renderer2 } from '@angular/core';
-import { ComponentConfiguration } from 'victor-core';
+import { ComponentConfiguration } from '../../models';
 import { LazyService, PropertyEntry } from '../../utils/common-decorator';
 
 export interface ComponentDesignConfiguration extends ComponentConfiguration {
