@@ -23,6 +23,9 @@
       "es2020",
       "dom"
     ],
+    "typeRoots": [
+      "node_modules/@types"
+    ],
     "paths": {
       "victor-core": [
         "projects/victor-core/src/public-api.ts",
@@ -82,11 +85,5 @@
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
-  },
-  "exclude": [
-    "dist/**",
-    "node_modules/**",
-    "**/test.ts",
-    "**/*.spec.ts"
-],
+  }
 }

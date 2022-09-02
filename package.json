@@ -5,8 +5,9 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build:engine": "ng build victor-core && ng build victor-renderer && ng build victor-editor",
-    "build:primary-market": "ng build victor-editor-shared && ng build dynamic-button && ng build dynamic-form && ng build dynamic-page && ng build dynamic-tabs && ng build primary-market",
+    "build:engine": "ng build victor-core && ng build victor-renderer && ng build victor-editor-shared && ng build victor-editor",
+    "build:primary-market": "ng build dynamic-button && ng build dynamic-form && ng build dynamic-page && ng build dynamic-tabs && ng build primary-market",
+    "build:lib": "npm run build:engine && npm run build:primary-market",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "server": "nodemon server/startup.js"
@@ -49,6 +50,7 @@
     "@angular-devkit/build-angular": "~13.3.9",
     "@angular/cli": "~13.3.9",
     "@angular/compiler-cli": "~13.3.9",
+    "@types/eslint": "^8.4.6",
     "@types/faker": "^5.5.6",
     "@types/jasmine": "~3.10.0",
     "@types/lodash": "^4.14.157",
@@ -56,13 +58,13 @@
     "@types/sortablejs": "^1.13.0",
     "@types/uuid": "^8.3.0",
     "jasmine-core": "~4.0.0",
-    "nodemon": "^2.0.19",
     "karma": "~6.3.0",
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage": "~2.1.0",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
     "ng-packagr": "^13.3.1",
+    "nodemon": "^2.0.19",
     "typescript": "~4.6.2"
   }
 }
